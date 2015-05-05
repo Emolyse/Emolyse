@@ -1,7 +1,12 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Rémy
- * Date: 05/05/2015
- * Time: 10:54
- */
+    include('includes/header.php');
+?>
+
+<div class="logoEmolyse">
+    <img src="images/logo.png" alt="logo application Emolyse" id="logoEmolyse"/>
+</div>
+<a href="experimentateur-accueil.php" class="btn-home btn-experimentateur">Expérimentateur</a>
+<a href="participant-accueil.php" class="btn-home btn-participant">Participant</a>
+
+</body>
+</html>
