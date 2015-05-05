@@ -7,7 +7,9 @@
 <body>
 
 <script src="http://threejs.org/build/three.min.js"></script>
-<script src="js/ColladaLoader.min.js"></script>
+<script src="js/ColladaLoader.js"></script>
+<script src="js/Detector.js"></script>
+<script src="js/stats.min.js"></script>
 <script>
     var color = 0x000000;
 
@@ -15,7 +17,9 @@
     var scene = new THREE.Scene();
 
     // Create your main camera
-    var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    var camera = new THREE.PerspectiveCamera( 25, window.innerWidth / window.innerHeight, 1, 10000 );
+    camera.position.set( 0, -10, 0);
+    camera.up.set( 0, 1, 0 );
 
     // Create lights
     var light = new THREE.PointLight(0xEEEEEE);
@@ -30,16 +34,7 @@
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
 
-    // Create a cube
-    var geometry = new THREE.BoxGeometry(1, 1, 1);
-    var material = new THREE.MeshLambertMaterial({
-        color: 0xff00ff,
-        ambient: 0x121212,
-        emissive: 0x121212
-    });
 
-    var cube = new THREE.Mesh(geometry, material);
-    scene.add(cube);
 
     // Set up the main camera
     camera.position.z = 5;
@@ -61,26 +56,39 @@
     backgroundScene .add(backgroundCamera );
     backgroundScene .add(backgroundMesh );
 
+
+    var loader = new THREE.ColladaLoader();
+    loader.load( "3D/avatar.dae", function ( collada ) {
+
+        collada.scene.traverse( function ( child ) {
+
+            if ( child instanceof THREE.SkinnedMesh ) {
+
+                var animation = new THREE.Animation( child, child.geometry.animation );
+                animation.play();
+
+                camera.lookAt( child.position );
+
+            }
+
+        } );
+        console.log(collada);
+        scene.add( collada.scene );
+
+    } );
+
     // Rendering function
     var render = function () {
+
+
         requestAnimationFrame(render);
-
-        // Update the color to set
-        if (color < 0xdddddd) color += 0x0000ff;
-
-        // Update the cube color
-        cube.material.color.setHex(color);
-
-        // Update the cube rotations
-        cube.rotation.x += 0.05;
-        cube.rotation.y += 0.02;
 
         renderer.autoClear = false;
         renderer.clear();
-        renderer.render(backgroundScene , backgroundCamera );
+        renderer.render(backgroundScene, backgroundCamera);
         renderer.render(scene, camera);
-    };
 
+    };
     render();
 </script>
 </body>
