@@ -8,7 +8,7 @@ include('includes/en-tete.php');
         <li><a href="index.php"><img src="images/home.png" alt="Revenir à l'accueil de l'application" id="pictoHome"/></a></li>
         <li><a href="experimentateur-accueil.php"><?php if(BTN_EXPERIMENTATEUR_HOME != ''){echo BTN_EXPERIMENTATEUR_HOME;}else{ echo('BTN_EXPERIMENTATEUR_HOME');}; ?></a></li>
         <li><a href="experimentateur-experiences.php"><?php if(BTN_EXPERIENCES != ''){echo BTN_EXPERIENCES;}else{ echo('BTN_EXPERIENCES');}; ?></a></li>
-        <li><?php if(AJOUTER != ''){echo AJOUTER;}else{ echo('AJOUTER');}; ?></li>
+        <li><?php if(MODIFIER != ''){echo MODIFIER;}else{ echo('MODIFIER');}; ?></li>
     </ul>
 </section>
 
@@ -31,7 +31,7 @@ include('includes/en-tete.php');
                 <button type="button" id="add-env"><i class="fa fa-plus-circle"></i></button>
             </div>
         </div>
-        <input type="submit" id="btn-add-experience" name="add-experience" value="<?php if(AJOUTER != ''){echo AJOUTER;}else{ echo('AJOUTER');}; ?>"/>
+        <input type="submit" id="btn-update-experience" name="update-experience" value="<?php if(MODIFIER != ''){echo MODIFIER;}else{ echo('MODIFIER');}; ?>"/>
     </form>
 </section>
 

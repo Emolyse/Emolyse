@@ -113,25 +113,25 @@ a.btn-experimentateur-home:active{
     background: #D7D6D6;
 }
 
-section.liste-participants{
+section.parametres, section.liste-participants{
     margin-top: 50px;
 }
-table.table-participants{
+table.table-parametres, table.table-participants{
     width: 800px;
     display: block;
     margin: 0 auto;
     border-spacing: 0px;
 }
-table.table-participants > thead > tr > th{
+table.table-parametres > thead > tr > th, table.table-participants > thead > tr > th{
     background-color: #E4E4E4;
     padding: 5px 0;
     border-color: #E4E4E4;
     padding-left: 5px;
 }
-table.table-participants tr{
+table.table-parametres tr, table.table-participants tr{
     text-align: left;
 }
-table.table-participants tr td{
+table.table-parametres tr td, table.table-participants tr td{
     padding: 10px 0;
     padding-left: 5px;
 }
@@ -216,7 +216,7 @@ input#champs-nom-experience {
     text-decoration: underline;
     margin-left: 10px;
 }
-.objet h3{
+.environnement h3, .objet h3{
     color: #8dc4c7;
     font-size: 26px;
     display: inline-block;
@@ -224,13 +224,13 @@ input#champs-nom-experience {
     margin-top: 20px;
     margin-right: 15px;
 }
-.liste-objets i.fa.fa-plus-circle {
+.select-environnement i.fa.fa-plus-circle, .liste-objets i.fa.fa-plus-circle {
     font-size: 70px;
     display: inline-block;
     position: relative;
     margin: 16px 0 0 30px;
 }
-button#add-objects {
+button#add-env, button#add-objects {
     background: none;
     border: none;
 }
@@ -243,6 +243,115 @@ button#add-objects {
 button#add-env {
     background: none;
     border: none;
+}
+#btn-update-experience, #btn-add-experience{
+    display: block;
+    text-decoration: none;
+    /* border: 1px solid #c4beb5; */
+    padding: 20px 10px;
+    background: #E4E4E4;
+    width: 300px;
+    margin: 20px auto 0 auto;
+    text-align: center;
+    font-size: 24px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    margin-top: 110px;
+}
+.gerer-parametres {
+    text-align: center;
+    margin-bottom: 25px;
+}
+.gerer-parametres a{
+    padding: 0 20px;
+}
+.nouvelle-experience > div{
+    display: inline-block;
+    width: 33.1%;
+}
+#select-experience{
+    display: block;
+    text-decoration: none;
+    width: 280px;
+    margin: 20px auto 0 auto;
+    text-align: center;
+    font-size: 24px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+#btn-start-experience{
+    display: block;
+    text-decoration: none;
+    /* border: 1px solid #c4beb5; */
+    padding: 25px 20px;
+    background: #E4E4E4;
+    width: 280px;
+    margin: 20px auto 0 auto;
+    text-align: center;
+    font-size: 24px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+.form-finalisation > div{
+    display: block;
+}
+.form-finalisation label{
+    font-size: 20px;
+}
+.titreForm {
+    color: #66D2D8;
+    font-size: 26px;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #66D2D8;
+}
+.sexeForm {
+    margin-bottom: 15px;
+}
+.sexeForm input[type="radio"] {
+    margin-left: 40px;
+}
+.dateNaissForm {
+    margin-bottom: 15px;
+}
+.dateNaissForm select{
+    font-size: 24px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    margin-left: 16px;
+}
+.infos {
+    display: inline-block;
+}
+.infos > div input{
+    font-size: 24px;
+    margin-bottom: 5px;
+    width: 200px;
+    padding: 15px;
+}
+.fileForm {
+    display: inline-block;
+    width: 50%;
+}
+input#finaliser-experience{
+    text-decoration: none;
+    border: none;
+    padding: 25px 20px;
+    background: #E4E4E4;
+    width: 100%;
+    margin: 20px auto 0 auto;
+    text-align: center;
+    font-size: 24px;
+     -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+     border-radius: 5px;
+}
+span.obligatoire {
+    font-size: 12px;
+    font-style: italic;
 }
 /* END CONTENT */
 

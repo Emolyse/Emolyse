@@ -6,18 +6,18 @@
 <section class="breadcrumb">
     <ul>
         <li><a href="index.php"><img src="images/home.png" alt="Revenir à l'accueil de l'application" id="pictoHome"/></a></li>
-        <li><a href="experimentateur-accueil.php">Expérimentateur</a></li>
-        <li>Participants</li>
+        <li><a href="experimentateur-accueil.php"><?php if(BTN_EXPERIMENTATEUR_HOME != ''){echo BTN_EXPERIMENTATEUR_HOME;}else{ echo('BTN_EXPERIMENTATEUR_HOME');}; ?></a></li>
+        <li><?php if(BTN_PARTICIPANTS != ''){echo BTN_PARTICIPANTS;}else{ echo('BTN_PARTICIPANTS');}; ?></li>
     </ul>
 </section>
 
 <section class="liste-participants">
     <table class="table-participants">
         <thead>
-            <th>Sexe <i class="fa fa-sort-desc"></i></th>
-            <th>Nom <i class="fa fa-sort-desc"></i></th>
-            <th>Prénom <i class="fa fa-sort-desc"></i></th>
-            <th>Age <i class="fa fa-sort-desc"></i></th>
+            <th><?php if(SEXE != ''){echo SEXE;}else{ echo('SEXE');}; ?> <i class="fa fa-sort-desc"></i></th>
+            <th><?php if(NOM != ''){echo NOM;}else{ echo('NOM');}; ?> <i class="fa fa-sort-desc"></i></th>
+            <th><?php if(PRENOM != ''){echo PRENOM;}else{ echo('PRENOM');}; ?> <i class="fa fa-sort-desc"></i></th>
+            <th><?php if(AGE != ''){echo AGE;}else{ echo('AGE');}; ?> <i class="fa fa-sort-desc"></i></th>
             <th></th>
         </thead>
         <tbody>
