@@ -57,32 +57,40 @@
         container = document.getElementById( 'container' );
 
         var axeX, axeY, axeZ;
-        var geometry = new THREE.Geometry();
-        geometry.vertices.push(
-                new THREE.Vector3( 0, 0, 0 ),
-                new THREE.Vector3( 100, 0, 0 )
-        );
 
-        var geometry2 = new THREE.Geometry();
-        geometry2.vertices.push(
-                new THREE.Vector3( 0, 0, 0 ),
-                new THREE.Vector3( 0, 100, 0 )
-        );
+        var axeGenerator = function(x, y, z){
+            var axeGeometry = new THREE.Geometry();
+            axeGeometry.vertices.push(
+                    new THREE.Vector3( 0, 0, 0 ),
+                    new THREE.Vector3( x, y, z )
+            );
+            return axeGeometry;
+        }
 
-        var geometry3 = new THREE.Geometry();
-        geometry3.vertices.push(
-                new THREE.Vector3( 0, 0, 0 ),
-                new THREE.Vector3( 0, 0, 100 )
-        );
+        var planeGenerator = function(width,height,color){
+            var planeGeometry = new THREE.PlaneGeometry( width, height);
+            var material = new THREE.MeshBasicMaterial( {color: color, wireframe:false} );
+            return new THREE.Mesh( planeGeometry, material );
+        };
 
-        axeX = new THREE.Line(geometry, new THREE.LineBasicMaterial({color:0xff0000}));
-        axeY = new THREE.Line(geometry2, new THREE.LineBasicMaterial({color:0x00ff00}));
-        axeZ = new THREE.Line(geometry3, new THREE.LineBasicMaterial({color:0x0000ff}));
+        axeX = new THREE.Line(axeGenerator(100,0,0), new THREE.LineBasicMaterial({color:0xff0000}));
+        axeY = new THREE.Line(axeGenerator(0,100,0), new THREE.LineBasicMaterial({color:0x00ff00}));
+        axeZ = new THREE.Line(axeGenerator(0,0,100), new THREE.LineBasicMaterial({color:0x0000ff}));
 
+        var backgroundPlane = planeGenerator(window.innerWidth*2/3,5,0xdddddd);
+        var floorPlane = planeGenerator(9,8,0xAAAAAA);
+        var leftWall = planeGenerator(4,5,0x333333);
+        var rightWall = planeGenerator(4,5,0xdddddd);
+        backgroundPlane.position.set(1,1.5,-4);
+        floorPlane.position.set(1,0,-2);
+        floorPlane.rotateX(-Math.PI/2);
+        leftWall.rotateY(Math.PI/2);
+        leftWall.position.set(-4,1.5,-4);
+        rightWall.position.set(0,1.5,-4);
 
         camera = new THREE.PerspectiveCamera( 25, window.innerWidth / window.innerHeight, 1, 10000 );
-        camera.position.set( 1, 2, 7 );
-        camera.lookAt( new THREE.Vector3(1,1,0));
+        camera.position.set( 1, 1.2, 100 );
+        camera.lookAt( new THREE.Vector3(1,1.2,0));
 
         camera.up.x=0;
         camera.up.y=0;
@@ -91,8 +99,13 @@
         scene = new THREE.Scene();
         scene.add(axeX);
         scene.add(axeY);
-
         scene.add(axeZ);
+
+//        scene.add(backgroundPlane);
+//        scene.add(floorPlane);
+//        scene.add(leftWall);
+//        scene.add(rightWall);
+
         var light = new THREE.PointLight(0xffffff);
         scene.add( light );
         renderer = new THREE.WebGLRenderer( { antialias: true } );
@@ -109,19 +122,18 @@
 
         container.appendChild( stats.domElement );
         var loader = new THREE.ColladaLoader();
-        loader.load( "3D/avatar.dae", function ( collada ) {
+        loader.load( "3D/male_caucasian/male_caucasian.dae", function ( collada ) {
 
             collada.scene.traverse( function ( child ) {
 
-                if ( child instanceof THREE.SkinnedMesh ) {
-
-                    var animation = new THREE.Animation( child, child.geometry.animation );
-                    console.log(animation);
-                    child.rotateX(-Math.PI/2);
-                    child.rotateZ(Math.PI/2);
-                    animation.play();
-
-                }
+//                if ( child instanceof THREE.SkinnedMesh ) {
+//
+//                    var animation = new THREE.Animation( child, child.geometry.animation );
+//                    console.log(animation);
+//                    child.rotateX(-Math.PI/2);
+//                    //animation.play();
+//
+//                }
 
             } );
             scene.add( collada.scene );
