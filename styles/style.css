@@ -135,6 +135,12 @@ table.table-parametres tr td, table.table-participants tr td{
     padding: 10px 0;
     padding-left: 5px;
 }
+table.table-parametres tr td{
+    vertical-align: top;
+}
+table.table-parametres tr{
+    height: 38px;
+}
 table.table-participants tr td img{
     width: 50px;
 }
@@ -352,6 +358,74 @@ input#finaliser-experience{
 span.obligatoire {
     font-size: 12px;
     font-style: italic;
+}
+.pop-up, .pop-up-consigne{
+    display: none;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0,0,0,0.7);
+    top: 0;
+}
+.pop-up .box, .pop-up-consigne .box {
+    display: block;
+    width: 600px;
+    margin: 16% auto 0 auto;
+    background: #f2f2f2;
+    padding: 15px;
+}
+.pop-up .box h3, .pop-up-consigne .box h3{
+    color: #66D2D8;
+    font-size: 26px;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #66D2D8;
+}
+.pop-up .box form, .pop-up-consigne .box form{
+    display: block;
+    margin: 0 auto 10px auto;
+    width: 250px;
+}
+.box input{
+    padding: 5px 10px;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+.box input[type="file"] {
+    padding-left: 0px;
+}
+.pop-up .box input[type="submit"], .pop-up-consigne .box input[type="submit"]{
+    display: block;
+    text-decoration: none;
+    padding: 20px 10px;
+    background: #E4E4E4;
+    width: 100%;
+    margin: 20px auto 0 auto;
+    text-align: center;
+    font-size: 24px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+#consigne{
+    width: 100%;
+    font-family: arial;
+}
+.pop-up .fa-times-circle-o, .pop-up-consigne .fa-times-circle-o{
+    font-size: 40px;
+    color: #fff;
+    position: absolute;
+    right: 50;
+    top: 36px;
+}
+.champ_text_transparent {
+    width: 140px;
+    background-color: transparent;
+    border: 0px;
+    text-align: center;
+}
+.champ_text_transparent:focus {
+    border: 1px solid #000;
+    outline: -webkit-focus-ring-color auto 5px;
 }
 /* END CONTENT */
 

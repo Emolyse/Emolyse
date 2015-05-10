@@ -15,6 +15,7 @@
 
     <link rel="stylesheet" href="../Emolyse/styles/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="../Emolyse/styles/style.css"/>
+    <script type="text/javascript" src="../Emolyse/scripts/jquery-2.1.4.min.js"></script>
 </head>
 <body>
 <form action="" method="get">

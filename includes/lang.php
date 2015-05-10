@@ -1,15 +1,5 @@
 <?php
-/*if($_SESSION['lang'] == ''){
-    $_SESSION['lang'] = 'FR';
-    echo "totot";
-}
-if(isset($_GET['lang'])){
-    $_SESSION['lang'] = $_GET['lang'];
-    echo "tata";
-}*/
-
 if(!isset($_SESSION['lang'])){
-    //echo "if";
     $_SESSION['lang'] = 'FR';
 
     $requete = "SELECT codeIdentifiant, traduction FROM traduction WHERE codeLangue='".$_SESSION['lang']."'";
@@ -20,7 +10,6 @@ if(!isset($_SESSION['lang'])){
     }
     $resultats->close();
 }else{
-    //echo "else";
     if(isset($_GET['lang'])){
         $_SESSION['lang'] = $_GET['lang'];
     }
