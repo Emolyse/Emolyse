@@ -36,6 +36,7 @@
         }
 
         #console{
+            display: none;
             position: fixed;
             background-color: #ffffff;
             color: #000000;
@@ -54,10 +55,6 @@
 <div id="console"></div>
 <div id="jointTarget"></div>
 <div id="container"></div>
-
-<div id="info">
-    <a href="http://threejs.org" target="_blank">three.js</a> webgl - collada - skinning
-</div>
 
 <script src="js/three.min.js"></script>
 <script src="js/ColladaLoader.js"></script>
@@ -143,18 +140,8 @@
             //On affiche la position des bones qui nous intéressent pour déterminer la position des points d'ancrages pour l'interaction tactile
             var idBones = [0,1,6,9,12,10,13];
             loadConsole("Height : 165.94");
-            console.log(avatar.skeleton.bones[12].getWorldPosition());
-            initTouchInterface();
+
         });
-
-        var initTouchInterface = function(){
-            //x:1.5 y:1.3
-
-            $("#jointTarget").css({
-                left:"20%",
-                bottom: "10%"
-            });
-        };
 
         var texture = THREE.ImageUtils.loadTexture( 'img/env.jpg' );
         var backgroundMesh = new THREE.Mesh(
@@ -244,7 +231,42 @@
     function loadConsole(msg){
         $("#console").text(msg);
     }
-
+    var mouse = new THREE.Vector2();
+    function onMouseDown(event){
+        mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+        mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+//        console.log(mouse);
+        $("#jointTarget").css({
+            left : event.clientX+"px",
+            bottom :"auto",
+            top : event.clientY+"px"
+        });
+    }
+    container.addEventListener('mousedown', function (evt) {
+        // The user has clicked; let's note this event
+        // and the click's coordinates so that we can
+        // react to it in the render loop
+        clickInfo.userHasClicked = true;
+        clickInfo.x = evt.clientX;
+        clickInfo.y = evt.clientY;
+    }, false);
+//    var isMouseDown = false;
+//    $("html, body").mousedown(event,function(event){
+//        isMouseDown = true;
+//        console.log("MouseDown");
+//        console.log(event);
+//        onMouseDown(event);
+//    });
+//    $("html, body").mouseup(event,function(event){
+//        console.log("MouseUp");
+//        isMouseDown = false;
+//    });
+//    $("html, body").mousemove(event,function(event){
+//        if(isMouseDown) {
+//            console.log(event);
+//            onMouseDown(event);
+//        }
+//    });
 </script>
 
 </body>
