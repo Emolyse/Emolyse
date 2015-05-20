@@ -12,41 +12,51 @@ include('includes/en-tete.php');
 </section>
 
 <section class="liste-experience">
-    <a href="ajouter-experience.php"><i class="fa fa-plus-circle"></i></a>
-    <a href="#"><i class="fa fa-download telecharger-tout"></i></a>
+    <div class="lienExperience">
+        <a href="includes/nouvelleExperience.php"><i class="fa fa-plus-circle"></i></a>
+        <a href="#"><i class="fa fa-download telecharger-tout"></i></a>
+    </div>
     <table class="table-experience">
         <thead>
-        <th></th>
-        <th><?php if(ID != ''){echo ID;}else{ echo('ID');}; ?></th>
-        <th><?php if(NOM != ''){echo NOM;}else{ echo('NOM');}; ?></th>
-        <th></th>
-        <th></th>
+            <th></th>
+            <th><?php if(NOM != ''){echo NOM;}else{ echo('NOM');}; ?></th>
+            <th></th>
+            <th></th>
         </thead>
-        <tbody>
-        <tr onclick="document.location = 'modifier-experience.php';">
-            <td><img src="images/tablette.png" alt="aperçu de l'expérience"/></td>
-            <td>202</td>
-            <td>Tactile</td>
-            <td><a href="#"><i class="fa fa-download"></i></a></td>
-            <td><a href="#"><i class="fa fa-minus"></i></a></td>
-        </tr>
-        <tr onclick="document.location = 'modifier-experience.php';">
-            <td><img src="images/tablette.png" alt="aperçu de l'expérience"/></td>
-            <td>203</td>
-            <td>Cuisine</td>
-            <td><a href="#"><i class="fa fa-download"></i></a></td>
-            <td><a href="#"><i class="fa fa-minus"></i></a></td>
-        </tr>
-        <tr onclick="document.location = 'modifier-experience.php';">
-            <td><img src="images/tablette.png" alt="aperçu de l'expérience"/></td>
-            <td>204</td>
-            <td>Musique</td>
-            <td><a href="#"><i class="fa fa-download"></i></a></td>
-            <td><a href="#"><i class="fa fa-minus"></i></a></td>
-        </tr>
+            <tbody>
+            <?php
+                $requete = "SELECT * FROM experience WHERE nbProduit > 1";
+                $resultats = $base->query($requete);
+                while(($resultat = $resultats->fetch_array())){
+                    $idExperience = $resultat['idExperience'];
+                    echo "<tr>";
+                    echo "<td onclick='document.location = \"gerer-experience.php?id=$idExperience\"' class='ligneClic'><img src='images/tablette.png' alt='aperçu de l\'expérience'/></td>";
+                    echo "<td onclick='document.location = \"gerer-experience.php?id=$idExperience\"' class='ligneClic'>".$resultat['nom']."</td>";
+                    echo "<td><a href='#'><i class='fa fa-download'></i></a></td>";
+                    echo "<td><a href='#' class='supExperience' id='$idExperience'><i class='fa fa-minus'></i></a></td>";
+                    echo "</tr>";
+                }
+            ?>
         </tbody>
     </table>
 </section>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        // suppression d'une experience
+        $( ".supExperience" ).click(function() {
+            var idExperience = $(this).attr("id");
+
+            var r = confirm("Etes vous sûr de vouloir supprimer cette expérience ?");
+            if (r == true) {
+                texte = file('http://'+window.location.host+'/Emolyse/Emolyse/includes/traitement.php?id='+escape(idExperience)
+                    +'&deleteExp="deleteExp"'
+                )
+                location.reload();
+            }
+        });
+    });
+</script>
 
 </body>
 </html>

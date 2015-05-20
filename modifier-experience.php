@@ -16,7 +16,7 @@ include('includes/en-tete.php');
     <form action="#" id="formulaire-experience">
         <div class="params1">
             <label>202 - </label><input type="text" name="nom" id="champs-nom-experience"/>
-            <a href="#"><img src="images/drapeau-français.png" alt="<?php if(CHOISIR_LA_LANGUE != ''){echo CHOISIR_LA_LANGUE;}else{ echo('CHOISIR_LA_LANGUE');}; ?>" class="drapeau-experience"/></a>
+            <a href="#"><img src="images/drapeau-francais.png" alt="<?php if(CHOISIR_LA_LANGUE != ''){echo CHOISIR_LA_LANGUE;}else{ echo('CHOISIR_LA_LANGUE');}; ?>" class="drapeau-experience"/></a>
             <a href="#" class="editer-consigne-add-experience"><?php if(EDITER_LA_CONSIGNE != ''){echo EDITER_LA_CONSIGNE;}else{ echo('EDITER_LA_CONSIGNE');}; ?></a>
         </div>
         <div class="objet">

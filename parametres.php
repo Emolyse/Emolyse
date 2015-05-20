@@ -20,11 +20,11 @@ include('includes/en-tete.php');
         <tr>
             <th><?php if(IDENTIFIANT != ''){echo IDENTIFIANT;}else{echo('IDENTIFIANT');}; ?></th>
             <?php
-                $requete = "SELECT * FROM traduction GROUP BY codeLangue";
+                $requete = "SELECT * FROM traduction t, langue l WHERE t.codeLangue = l.codeLangue AND codeIdentifiant <> 'TEXT_CONSIGNE' GROUP BY t.codeLangue";
                 $resultats = $base->query($requete);
                 while($resultat = $resultats->fetch_array())
                 {
-                    echo "<th>".$resultat['codeLangue']."</th>";
+                    echo "<th>".$resultat['nom']."</th>";
                 }
                 $resultats->close();
             ?>
@@ -33,18 +33,21 @@ include('includes/en-tete.php');
             $requeteId = "SELECT * FROM identifiant";
             $resultatsId = $base->query($requeteId);
             $rowcount = mysqli_num_rows($resultatsId);
+            $rowcount = $rowcount-1;
             $i = 1;
             while(($resultatId = $resultatsId->fetch_array()) || ($i == $rowcount+1))
             {
                 echo "<tr>";
-                echo "<td>".$resultatId['codeIdentifiant']."</td>";
+                if($resultatId['codeIdentifiant'] != 'TEXT_CONSIGNE'){
+                    echo "<td>".$resultatId['codeIdentifiant']."</td>";
+                }
 
                 $requete = "SELECT * FROM traduction GROUP BY codeLangue";
                 $resultats = $base->query($requete);
 
                 while(($resultat = $resultats->fetch_array()))
                 {
-                    $requeteTraductions = "SELECT * FROM traduction WHERE codeLangue='".$resultat['codeLangue']."' AND codeIdentifiant='".$resultatId['codeIdentifiant']."'";
+                    $requeteTraductions = "SELECT * FROM traduction WHERE codeLangue='".$resultat['codeLangue']."' AND codeIdentifiant='".$resultatId['codeIdentifiant']."' AND codeIdentifiant <> 'TEXT_CONSIGNE'";
                     $resultatsTraductions = $base->query($requeteTraductions);
 
                     $j = 1;
@@ -68,10 +71,13 @@ include('includes/en-tete.php');
         <form action="includes/traitement.php" method="post" enctype="multipart/form-data">
             <input type="text" name="codeLangue" id="codeLangue" placeholder="Code langue*"/>
             <input type="text" name="nom" id="nom" placeholder="Nom de la langue*"/>
-            <input type="file" name="lienDrapeau"/>
+<!--            <div id="fileLangClic" onclick="upload();"><span id="indicationUploadImg">Ajouter une image</span>-->
+            <div id="fileLangClic"><span id="indicationUploadImg">Ajouter une image</span>
+                <img src="" alt="Aperçu de l'image" id="apercuImgLang" style="display: none"/>
+            </div>
+            <input type="file" name="file" id="fileLang" style="visibility: hidden" />
             <input type="submit" value="Ajouter" name="ajoutLangue"/>
         </form>
-
     </div>
 </div>
 
@@ -80,22 +86,38 @@ include('includes/en-tete.php');
     <i class="fa fa-times-circle-o close"></i>
     <div class="box">
         <h3>Modifier la consigne</h3>
-        <form action="includes/traitement.php" method="post" enctype="multipart/form-data">
-            <textarea name="consigne" id="consigne" cols="30" rows="10">
+
+            <ul class="tabs">
                 <?php
-                    $requete = "SELECT traduction FROM traduction WHERE codeLangue='FR' AND codeIdentifiant='TEXT_CONSIGNE'";
+                    $requete = "SELECT * FROM langue";
                     $resultats = $base->query($requete);
-                    while($resultat = $resultats->fetch_array()){
-                        echo utf8_decode($resultat['traduction']);
+                    while(($resultat = $resultats->fetch_array())){
+                        echo "<li><a href='#' title='consigne-".$resultat['codeLangue']."' class='tab'>".$resultat['nom']."</a></li>";
                     }
                 ?>
-            </textarea>
-            <input type="hidden" name="codeLangue" value="FR"/>
-            <input type="hidden" name="codeIdentifiant" value="TEXT_CONSIGNE"/>
-            <input type="submit" value="Modifier" name="modifierConsigne"/>
-            <div class="error"></div>
-        </form>
+            </ul>
 
+            <?php
+                $requeteLang = "SELECT * FROM langue";
+                $resultatsLang = $base->query($requeteLang);
+                while(($resultatLang = $resultatsLang->fetch_array())){
+                    echo "<div class='content consigne-".$resultatLang['codeLangue']."'>";
+                    echo "<form action='includes/traitement.php' method='post' enctype='multipart/form-data'>";
+                    echo "<textarea name='consigne' id='consigne-".$resultatLang['codeLangue']."' cols='30' rows='10'>";
+                        $requete = "SELECT traduction FROM traduction WHERE codeLangue='".$resultatLang['codeLangue']."' AND codeIdentifiant='TEXT_CONSIGNE'";
+                        $resultats = $base->query($requete);
+                        while($resultat = $resultats->fetch_array()){
+                            echo utf8_decode($resultat['traduction']);
+                        }
+                    echo "</textarea>";
+                    echo "<input type='hidden' name='codeLangue' value='".$resultatLang['codeLangue']."' />";
+                    echo "<input type='hidden' name='codeIdentifiant' value='TEXT_CONSIGNE' />";
+                    echo "<input type='submit' value='Modifier' name='modifierConsigne' />";
+                    echo "<div class='error'></div>";
+                    echo "</form>";
+                    echo "</div>";
+                }
+            ?>
     </div>
 </div>
 
@@ -118,30 +140,95 @@ include('includes/en-tete.php');
             $('.pop-up-consigne').show();
             document.body.style.overflow = 'hidden';
         });
+
+        $("a[title*='consigne-FR']").addClass("active");
+        $("a.tab").click(   function ()
+            {
+                $(".active").removeClass("active");
+
+                $(this).addClass("active");
+
+                $(".content").hide();
+
+                var contenu_aff = $(this).attr("title");
+                $("." + contenu_aff).show();
+            }
+        );
     });
+    $(document).on('dragenter', '#fileLangClic', function() {
+        $(this).css('border', '3px dashed red');
+        return false;
+    });
+
+    $(document).on('dragover', '#fileLangClic', function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        $(this).css('border', '3px dashed red');
+        return false;
+    });
+
+    $(document).on('dragleave', '#fileLangClic', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        $(this).css('border', '3px dashed #BBBBBB');
+        return false;
+    });
+    $(document).on('drop', '#fileLangClic', function(e) {
+        if(e.originalEvent.dataTransfer){
+            if(e.originalEvent.dataTransfer.files.length) {
+                // Stop the propagation of the event
+                e.preventDefault();
+                e.stopPropagation();
+                $(this).css('border', '3px dashed green');
+                // Main function to upload
+                upload(e.originalEvent.dataTransfer.files);
+            }
+        }
+        else {
+            $(this).css('border', '3px dashed #BBBBBB');
+        }
+        return false;
+    });
+    function upload(files) {
+
+        var f = files[0] ;
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            var dataURL = reader.result;
+            $('#apercuImgLang').attr('src', dataURL);
+        }
+        reader.onload = handleReaderLoad;
+        reader.readAsDataURL(f);
+
+        $('#indicationUploadImg').hide();
+        $('#apercuImgLang').show();
+    }
+
+    function handleReaderLoad(evt) {
+        var pic = {};
+        pic.file = evt.target.result.split(',')[1];
+
+        var str = jQuery.param(pic);
+
+        $.ajax({
+            type: 'POST',
+            contentType: "application/x-www-form-urlencoded;charset=UTF-8",
+            url: 'includes/traitement.php',
+            data: {'filename': str},
+            success: function(data){
+                console.log(data);
+        }
+    });
+    }
+
     function updateTraduction(ID_element)
     {
         var value = document.getElementsByName(ID_element).item(0).value;
 
-        console.log('http://'+window.location.host+'/Emolyse/Emolyse/includes/modifTraduction.php?ID_element='+escape(ID_element)
-            +'&value='+escape(value));
-
         texte = file('http://'+window.location.host+'/Emolyse/Emolyse/includes/modifTraduction.php?ID_element='+escape(ID_element)
             +'&value='+escape(value)
         )
-    }
-    function file(fichier)
-    {
-        if(window.XMLHttpRequest)
-            xhr_object = new XMLHttpRequest();
-        else if(window.ActiveXObject) // IE
-            xhr_object = new ActiveXObject("Microsoft.XMLHTTP");
-        else
-            return(false);
-        xhr_object.open("GET", fichier, false);
-        xhr_object.send(null);
-        if(xhr_object.readyState == 4) return(xhr_object.responseText);
-        else return(false);
     }
 </script>
 </body>

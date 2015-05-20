@@ -21,27 +21,19 @@
             <th></th>
         </thead>
         <tbody>
-            <tr>
-                <td><img src="images/profil_h.png" alt="Homme"/></td>
-                <td>Martin</td>
-                <td>Bernard</td>
-                <td>28 ans</td>
-                <td><a href="#"><i class="fa fa-download"></i></a></td>
-            </tr>
-            <tr>
-                <td><img src="images/profil_h.png" alt="Homme"/></td>
-                <td>André</td>
-                <td>Michel</td>
-                <td>40 ans</td>
-                <td><a href="#"><i class="fa fa-download"></i></a></td>
-            </tr>
-            <tr>
-                <td><img src="images/profil_h.png" alt="Homme"/></td>
-                <td>Petit</td>
-                <td>Michelle</td>
-                <td>45 ans</td>
-                <td><a href="#"><i class="fa fa-download"></i></a></td>
-            </tr>
+            <?php
+                $requete = "SELECT * FROM participant";
+                $resultats = $base->query($requete);
+                while(($resultat = $resultats->fetch_array())){
+                    echo "<tr>";
+                    echo "<td>".$resultat['sexe']."</td>";
+                    echo "<td>".$resultat['nom']."</td>";
+                    echo "<td>".$resultat['prenom']."</td>";
+                    echo "<td>".$resultat['naissance']."</td>";
+                    echo "<td><a href='#'><i class='fa fa-download'></i></a></td>";
+                    echo "</tr>";
+                }
+            ?>
         </tbody>
     </table>
 </section>
