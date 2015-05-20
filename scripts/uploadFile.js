@@ -8,7 +8,7 @@
         if(oo) $.extend(o, oo);
         this.each(function(){
             $( ".dropFile" ).click(function() {
-                $("input[name*='lienPhoto']").click();
+                $("#lienPhoto").click();
             });
 
             $("input[name*='lienPhoto']").on('change', function(e){

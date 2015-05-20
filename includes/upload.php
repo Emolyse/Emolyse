@@ -21,7 +21,7 @@
         $base->query($requeteInsert);
 
         $id = $base->insert_id;
-        $o->content = '<li class="objets ui-state-default" data-id="'.$id.'" ><img src="images/imgExperience/'.$h['x-file-name'].'" /></li>';
+        $o->content = '<li class="objets ui-state-default ui-sortable-handle" data-id="'.$id.'" ><img src="images/imgExperience/'.$h['x-file-name'].'" /></li>';
 
         // on compte le nombre de produits dans la base
         $requeteCountProduit = "SELECT * FROM produit WHERE idExperience=".$idExperience."";

@@ -26,7 +26,7 @@ menu, nav, section, summary {
 
 }
 html, body{
-    background: #f2f2f2;
+    /*background: #f2f2f2;*/
     color: #362f2d;
 }
 :focus {
@@ -65,6 +65,14 @@ a.btn-home {
 a.btn-home:active{
     background: #D7D6D6;
 }
+.drapeauxLang {
+    background: none;
+    border: none;
+    margin-top: 5px;
+}
+#formLang{
+    text-align: right;
+}
 /* EN-TETE */
 .logoEmolyseEnTete{
     display: block;
@@ -102,21 +110,26 @@ label.radioImage > input + img{ /* IMAGE STYLES */
     border:2px solid transparent;
 }
 label.radioImage > input:checked + img{ /* (RADIO CHECKED) IMAGE STYLES */
-    border:2px solid #262726;
+    border:2px solid #ffffff;
     border-radius: 3px;
 }
 #langueAddExp{
     display: none;
-    background: #B2AFAE;
+    background: #3C3B3B;
     padding: 20px;
-    border: 1px solid #fff;
+    border: none;
     position: absolute;
-    left: 305px;
-    top: 309px;
+    left: 285px;
+    top: 301px;
+    z-index: 999;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
 }
 #btn-update-lang{
     display: inline-block;
     width: 50px;
+    margin-top: 5px;
 }
 /* END EN-TETE */
 
@@ -200,7 +213,7 @@ section.liste-experience{
     margin-top: 50px;
 }
 table.table-experience{
-    width: 800px;
+    width: 600px;
     display: block;
     margin: 60px auto 0 auto;
     border-spacing: 0px;
@@ -222,12 +235,8 @@ table.table-experience tr td img{
     width: 120px;
 }
 table.table-experience tr td:last-child{
-    width: 120px;
     text-align: center;
     font-size: 20px;
-}
-table.table-experience tr td:first-child{
-    width: 70px;
 }
 i.fa.fa-plus-circle {
     font-size: 40px;
@@ -235,11 +244,11 @@ i.fa.fa-plus-circle {
     padding: 0 10px;
 }
 .closeAddExp{
-    font-size: 24px;
+    font-size: 20px;
     position: absolute;
-    color: #262726;
-    top: -12px;
-    right: -9px;
+    color: #FFFFFF;
+    top: 1px;
+    right: 1px;
 }
 i.fa.fa-download.telecharger-tout {
     font-size: 40px;
@@ -267,6 +276,7 @@ i.fa.fa-download, i.fa.fa-minus{
 input#champs-nom-experience {
     padding: 5px 10px;
     font-size: 18px;
+    display: block;
 }
 .drapeau-experience{
     vertical-align: -8px;
@@ -514,7 +524,8 @@ a.tab.active {
     background: #D0CFCF;
 }
 .block-objets{
-    margin-left: 30px;
+    margin-left: 33px;
+    margin-top: 15px;
 }
 .dropFile{
     border: 2px dashed #004f79;
@@ -523,12 +534,13 @@ a.tab.active {
     width: 100px;
     overflow: hidden;
     text-align: center;
+    cursor: pointer;
 }
 .dropFile.hover{
     background: #0087F7;
 }
-.liste-objets{
-    display: inline-block;
+#lienPhoto{
+    cursor: pointer;
 }
 span.instruction {
     margin-top: 21px;
@@ -537,6 +549,9 @@ span.instruction {
 .objets{
     display: inline-block;
     height: 100px;
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-bottom: 4px;
 }
 .objets img {
     height: 100%;

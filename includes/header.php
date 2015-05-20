@@ -24,12 +24,13 @@
     <script type="text/javascript" src="../Emolyse/scripts/order.js"></script>
 </head>
 <body>
-<form action="" method="get">
+<form action="" method="get" id="formLang">
     <?php
     $requete = "SELECT * FROM langue";
     $resultats = $base->query($requete);
     while(($resultat = $resultats->fetch_array())){
-        echo "<input type='submit' name='lang' value='".$resultat['codeLangue']."' />";
+        echo "<button name='lang' value='".$resultat['codeLangue']."' type='submit' class='drapeauxLang'><img src='".$resultat['lienDrapeau']."' width='30px'/></button>";
+        //echo "<input type='submit' name='lang' value='".$resultat['codeLangue']."' class='drapeauxLang' />";
     }
     ?>
 </form>

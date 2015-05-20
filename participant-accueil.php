@@ -15,8 +15,14 @@ include('includes/en-tete.php');
     <div>
         <form action="#">
             <select name="experience" id="select-experience">
-                <option value="202-tactile">Tactile</option>
-                <option value="203-cuisine">Cuisine</option>
+                <?php
+                $requete = "SELECT * FROM experience WHERE nbProduit > 1";
+                $resultats = $base->query($requete);
+                while(($resultat = $resultats->fetch_array())){
+                    $idExperience = $resultat['idExperience'];
+                    echo "<option value='".$idExperience."'>".$resultat['nom']."</option>";
+                }
+                ?>
             </select>
             <input type="submit" id="btn-start-experience" name="start-experience" value="<?php if(DEMARRER != ''){echo DEMARRER;}else{ echo('DEMARRER');}; ?>"/>
         </form>

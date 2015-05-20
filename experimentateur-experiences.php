@@ -18,22 +18,22 @@ include('includes/en-tete.php');
     </div>
     <table class="table-experience">
         <thead>
-            <th></th>
+<!--            <th></th>-->
             <th><?php if(NOM != ''){echo NOM;}else{ echo('NOM');}; ?></th>
             <th></th>
             <th></th>
         </thead>
             <tbody>
             <?php
-                $requete = "SELECT * FROM experience WHERE nbProduit > 1";
+                $requete = "SELECT * FROM experience";
                 $resultats = $base->query($requete);
                 while(($resultat = $resultats->fetch_array())){
                     $idExperience = $resultat['idExperience'];
                     echo "<tr>";
-                    echo "<td onclick='document.location = \"gerer-experience.php?id=$idExperience\"' class='ligneClic'><img src='images/tablette.png' alt='aperçu de l\'expérience'/></td>";
-                    echo "<td onclick='document.location = \"gerer-experience.php?id=$idExperience\"' class='ligneClic'>".$resultat['nom']."</td>";
-                    echo "<td><a href='#'><i class='fa fa-download'></i></a></td>";
-                    echo "<td><a href='#' class='supExperience' id='$idExperience'><i class='fa fa-minus'></i></a></td>";
+//                    echo "<td onclick='document.location = \"gerer-experience.php?id=$idExperience\"' class='ligneClic'><img src='images/tablette.png' alt='aperçu de l\'expérience'/></td>";
+                    echo "<td width=80% onclick='document.location = \"gerer-experience.php?id=$idExperience\"' class='ligneClic'>".$resultat['nom']."</td>";
+                    echo "<td width=10%><a href='#'><i class='fa fa-download'></i></a></td>";
+                    echo "<td width=10%><a href='#' class='supExperience' id='$idExperience'><i class='fa fa-minus'></i></a></td>";
                     echo "</tr>";
                 }
             ?>
