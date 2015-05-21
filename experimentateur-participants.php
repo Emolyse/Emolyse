@@ -4,6 +4,7 @@
 ?>
 
 <?php
+    // Trie du tableau en fonction de la colonne sélectionnée
     $tablename = 'participants';
     $tri_autorises = array('sexe','nom','prenom','naissance');
     $order_by = in_array($_GET['order'], $tri_autorises) ? $_GET['order'] : 'nom';

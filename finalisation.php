@@ -13,14 +13,14 @@ include('includes/en-tete.php');
 <section class="nouvelle-experience">
     <div class="avatarFinal"></div>
     <div class="form-finalisation">
-        <form action="#">
+        <form action="includes/traitement.php" method="post" enctype="multipart/form-data">
             <div class="titreForm">
                 <?php if(EXPERIENCE_TERMINEE != ''){echo EXPERIENCE_TERMINEE;}else{ echo('EXPERIENCE_TERMINEE');}; ?>
             </div>
             <div class="sexeForm">
                 <label><?php if(SEXE != ''){echo SEXE;}else{ echo('SEXE');}; ?>* : </label>
-                <input type="radio" name="sexe" value="femme"> <?php if(FEMME != ''){echo FEMME;}else{ echo('FEMME');}; ?>
-                <input type="radio" name="sexe" value="homme"> <?php if(HOMME != ''){echo HOMME;}else{ echo('HOMME');}; ?>
+                <input type="radio" name="sexe" value="F"> <?php if(FEMME != ''){echo FEMME;}else{ echo('FEMME');}; ?>
+                <input type="radio" name="sexe" value="H"> <?php if(HOMME != ''){echo HOMME;}else{ echo('HOMME');}; ?>
             </div>
             <div class="dateNaissForm">
                 <label><?php if(NEE_LE != ''){echo NEE_LE;}else{ echo('NEE_LE');}; ?>* :</label>
@@ -159,13 +159,54 @@ include('includes/en-tete.php');
                 </div>
             </div>
             <div class="fileForm">
-                <input type="file"/>
+                <div id="filePhotoUserClic"><span id="indicationUploadImg">Ajouter une photo</span>
+                </div>
+                <input type="hidden" name="lienPhotoUser" id="lienPhotoUser"/>
+                <input type="file" name="file" id="filePhotoUser" style="visibility: hidden" />
             </div>
             <input type="submit" id="finaliser-experience" name="finaliser-experience" value="<?php if(FINALISER != ''){echo FINALISER;}else{ echo('FINALISER');}; ?>"/>
             <span class="obligatoire">* <?php if(CHAMPS_OBLIGATOIRE != ''){echo CHAMPS_OBLIGATOIRE;}else{ echo('CHAMPS_OBLIGATOIRE');}; ?></span>
         </form>
     </div>
 </section>
+<script>
+    $(document).ready(function () {
+        // Custom du bouton d'upload d'une image et envoie des infos pour enregistrement
+        $('#filePhotoUserClic').click(function(){
+            $('#filePhotoUser').click();
+        });
+        $("#filePhotoUser").on('change', function(e){
+            var files = e.target.files;
+            upload(files,0);
+        });
+        function upload(files, index){
+            var file = files[index];
+            var xhr = new XMLHttpRequest();
+
+        xhr.addEventListener('load', function(e){
+            var json = jQuery.parseJSON(e.target.responseText);
+            if(index < files.length-1){
+                upload(files, index+1);
+            }
+            if(json.error){
+                alert(json.error);
+                return false;
+            }
+            if(json.content != ''){
+                $('#filePhotoUserClic').html(json.content);
+            }
+            $('#lienPhotoUser').val(json.link);
+        });
+
+            xhr.open('post', 'includes/uploadPhotoUser.php', true);
+            xhr.setRequestHeader('content-type', 'multipart/form-data');
+            xhr.setRequestHeader('x-file-type', file.type);
+            xhr.setRequestHeader('x-file-size', file.size);
+            xhr.setRequestHeader('x-file-name', file.name);
+            xhr.send(file);
+        }
+    });
+</script>
 
 </body>
 </html>

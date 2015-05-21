@@ -16,6 +16,7 @@ include('includes/en-tete.php');
         <form action="#">
             <select name="experience" id="select-experience">
                 <?php
+                // on veut afficher uniquement les expériences avec au moins un produit
                 $requete = "SELECT * FROM experience WHERE nbProduit > 1";
                 $resultats = $base->query($requete);
                 while(($resultat = $resultats->fetch_array())){

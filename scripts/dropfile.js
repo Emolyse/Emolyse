@@ -1,14 +1,12 @@
 (function($){
-
+    // Upload d'un produit via drag & drop
     var o = {
-        message : 'Deposez vos fichiers ici',
         script : 'includes/upload.php'
     }
 
     $.fn.dropfile = function(oo){
         if(oo) $.extend(o, oo);
         this.each(function(){
-           $('<span>').addClass('instruction').append(o.message).appendTo(this);
             $(this).bind({
                 dragenter : function(e){
                     e.preventDefault();
@@ -43,8 +41,7 @@
                     alert(json.error);
                     return false;
                 }
-                $('.liste-objets').append(json.content);
-                console.log(json.count);
+                 $('.liste-objets').append(json.content);
             });
 
             var idExperience = $('#idExperience').val();

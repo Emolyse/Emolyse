@@ -1,7 +1,7 @@
 <?php
 include('header.php');
 
-//RECUPERATION DES FORMULAIRES EN GET
+// Modification des traductions dans la table 'traduction' en fonction de l'ID de la trad, de son code langue et de son code identifiant
 $ID_element = $_GET['ID_element'];
 $value = $_GET['value'];
 

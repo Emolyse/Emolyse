@@ -71,10 +71,9 @@ include('includes/en-tete.php');
         <form action="includes/traitement.php" method="post" enctype="multipart/form-data">
             <input type="text" name="codeLangue" id="codeLangue" placeholder="Code langue*"/>
             <input type="text" name="nom" id="nom" placeholder="Nom de la langue*"/>
-<!--            <div id="fileLangClic" onclick="upload();"><span id="indicationUploadImg">Ajouter une image</span>-->
-            <div id="fileLangClic"><span id="indicationUploadImg">Ajouter une image</span>
-                <img src="" alt="Aperçu de l'image" id="apercuImgLang" style="display: none"/>
+            <div id="fileLangClic"><span id="indicationUploadImg">Ajouter un drapeau</span>
             </div>
+            <input type="hidden" name="lienDrapeau" id="lienDrapeau"/>
             <input type="file" name="file" id="fileLang" style="visibility: hidden" />
             <input type="submit" value="Ajouter" name="ajoutLangue"/>
         </form>
@@ -124,7 +123,7 @@ include('includes/en-tete.php');
 
 <script>
     $(document).ready(function () {
-        // Gestion de la pop-up
+        // Gestion des pop-up
         document.body.style.overflow = 'auto';
         $("#add-language").click(function() {
             $('.pop-up').show();
@@ -141,6 +140,7 @@ include('includes/en-tete.php');
             document.body.style.overflow = 'hidden';
         });
 
+        // tabs dans la pop-up de la consigne pour les différantes langues
         $("a[title*='consigne-FR']").addClass("active");
         $("a.tab").click(   function ()
             {
@@ -154,82 +154,43 @@ include('includes/en-tete.php');
                 $("." + contenu_aff).show();
             }
         );
-    });
-    $(document).on('dragenter', '#fileLangClic', function() {
-        $(this).css('border', '3px dashed red');
-        return false;
-    });
 
-    $(document).on('dragover', '#fileLangClic', function(e){
-        e.preventDefault();
-        e.stopPropagation();
-        $(this).css('border', '3px dashed red');
-        return false;
-    });
+        // gestion de l'upload du fichier drapeau
+        $('#fileLangClic').click(function(){
+            $('#fileLang').click();
+        });
+        $("#fileLang").on('change', function(e){
+            var files = e.target.files;
+            upload(files,0);
+        });
+        function upload(files, index){
+            var file = files[index];
+            var xhr = new XMLHttpRequest();
 
-    $(document).on('dragleave', '#fileLangClic', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        $(this).css('border', '3px dashed #BBBBBB');
-        return false;
-    });
-    $(document).on('drop', '#fileLangClic', function(e) {
-        if(e.originalEvent.dataTransfer){
-            if(e.originalEvent.dataTransfer.files.length) {
-                // Stop the propagation of the event
-                e.preventDefault();
-                e.stopPropagation();
-                $(this).css('border', '3px dashed green');
-                // Main function to upload
-                upload(e.originalEvent.dataTransfer.files);
-            }
-        }
-        else {
-            $(this).css('border', '3px dashed #BBBBBB');
-        }
-        return false;
-    });
-    function upload(files) {
+            xhr.addEventListener('load', function(e){
+                var json = jQuery.parseJSON(e.target.responseText);
+                if(index < files.length-1){
+                    upload(files, index+1);
+                }
+                if(json.error){
+                    alert(json.error);
+                    return false;
+                }
+                if(json.content != ''){
+                    $('#fileLangClic').html(json.content);
+                }
+                $('#lienDrapeau').val(json.link);
 
-        var f = files[0] ;
-        var reader = new FileReader();
+            });
 
-        reader.onload = function (e) {
-            var dataURL = reader.result;
-            $('#apercuImgLang').attr('src', dataURL);
-        }
-        reader.onload = handleReaderLoad;
-        reader.readAsDataURL(f);
-
-        $('#indicationUploadImg').hide();
-        $('#apercuImgLang').show();
-    }
-
-    function handleReaderLoad(evt) {
-        var pic = {};
-        pic.file = evt.target.result.split(',')[1];
-
-        var str = jQuery.param(pic);
-
-        $.ajax({
-            type: 'POST',
-            contentType: "application/x-www-form-urlencoded;charset=UTF-8",
-            url: 'includes/traitement.php',
-            data: {'filename': str},
-            success: function(data){
-                console.log(data);
+            xhr.open('post', 'includes/uploadFlag.php', true);
+            xhr.setRequestHeader('content-type', 'multipart/form-data');
+            xhr.setRequestHeader('x-file-type', file.type);
+            xhr.setRequestHeader('x-file-size', file.size);
+            xhr.setRequestHeader('x-file-name', file.name);
+            xhr.send(file);
         }
     });
-    }
-
-    function updateTraduction(ID_element)
-    {
-        var value = document.getElementsByName(ID_element).item(0).value;
-
-        texte = file('http://'+window.location.host+'/Emolyse/Emolyse/includes/modifTraduction.php?ID_element='+escape(ID_element)
-            +'&value='+escape(value)
-        )
-    }
 </script>
 </body>
 </html>

@@ -1,3 +1,4 @@
+// fonction pour envoyer des infos en get d'un script JS vers un script PHP
 function file(fichier)
 {
     if(window.XMLHttpRequest)

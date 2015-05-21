@@ -1,4 +1,5 @@
 $(function() {
+    // Tri des produits jQuery UI
     $( "#sortable").sortable({
         update : function(event, ui){
             var pos = 0;

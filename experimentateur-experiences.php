@@ -30,7 +30,6 @@ include('includes/en-tete.php');
                 while(($resultat = $resultats->fetch_array())){
                     $idExperience = $resultat['idExperience'];
                     echo "<tr>";
-//                    echo "<td onclick='document.location = \"gerer-experience.php?id=$idExperience\"' class='ligneClic'><img src='images/tablette.png' alt='aperçu de l\'expérience'/></td>";
                     echo "<td width=80% onclick='document.location = \"gerer-experience.php?id=$idExperience\"' class='ligneClic'>".$resultat['nom']."</td>";
                     echo "<td width=10%><a href='#'><i class='fa fa-download'></i></a></td>";
                     echo "<td width=10%><a href='#' class='supExperience' id='$idExperience'><i class='fa fa-minus'></i></a></td>";
@@ -43,7 +42,7 @@ include('includes/en-tete.php');
 
 <script type="text/javascript">
     $(document).ready(function () {
-        // suppression d'une experience
+        // suppression d'une experience avec envoie d'infos en get
         $( ".supExperience" ).click(function() {
             var idExperience = $(this).attr("id");
 

@@ -1,13 +1,15 @@
 (function($){
-
+    // upload Manuel d'un produit
     var o = {
+        message : 'Ajout manuel',
         script : 'includes/upload.php'
     }
 
     $.fn.uploadFile = function(oo){
         if(oo) $.extend(o, oo);
         this.each(function(){
-            $( ".dropFile" ).click(function() {
+            $('<span>').addClass('instruction').append(o.message).appendTo('#manualAdd');
+            $( "#manualAdd" ).click(function() {
                 $("#lienPhoto").click();
             });
 

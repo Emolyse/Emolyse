@@ -22,27 +22,18 @@ function add_picture() {
     return TRUE;
 }
 
+// Ajout d'une langue avec ajout de tous les champs pour cette nouvelle langue dans la table des traductions
 if(isset($_POST['ajoutLangue'])){
     $codeLangue = $_POST['codeLangue'];
     $nom = $_POST['nom'];
-
-    $ds= DIRECTORY_SEPARATOR;
-    $storeFolder = '../images';
-    if (!empty($_FILES)) {
-        $tempFile = $_FILES['file']['tmp_name'];
-        $targetPath = dirname( __FILE__ ) . $ds. $storeFolder . $ds;
-        $targetFile = $targetPath. $_FILES['file']['name'];
-        move_uploaded_file($tempFile,$targetFile);
-    }
-
-    $lienDrapeau = '../Emolyse/images/'.$_FILES['file']['name'];
+    $lienDrapeau = $_POST['lienDrapeau'];
 
     if($codeLangue != '' && $nom != ''){
 
         $requete = "INSERT INTO langue VALUES ('".$codeLangue."', '".$nom."', '".$lienDrapeau."')";
         $base->query($requete);
 
-        // à décommenter
+        // à décommenter (ajout de tous les champs dans la table des traductions)
         /*$requeteId = "SELECT * FROM identifiant";
         $resultatsId = $base->query($requeteId);
         while($resultatId = $resultatsId->fetch_array()){
@@ -51,6 +42,11 @@ if(isset($_POST['ajoutLangue'])){
         }*/
 
         $base->close();
+
+        unset($codeLangue);
+        unset($nom);
+        unset($lienDrapeau);
+
     }else{
         header("Location: ../parametres.php");
     }
@@ -58,6 +54,7 @@ if(isset($_POST['ajoutLangue'])){
     header("Location: ../parametres.php");
 }
 
+// Modification de la consigne par défaut en fonction de la langue sélectionnée
 if(isset($_POST['modifierConsigne'])){
     $consigne = $_POST['consigne'];
     $codeLangue = $_POST['codeLangue'];
@@ -68,9 +65,14 @@ if(isset($_POST['modifierConsigne'])){
 
     $base->close();
 
+    unset($consigne);
+    unset($codeLangue);
+    unset($codeIdentifiant);
+
     header("Location: ../parametres.php");
 }
 
+// Modification de l'ordre des produits pour une expérience précise
 if(isset($_GET['updateOrderList'])){
     $id = $_GET['id'];
     $order = $_GET['order'];
@@ -80,9 +82,13 @@ if(isset($_GET['updateOrderList'])){
 
     $base->close();
 
+    unset($id);
+    unset($order);
+
     header("Location: ../gerer-experience.php");
 }
 
+// Suppression d'un produit avec le fichier photo correspondant, puis actualisation du nombre de produit pour l'expérience
 if(isset($_GET['deleteProduit'])){
     $id = $_GET['id'];
     $idExperience = $_GET['idExperience'];
@@ -99,6 +105,7 @@ if(isset($_GET['deleteProduit'])){
     // on compte le nombre de produits dans la base
     $requeteCountProduit = "SELECT * FROM produit WHERE idExperience=".$idExperience."";
     $resultatsCountProduit = $base->query($requeteCountProduit);
+
     $count = 0;
     while(($resultatsCountProduit->fetch_array())){
         $count++;
@@ -110,9 +117,14 @@ if(isset($_GET['deleteProduit'])){
 
     $base->close();
 
+    unset($id);
+    unset($idExperience);
+    unset($count);
+
     header("Location: ../gerer-experience.php");
 }
 
+// Modification d'une expérience
 if(isset($_GET['updateExperience'])){
     $element = $_GET['element'];
     $value = $_GET['value'];
@@ -126,9 +138,9 @@ if(isset($_GET['updateExperience'])){
     unset($element);
     unset($value);
     unset($id);
-
 }
 
+// Modification de la consigne d'une expérience
 if(isset($_POST['modifierConsigneExperience'])){
     $consigne = $_POST['consigne'];
     $idExperience = $_POST['idExperience'];
@@ -142,15 +154,16 @@ if(isset($_POST['modifierConsigneExperience'])){
 
     unset($consigne);
     unset($idExperience);
-
 }
 
+// Suppression d'une expérience avec tous les produits correspondants
 if(isset($_GET['deleteExp'])){
     $idExperience = $_GET['id'];
 
     $requeteSelect = "SELECT lienPhoto FROM produit WHERE idExperience=".$idExperience."";
     $resultatsSelect = $base->query($requeteSelect);
     while(($resultat = $resultatsSelect->fetch_array())){
+        // on supprime les fichiers des produits
         unlink("../".$resultat['lienPhoto']);
     }
 
@@ -160,6 +173,38 @@ if(isset($_GET['deleteExp'])){
     $requeteProduit = "DELETE FROM produit WHERE idExperience=".$idExperience."";
     $base->query($requeteProduit);
 
-//    header("Location: ../experimentateur-experiences.php");
+    $base->close();
+
+    unset($idExperience);
+}
+
+// Enregistrement à la fin d'une expérience
+if(isset($_POST['finaliser-experience'])){
+    $nom = $_POST['nom'];
+    $prenom = $_POST['prenom'];
+    $jour = $_POST['jour'];
+    $mois = $_POST['mois'];
+    $annee = $_POST['annee'];
+    $sexe = $_POST['sexe'];
+    $lienPhoto = $_POST['lienPhotoUser'];
+
+    $naissance = $annee."-".$mois."-".$jour;
+
+    if($sexe != '' && $jour != '' && $mois != '' && $annee != ''){
+        $requete = "INSERT INTO participant VALUES ('', '".$nom."', '".$prenom."', '".$naissance."', '".$sexe."', '".$lienPhoto."')";
+        $base->query($requete);
+        $base->close();
+    }
+
+    unset($nom);
+    unset($prenom);
+    unset($jour);
+    unset($mois);
+    unset($annee);
+    unset($sexe);
+    unset($lienPhoto);
+    unset($naissance);
+
+    header("Location: ../finalisation.php");
 
 }

@@ -1,4 +1,5 @@
 <?php
+// gestion de la langue de l'application
 if(!isset($_SESSION['lang'])){
     $_SESSION['lang'] = 'FR';
 
