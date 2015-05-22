@@ -146,7 +146,7 @@ $idExperience = $_GET['id'];
         });
 
         // suppression d'un produit
-         $('.liste-objets').on('dblclick','.objets', function(){
+         $('.liste-objets').on('doubletap','.objets', function(){
             var id = $(this).attr("data-id");
             var idExperience = $('#idExperience').val();
 
