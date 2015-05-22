@@ -48,12 +48,22 @@
             font-size: 30px;
             opacity: 0.8;
         }
+        #objet{
+            background: red;
+            width: 197px;
+            height: 201px;
+            position: absolute;
+            margin-top: 273px;
+            margin-left: 646px;
+        }
 
     </style>
 </head>
 <body>
 <div id="console"></div>
-<div id="container"></div>
+<div id="container">
+<div id="objet"></div>
+</div>
 
 <script src="js/three.min.js"></script>
 <script src="js/ColladaLoader.js"></script>
@@ -171,10 +181,10 @@
     }
     function onWindowResize() {
 
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
+        //camera.aspect = window.innerWidth / window.innerHeight;
+        //camera.updateProjectionMatrix();
 
-        renderer.setSize( window.innerWidth, window.innerHeight );
+        //renderer.setSize( window.innerWidth, window.innerHeight );
 
     }
 
