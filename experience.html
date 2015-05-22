@@ -64,8 +64,8 @@
 
     if (!Detector.webgl) Detector.addGetWebGLMessage();
 
-    var container, stats;
-    var camera, scene, renderer, backgroundScene, backgroundCamera, avatar;
+    var container;
+    var camera, scene, currentFrame=0, renderer, backgroundScene, backgroundCamera, avatar;
     var targetList = [];
     var idBonesTargeted = [14, 17, 18];
     var intersects = [];
@@ -79,25 +79,7 @@
         container = document.getElementById('container');
 
         scene = new THREE.Scene();
-
-//        var axeX, axeY, axeZ;
-//
-//        var axeGenerator = function(x, y, z){
-//            var axeGeometry = new THREE.Geometry();
-//            axeGeometry.vertices.push(
-//                    new THREE.Vector3( 0, 0, 0 ),
-//                    new THREE.Vector3( x, y, z )
-//            );
-//            return axeGeometry;
-//        }
-//
-//        axeX = new THREE.Line(axeGenerator(100,0,0), new THREE.LineBasicMaterial({color:0xff0000}));
-//        axeY = new THREE.Line(axeGenerator(0,100,0), new THREE.LineBasicMaterial({color:0x00ff00}));
-//        axeZ = new THREE.Line(axeGenerator(0,0,100), new THREE.LineBasicMaterial({color:0x0000ff}));
-//
-//        scene.add(axeX);
-//        scene.add(axeY);
-//        scene.add(axeZ);
+        
         var axisHelper = new THREE.AxisHelper(100);
         scene.add(axisHelper);
         /***************
@@ -130,7 +112,6 @@
 
         container.appendChild(renderer.domElement);
 
-
         /*
          * Bones :
          *    1 : buste
@@ -148,7 +129,7 @@
             var posBrasDroit = avatar.skeleton.bones[17].getWorldPosition();
 
             targetList = getTargetList();
-            $(document).on('touchstart', hitTarget);
+            $(document).on('touchstart', onWindowMouseDown);
         });
 
         var texture = THREE.ImageUtils.loadTexture('img/env.jpg');
@@ -205,9 +186,12 @@
             avatar.normalizeSkinWeights();
             console.log(avatar);
             scene.add(avatar);
+
             var skeleton = avatar.skeleton;
 
             avatar.material.materials[6].shininess = 0;
+            avatar.material.materials[7].shininess = 0;
+            avatar.material.materials[2].shininess = 0;
 
             // create a smooth skin
             // On active la manipulation des bones sur tous les matériaux qui composent un mesh
@@ -215,7 +199,7 @@
                 avatar.material.materials[i].skinning = true;
             }
             avatar.castShadow = true;
-            avatar.receiveShadow = false;
+            avatar.receiveShadow = true;
             avatar.skeleton.useVertexTexture = false;
             skeleton.bones[12].rotateZ(THREE.Math.degToRad(30));
             skeleton.bones[12].rotateX(THREE.Math.degToRad(-15));
@@ -241,7 +225,7 @@
         avatar.updateMatrixWorld(true);
         var res = [];
         for (var i = 0; i < idBonesTargeted.length; i++) {
-            var target = planeGenerator(8, 20, "#01B0F0");
+            var target = sphereGenerator(8, 20, "#01B0F0");
             var pos = avatar.skeleton.bones[idBonesTargeted[i]].getWorldPosition();
             target.position.set(pos.x, pos.y, pos.z);
             target.name = avatar.skeleton.bones[idBonesTargeted[i]].name;
@@ -249,7 +233,7 @@
             res.push(target);
         }
         //On créé la cible de rotation de l'avatar
-        var avatarTarget = planeGenerator(8, 20, "#01B0F0");
+        var avatarTarget = sphereGenerator(8, 20, "#01B0F0");
         avatarTarget.position.set(0, -80, 0);
         avatarTarget.name = 'avatarRot';
         scene.add(avatarTarget);
@@ -267,7 +251,7 @@
         targetList[targetList.length - 1].position.setX(avatar.position.x)
     }
 
-    function hitTarget(evt) {
+    function onWindowMouseDown(evt) {
         evt.preventDefault();
         evt = evt.originalEvent.changedTouches[0];
         var vector = mouseToWorld(evt);
@@ -279,13 +263,13 @@
 
         intersects = raycaster.intersectObjects(targetList);
 
-        window.addEventListener("touchend", onMouseUp);
+        window.addEventListener("touchend", onWindowMouseUp);
         if (intersects.length > 0) {
-            $("#container").on('touchmove', onDocumentMouseMove);
+            $("#container").on('touchmove', onContainerMouseMove);
         }
     }
 
-    function onMouseUp(evt) {
+    function onWindowMouseUp(evt) {
         evt.preventDefault();
         $("#container").off();
         loadConsole(avatar.quaternion.y +" - "+avatar.quaternion.w + " = "+avatar.quaternion.y*Math.PI);
@@ -294,7 +278,7 @@
         } else {
         }
     }
-    function onDocumentMouseMove(evt) {
+    function onContainerMouseMove(evt) {
         evt.preventDefault();
         evt = evt.originalEvent.changedTouches[0];
         var tmpMousePosMove = mouseToWorld(evt);
@@ -368,9 +352,6 @@
                 || (v1.x < 0 && v1.y > 0 && v2.x < 0 && v2.y > 0 && (v1.y < v2.y || v1.x < v2.x))
         )
             teta = -teta;
-//        if(avatar.rotation.y<0){
-//            teta=-teta;
-//        }
         return teta;
     }
 
@@ -393,12 +374,11 @@
         return vector;
     }
 
-    function planeGenerator(width, height, color) {
+    function sphereGenerator(width, height, color) {
         var planeGeometry = new THREE.SphereGeometry(width, 100, 100);
         var material = new THREE.MeshPhongMaterial({color: color, visible: true});
         return new THREE.Mesh(planeGeometry, material);
     }
-    ;
 </script>
 
 </body>
