@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>-->
 <html lang="en">
 <head>
     <title>three.js webgl - collada - skinning</title>
@@ -16,24 +16,8 @@
             overflow: hidden;
         }
 
-        #info {
-            position: absolute;
-            top: 0px;
-            width: 100%;
-            padding: 5px;
-        }
-
         a {
-
             color: #f00;
-        }
-
-        .jointTarget {
-            position: fixed;
-            background-color: #ff0000;
-            z-index: 1000;
-            width: 50px;
-            height: 50px;
         }
 
         #console {
@@ -74,9 +58,22 @@
             color: red;
         }
 
+        #resetButton {
+            z-index: 1000;
+            position: fixed;
+            height: 50px;
+            width: 100px;
+            bottom: 0;
+            cursor: pointer;
+        }
+        #resetButton:hover{
+            border:solid 3px #004f79;
+        }
     </style>
 </head>
 <body>
+
+<input id="resetButton" type="reset" value="Réinitialiser">
 <div id="console"></div>
 <div id="container">
     <div id="containerObjet">
@@ -97,8 +94,9 @@
     var targetList = [];
     var idBonesTargeted = [14, 17, 18];
     var intersects = [];
-    var mousePosDown;
-    var mousePosMove;
+    var mousePosDown, mousePosMove;
+    var animation, animationState;
+    var originalSkeleton, skeleton;
     var clock = new THREE.Clock();
     var offsetWidth=0,offsetHeight=0;
     init();
@@ -148,19 +146,16 @@
          *   13: bras gauche
          */
         loadObject();
-        loadAvatar("male_caucasian.dae", function () {
-            //On affiche la position des bones qui nous intéressent pour déterminer la position des points d'ancrages pour l'interaction tactile
-            var idBones = [0, 1, 6, 9, 12, 10, 13];
-            avatar.translateX(0);
-            avatar.translateY(-80);
+        loadAvatar("Remy/male_caucasian_anim_fin.dae", function () {
             avatar.updateMatrixWorld(true);
-//            avatar.rotateY(THREE.Math.degToRad(75));
-            var posBrasDroit = avatar.skeleton.bones[17].getWorldPosition();
-
             targetList = getTargetList();
-            $(document).on('touchstart', onWindowMouseDown);
+            $(document).on('touchstart', onCanvasMouseDown);
+            $("#resetButton").on('touchstart', resetBones);
         });
 
+        /************************************
+         *          Environnement           *
+         ************************************/
         var texture = THREE.ImageUtils.loadTexture('img/env.jpg');
         var backgroundMesh = new THREE.Mesh(
                 new THREE.PlaneGeometry(2, 2, 0),
@@ -215,11 +210,12 @@
         renderer.render(scene, camera);
 
     }
-    /*********************************
-     * @description Load the .dae file according to the name et initialize it in the scene
-     * @param name
-     * @param callback
-     */
+    /*****************************************************************************************
+     * @description Load the .dae file according to the name et initialize it in the scene   *
+     * @param name                                                                           *
+     * @param callback                                                                       *
+     *****************************************************************************************/
+
     function loadAvatar(name, callback) {
         var loader = new THREE.ColladaLoader();
         loader.load("3D/dae/" + name, function (collada) {
@@ -242,13 +238,22 @@
             avatar.castShadow = true;
             avatar.receiveShadow = true;
             avatar.skeleton.useVertexTexture = false;
+
+            avatar.translateY(-80);
+
+
             skeleton.bones[12].rotateZ(THREE.Math.degToRad(30));
             skeleton.bones[12].rotateX(THREE.Math.degToRad(-15));
             skeleton.bones[13].rotateZ(THREE.Math.degToRad(-30));
             skeleton.bones[13].rotateX(THREE.Math.degToRad(-15));
-            avatar.rotateY(THREE.Math.degToRad(75));
+//            avatar.rotateY(THREE.Math.degToRad(75));
             avatar.updateMatrixWorld(true);
 
+            originalSkeleton = saveSkeleton();
+
+            animation = new THREE.Animation( avatar, avatar.geometry.animation );
+            animation.loop = true;
+            animation.timeScale = 0.7;
             callback();
         });
     }
@@ -274,7 +279,7 @@
         avatar.updateMatrixWorld(true);
         var res = [];
         for (var i = 0; i < idBonesTargeted.length; i++) {
-            var target = sphereGenerator(8, 20, "#01B0F0");
+            var target = sphereGenerator(8, "#01B0F0");
             var pos = avatar.skeleton.bones[idBonesTargeted[i]].getWorldPosition();
             target.position.set(pos.x, pos.y, pos.z);
             target.name = avatar.skeleton.bones[idBonesTargeted[i]].name;
@@ -282,7 +287,7 @@
             res.push(target);
         }
         //On créé la cible de rotation de l'avatar
-        var avatarTarget = sphereGenerator(8, 20, "#01B0F0");
+        var avatarTarget = sphereGenerator(8, "#01B0F0");
         avatarTarget.position.set(0, -80, 0);
         avatarTarget.name = 'avatarRot';
         scene.add(avatarTarget);
@@ -300,7 +305,7 @@
         targetList[targetList.length - 1].position.setX(avatar.position.x)
     }
 
-    function onWindowMouseDown(evt) {
+    function onCanvasMouseDown(evt) {
         evt.preventDefault();
         evt = evt.originalEvent.changedTouches[0];
         var vector = mouseToWorld(evt);
@@ -312,21 +317,36 @@
 
         intersects = raycaster.intersectObjects(targetList);
 
-        window.addEventListener("touchend", onWindowMouseUp);
+        $(document).on('touchend', onDocumentMouseUp);
         if (intersects.length > 0) {
             $("#container").on('touchmove', onContainerMouseMove);
         }
     }
 
-    function onWindowMouseUp(evt) {
+    function onDocumentMouseUp(evt) {
         evt.preventDefault();
         $("#container").off();
-        loadConsole(avatar.quaternion.y +" - "+avatar.quaternion.w + " = "+avatar.quaternion.y*Math.PI);
+        $(document).off('touchend');
+        console.log(intersects.length);
         if (intersects.length > 0) {
-
+            loadConsole(avatar.rotation.y);
         } else {
+            var mousePosUp = mouseToWorld(evt);
+            var long = mousePosUp.x - mousePosDown.x;
+            console.log(long);
+            loadConsole()
+            if (Math.abs(long) > 10) {
+                if (mousePosDown.x < mousePosUp.x) {
+                    avatar.rotation.y = THREE.Math.degToRad(0);
+                }
+                else {
+                    avatar.rotation.y = THREE.Math.degToRad(180);
+                }
+                start((long) / (Math.abs(long) / 2), (Math.abs(long) / 2));
+            }
         }
     }
+
     function onContainerMouseMove(evt) {
         evt.preventDefault();
         evt = evt.originalEvent.changedTouches[0];
@@ -339,14 +359,14 @@
                 if (angle){
                     var rot = avatar.quaternion.y*Math.PI;
                     if(Math.abs(rot)<=1.5) {
-                        bone.rotateZ(angle);
-                    }else if(Math.abs(rot)>=2.7){
-                        bone.rotateZ(-angle);
-                    }else if(rot>Math.PI/4){
                         bone.rotateX(angle);
+                    }else if(Math.abs(rot)>=2.7){
+                        bone.rotateX(-angle);
+                    }else if(rot>Math.PI/4){
+                        bone.rotateZ(angle);
                     }else
                     {
-                        bone.rotateX(-angle);
+                        bone.rotateZ(-angle);
                     }
                 }
                 break;
@@ -357,14 +377,14 @@
                 if (angle){
                     var rot = avatar.quaternion.y*Math.PI;
                     if(Math.abs(rot)<=1.5) {
-                        bone.rotateZ(angle);
-                    }else if(Math.abs(rot)>=2.7){
-                        bone.rotateZ(-angle);
-                    }else if(rot>Math.PI/4){
                         bone.rotateX(angle);
+                    }else if(Math.abs(rot)>=2.7){
+                        bone.rotateX(-angle);
+                    }else if(rot>Math.PI/4){
+                        bone.rotateZ(angle);
                     }else
                     {
-                        bone.rotateX(-angle);
+                        bone.rotateZ(-angle);
                     }
                 }
                 break;
@@ -387,6 +407,7 @@
         }
         updateTargets();
     }
+
     function getAngle(origin, v1, v2) {
         v1.x -= origin.x;
         v2.x -= origin.x;
@@ -422,8 +443,64 @@
 
         return vector;
     }
+    /*******************************************************
+     * Fonctions d'animation de l'avatar
+     *******************************************************/
+    function start(translation, nbFrame) {
+        if (!animationState) {
+//            skeleton = saveSkeleton();
+            animation.play();
+            loop(translation, nbFrame);
+        }
+    }
 
-    function sphereGenerator(width, height, color) {
+    function stop() {
+        if (animationState) {
+            animation.stop();
+            window.cancelAnimationFrame(animationState);
+            animationState = undefined;
+            currentFrame = 0;
+//            resetBones(skeleton);
+            avatar.updateMatrixWorld();
+        }
+    }
+
+
+    function loop(translation, nbFrame){
+        animationState = requestAnimationFrame(
+                function(){
+                    loop(translation, nbFrame);
+                    updateTargets();
+                }, renderer.domElement);
+        THREE.AnimationHandler.update(clock.getDelta());
+        avatar.position.x+=translation;
+        currentFrame++;
+        if(currentFrame >= nbFrame){
+            stop();
+        }
+    }
+    /***************************
+     *      Les Bones          *
+     ***************************/
+    function saveSkeleton(){
+        var res = [];
+        for(var i=0;i<avatar.skeleton.bones.length;i++){
+            res.push(avatar.skeleton.bones[i].rotation.clone());
+        }
+        return res;
+    }
+
+    function resetBones(){
+        takePose(originalSkeleton);
+    }
+    function takePose(skeleton){
+        for(var i=0;i<originalSkeleton.length;i++){
+            avatar.skeleton.bones[i].rotation.set(skeleton[i].x,skeleton[i].y,skeleton[i].z);
+        }
+        updateTargets();
+    }
+
+    function sphereGenerator(width, color) {
         var planeGeometry = new THREE.SphereGeometry(width, 100, 100);
         var material = new THREE.MeshPhongMaterial({color: color, visible: true});
         return new THREE.Mesh(planeGeometry, material);
