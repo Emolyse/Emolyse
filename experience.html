@@ -12,7 +12,7 @@
             text-align: center;
 
             background-color: #000;
-            margin: 0px;
+            margin: 0;
             overflow: hidden;
         }
 
@@ -21,7 +21,7 @@
         }
 
         #console {
-            /*display: none;*/
+            display: none;
             position: fixed;
             background-color: #ffffff;
             color: #000000;
@@ -35,11 +35,11 @@
         }
 
         #containerObjet {
-            position: fixed;
-            height: 39%;
-            width: 15%;
-            top: 24%; /*margin-top: 207px;*/
-            left: 72%; /*margin-left: 922px;*/
+            position: absolute;
+            /*height: 39%;*/
+            /*width: 15%;*/
+            /*top: 24%;*/
+            /*left: 72%;*/
             -webkit-perspective: 198px;
             perspective: 198px;
             -webkit-transform: rotate(-90deg);
@@ -47,9 +47,9 @@
         }
 
         #objet {
-            /*padding: 12% 11%;*/
+            padding: 12% 20%;
             width: 91%;
-            height: 92%;
+            height: 81%;
             position: absolute;
             border: 1px solid black;
             background-color: red;
@@ -75,11 +75,10 @@
 
 <input id="resetButton" type="reset" value="Réinitialiser">
 <div id="console"></div>
-<div id="container">
-    <div id="containerObjet">
-        <div id="objet">test</div>
-    </div>
+<div id="containerObjet">
+    <div id="objet"></div>
 </div>
+<div id="container"></div>
 
 <script src="js/three.min.js"></script>
 <script src="js/ColladaLoader.js"></script>
@@ -97,17 +96,17 @@
     var borneMin=-140, borneMax=9;
     var mousePosDown, mousePosMove;
     var animation, animationState;
-    var originalSkeleton, skeleton;
+    var originalSkeleton, skeleton, avatarRotation = 0;
     var clock = new THREE.Clock();
     var offsetWidth=0,offsetHeight=0;
+    var mouseMoving = false;
     init();
 
     function init() {
-
         container = document.getElementById('container');
 
         scene = new THREE.Scene();
-        
+
         var axisHelper = new THREE.AxisHelper(100);
         scene.add(axisHelper);
         /***************
@@ -146,18 +145,28 @@
          *   12 : bras droit
          *   13: bras gauche
          */
-        loadObject();
         loadAvatar("Remy/male_caucasian_anim_fin.dae", function () {
             avatar.updateMatrixWorld(true);
             targetList = getTargetList();
             $(document).on('touchstart', onCanvasMouseDown);
             $("#resetButton").on('touchstart', resetBones);
+            var loaderObject = new THREE.ColladaLoader();
+            var screen;
+            loaderObject.load("3D/dae/meubles/screen.dae", function (collada) {
+                screen = collada.scene;
+                console.log(collada);
+                scene.add(screen);
+                console.log(scene);
+                screen.position.set(170,120,-150);
+                screen.scale.set(1.0,0.75,0.75);
+                screen.rotateY(THREE.Math.degToRad(-80));
+            });
         });
 
         /************************************
          *          Environnement           *
          ************************************/
-        var texture = THREE.ImageUtils.loadTexture('img/env.jpg');
+        var texture = THREE.ImageUtils.loadTexture('img/grey_space.jpg');
         var backgroundMesh = new THREE.Mesh(
                 new THREE.PlaneGeometry(2, 2, 0),
                 new THREE.MeshBasicMaterial({
@@ -173,16 +182,15 @@
         backgroundScene.add(backgroundCamera);
         backgroundScene.add(backgroundMesh);
         window.addEventListener('resize', onWindowResize, false);
-
+        onWindowResize();
         render();
 
     }
     function onWindowResize() {
 
         camera.aspect = 16 / 9;
+        backgroundCamera.aspect = 16 / 9;
         camera.updateProjectionMatrix();
-
-//        renderer.setSize(window.innerWidth, window.innerHeight);
 
         if(window.innerWidth / window.innerHeight > 16 / 9){
             offsetWidth = window.innerWidth - 16 * window.innerHeight / 9;
@@ -243,7 +251,7 @@
             skeleton.bones[12].rotateX(THREE.Math.degToRad(-15));
             skeleton.bones[13].rotateZ(THREE.Math.degToRad(-30));
             skeleton.bones[13].rotateX(THREE.Math.degToRad(-15));
-//            avatar.rotateY(THREE.Math.degToRad(75));
+
             avatar.updateMatrixWorld(true);
 
             originalSkeleton = saveSkeleton();
@@ -260,11 +268,22 @@
     }
 
     function loadObject(){
-        $('#containerObjet').css({
-            'top': 0.24*window.innerHeight+offsetHeight/2,
-            'left': 0.72*window.innerWidth+offsetWidth/2
-        });
-        loadConsole(window.innerWidth+"-"+window.innerHeight);
+//
+//        var w = $('canvas').height();
+//        var h = $('canvas').width();
+//        var t = w*0.23+offsetHeight/2;
+//        var l = h*0.72+offsetWidth/2;
+//        h = h*0.24;
+//        w = w*0.24;
+//        console.log(offsetHeight);
+//        console.log(h);
+//        console.log(w);
+//        $('#containerObjet').css({
+//            'top': t+"px",
+//            'left': l+"px",
+//            'width' : w+"px",
+//            'height' : h+"px"
+//        });
     }
 
 
@@ -276,7 +295,7 @@
         avatar.updateMatrixWorld(true);
         var res = [];
         for (var i = 0; i < idBonesTargeted.length; i++) {
-            var target = sphereGenerator(8, "#01B0F0");
+            var target = sphereGenerator(10, "#01B0F0");
             var pos = avatar.skeleton.bones[idBonesTargeted[i]].getWorldPosition();
             target.position.set(pos.x, pos.y, pos.z);
             target.name = avatar.skeleton.bones[idBonesTargeted[i]].name;
@@ -284,13 +303,13 @@
             res.push(target);
         }
         //On créé la cible de rotation de l'avatar
-        var avatarTarget = sphereGenerator(8, "#01B0F0");
+        var avatarTarget = sphereGenerator(12, "#01B0F0");
         avatarTarget.position.set(0, -80, 0);
         avatarTarget.name = 'avatarRot';
         scene.add(avatarTarget);
         res.push(avatarTarget);
         return res;
-    };
+    }
 
     function updateTargets() {
         avatar.updateMatrixWorld(true);
@@ -324,13 +343,11 @@
         evt = evt.originalEvent.changedTouches[0];
         $("#container").off();
         $(document).off('touchend');
-        console.log(intersects.length);
         if (intersects.length > 0) {
-            loadConsole(avatar.rotation.y);
+            loadConsole(avatarRotation);
         } else {
             var mousePosUp = mouseToWorld(evt);
             var long = mousePosUp.x - mousePosDown.x; // long est la longueur de déplacement du touch
-            loadConsole(long);
             if (Math.abs(long) > 10) {
                 if (long > 0) { // L'avatar avance
                     if(long+avatar.position.x >= borneMax){
@@ -339,7 +356,7 @@
                 }
                 else { // L'avatar recule
                     if(long+avatar.position.x <= borneMin){
-                       long = borneMin - avatar.position.x;
+                        long = borneMin - avatar.position.x;
                     }
                 }
                 if(Math.abs(long) > 1)
@@ -351,50 +368,47 @@
     function onContainerMouseMove(evt) {
         evt.preventDefault();
         evt = evt.originalEvent.changedTouches[0];
+        var bone, angle;
         var tmpMousePosMove = mouseToWorld(evt);
         switch (intersects[0].object.name) {
             case 'rHand':
-                var bone = avatar.skeleton.bones[12];
-                var angle = getAngle(bone.getWorldPosition(), mousePosMove, tmpMousePosMove);
+                bone = avatar.skeleton.bones[12];
+                angle = getAngle(bone.getWorldPosition(), mousePosMove, tmpMousePosMove);
                 mousePosMove = mouseToWorld(evt);
-                if (angle){
-                    var rot = avatar.quaternion.y*Math.PI;
-                    if(Math.abs(rot)<=1.5) {
+                if (angle) {
+                    if (Math.abs(avatarRotation) <= 0.8) {
                         bone.rotateX(angle);
-                    }else if(Math.abs(rot)>=2.7){
+                    } else if (Math.abs(avatarRotation) >= Math.PI - 0.8) {
                         bone.rotateX(-angle);
-                    }else if(rot>Math.PI/4){
+                    } else if (avatarRotation < 0) {
                         bone.rotateZ(angle);
-                    }else
-                    {
+                    } else {
                         bone.rotateZ(-angle);
                     }
                 }
                 break;
             case 'lHand':
-                var bone = avatar.skeleton.bones[13];
-                var angle = getAngle(bone.getWorldPosition(), mousePosMove, tmpMousePosMove);
+                bone = avatar.skeleton.bones[13];
+                angle = getAngle(bone.getWorldPosition(), mousePosMove, tmpMousePosMove);
                 mousePosMove = mouseToWorld(evt);
-                if (angle){
-                    var rot = avatar.quaternion.y*Math.PI;
-                    if(Math.abs(rot)<=1.5) {
+                if (angle) {
+                    if (Math.abs(avatarRotation) <= 0.8) {
                         bone.rotateX(angle);
-                    }else if(Math.abs(rot)>=2.7){
+                    } else if (Math.abs(avatarRotation) >= Math.PI - 0.8) {
                         bone.rotateX(-angle);
-                    }else if(rot>Math.PI/4){
+                    } else if (avatarRotation < 0) {
                         bone.rotateZ(angle);
-                    }else
-                    {
+                    } else {
                         bone.rotateZ(-angle);
                     }
                 }
                 break;
             case 'head':
-                var bone = avatar.skeleton.bones[3];
-                var angle = getAngle(bone.getWorldPosition(), mousePosMove, tmpMousePosMove);
+                bone = avatar.skeleton.bones[3];
+                angle = getAngle(bone.getWorldPosition(), mousePosMove, tmpMousePosMove);
                 mousePosMove = mouseToWorld(evt);
                 if (angle)
-                    if(avatar.quaternion.y*Math.PI<0)
+                    if (Math.abs(avatarRotation) > Math.PI/2)
                         bone.rotateX(angle);
                     else
                         bone.rotateX(-angle);
@@ -403,7 +417,13 @@
                 var v1 = mousePosMove.clone().normalize();
                 var v2 = tmpMousePosMove.clone().normalize();
                 mousePosMove = mouseToWorld(evt);
-                avatar.rotateY((v2.x - v1.x) * Math.PI);
+                angle = (v2.x - v1.x) * Math.PI;
+                avatar.rotateY(angle);
+                avatarRotation += angle;
+                if (avatarRotation > Math.PI)
+                    avatarRotation = -(2 * Math.PI - avatarRotation);
+                if (avatarRotation < -Math.PI)
+                    avatarRotation = 2 * Math.PI + avatarRotation;
                 break;
         }
         updateTargets();
@@ -427,8 +447,8 @@
     }
 
     function mouseToWorld(evt) {
-        var mouseX = (evt.clientX / window.innerWidth) * 2 - 1;
-        var mouseY = -(evt.clientY / window.innerHeight) * 2 + 1;
+        var mouseX = ((evt.clientX-offsetWidth/2) / (window.innerWidth-offsetWidth)) * 2 - 1;
+        var mouseY = -((evt.clientY-offsetHeight/2) / (window.innerHeight-offsetHeight)) * 2 + 1;
 
         var vector = new THREE.Vector3(mouseX, mouseY, 0.99799794);//Mystery number = 0.99799794
         vector.unproject(camera);
