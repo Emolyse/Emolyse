@@ -34,6 +34,30 @@
             opacity: 0.8;
         }
 
+        #containerObjet {
+            position: fixed;
+            height: 39%;
+            width: 15%;
+            top: 24%; /*margin-top: 207px;*/
+            left: 72%; /*margin-left: 922px;*/
+            -webkit-perspective: 198px;
+            perspective: 198px;
+            -webkit-transform: rotate(-90deg);
+            transform: rotate(-90deg);
+        }
+
+        #objet {
+            /*padding: 12% 11%;*/
+            width: 91%;
+            height: 92%;
+            position: absolute;
+            border: 1px solid black;
+            background-color: red;
+            -webkit-transform: rotateX(12deg);
+            transform: rotateX(12deg);
+            color: red;
+        }
+
         #resetButton {
             z-index: 1000;
             position: fixed;
@@ -52,6 +76,9 @@
 <input id="resetButton" type="reset" value="Réinitialiser">
 <div id="console"></div>
 <div id="container">
+    <div id="containerObjet">
+        <div id="objet">test</div>
+    </div>
 </div>
 
 <script src="js/three.min.js"></script>
@@ -67,11 +94,12 @@
     var targetList = [];
     var idBonesTargeted = [14, 17, 18];
     var intersects = [];
+    var borneMin=-140, borneMax=9;
     var mousePosDown, mousePosMove;
     var animation, animationState;
     var originalSkeleton, skeleton;
     var clock = new THREE.Clock();
-
+    var offsetWidth=0,offsetHeight=0;
     init();
 
     function init() {
@@ -95,10 +123,10 @@
         /***************
          *    LIGHT    *
          **************/
-        var light = new THREE.DirectionalLight(0xF2D9B4, 1.5);
+        var light = new THREE.DirectionalLight(0xF2D9B4, 1.8);
         light.castShadow = true;
-        light.position.set(1, 2, 3);
-        light.lookAt(new THREE.Vector3(1, 2, 0));
+        light.position.set(-500, 0, 0);
+        light.lookAt(new THREE.Vector3(-5, 0, 0));
         scene.add(light);
 
         /***************
@@ -118,6 +146,7 @@
          *   12 : bras droit
          *   13: bras gauche
          */
+        loadObject();
         loadAvatar("Remy/male_caucasian_anim_fin.dae", function () {
             avatar.updateMatrixWorld(true);
             targetList = getTargetList();
@@ -145,21 +174,7 @@
         backgroundScene.add(backgroundMesh);
         window.addEventListener('resize', onWindowResize, false);
 
-        animate();
-
-        /************************************
-         *          Produit                 *
-         ************************************/
-        var produit = THREE.ImageUtils.loadTexture('images/imgExperience/03.jpg');
-        var produitMesh = new THREE.Mesh(
-                new THREE.PlaneGeometry( 5, 20, 32 ),
-                new THREE.MeshBasicMaterial({
-                    map: produit,
-                    color: 0x000000
-                }));
-        console.log('produit : '+produit);
-        console.log('produitMesh : '+produitMesh);
-        scene.add( produitMesh );
+        render();
 
     }
     function onWindowResize() {
@@ -168,19 +183,29 @@
         camera.updateProjectionMatrix();
 
 //        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        if(window.innerWidth / window.innerHeight > 16 / 9){
+            offsetWidth = window.innerWidth - 16 * window.innerHeight / 9;
+            offsetHeight = 0;
+            renderer.setSize(window.innerWidth - offsetWidth, window.innerHeight);
+            $('canvas').css({'marginTop':'0'});
+        }else{
+            offsetHeight = window.innerHeight - 9 * window.innerWidth / 16;
+            offsetWidth = 0;
+            renderer.setSize(window.innerWidth, window.innerHeight - offsetHeight);
+            $('canvas').css({'marginTop':offsetHeight/2});
+        }
+
+        loadObject();
     }
-    function animate() {
 
-        requestAnimationFrame(animate, renderer.domElement);
-
-        THREE.AnimationHandler.update(clock.getDelta());
-
+    function render() {
+        requestAnimationFrame( render, renderer.domElement );
         renderer.autoClear = false;
-        renderer.antialias = true;
+        renderer.antialias=true;
         renderer.clear();
-        renderer.render(backgroundScene, backgroundCamera);
-        renderer.render(scene, camera);
-
+        renderer.render( backgroundScene, backgroundCamera);
+        renderer.render( scene, camera );
     }
     /*****************************************************************************************
      * @description Load the .dae file according to the name et initialize it in the scene   *
@@ -234,6 +259,15 @@
         $("#console").text(msg);
     }
 
+    function loadObject(){
+        $('#containerObjet').css({
+            'top': 0.24*window.innerHeight+offsetHeight/2,
+            'left': 0.72*window.innerWidth+offsetWidth/2
+        });
+        loadConsole(window.innerWidth+"-"+window.innerHeight);
+    }
+
+
     /*******************************************************
      * @description Couch de dialogue avatar/touchInterface
      *******************************************************/
@@ -256,8 +290,7 @@
         scene.add(avatarTarget);
         res.push(avatarTarget);
         return res;
-    }
-    ;
+    };
 
     function updateTargets() {
         avatar.updateMatrixWorld(true);
@@ -288,6 +321,7 @@
 
     function onDocumentMouseUp(evt) {
         evt.preventDefault();
+        evt = evt.originalEvent.changedTouches[0];
         $("#container").off();
         $(document).off('touchend');
         console.log(intersects.length);
@@ -295,17 +329,21 @@
             loadConsole(avatar.rotation.y);
         } else {
             var mousePosUp = mouseToWorld(evt);
-            var long = mousePosUp.x - mousePosDown.x;
-            console.log(long);
-            loadConsole()
+            var long = mousePosUp.x - mousePosDown.x; // long est la longueur de déplacement du touch
+            loadConsole(long);
             if (Math.abs(long) > 10) {
-                if (mousePosDown.x < mousePosUp.x) {
-                    avatar.rotation.y = THREE.Math.degToRad(0);
+                if (long > 0) { // L'avatar avance
+                    if(long+avatar.position.x >= borneMax){
+                        long = borneMax - avatar.position.x;
+                    }
                 }
-                else {
-                    avatar.rotation.y = THREE.Math.degToRad(180);
+                else { // L'avatar recule
+                    if(long+avatar.position.x <= borneMin){
+                       long = borneMin - avatar.position.x;
+                    }
                 }
-                start((long) / (Math.abs(long) / 2), (Math.abs(long) / 2));
+                if(Math.abs(long) > 1)
+                    start((long) / (Math.abs(long) / 2), (Math.abs(long) / 2));
             }
         }
     }
@@ -411,7 +449,7 @@
      *******************************************************/
     function start(translation, nbFrame) {
         if (!animationState) {
-//            skeleton = saveSkeleton();
+            skeleton = saveSkeleton();
             animation.play();
             loop(translation, nbFrame);
         }
@@ -423,7 +461,8 @@
             window.cancelAnimationFrame(animationState);
             animationState = undefined;
             currentFrame = 0;
-//            resetBones(skeleton);
+
+            takePose(skeleton);
             avatar.updateMatrixWorld();
         }
     }
