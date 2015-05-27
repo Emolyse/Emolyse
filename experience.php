@@ -96,6 +96,7 @@
 <div id="console"></div>
 <div id="containerObjet">
     <?php
+    if(isset($_GET['experience'])){
         $experience = $_GET['experience'];
         $requete = "SELECT * FROM produit WHERE idExperience=".$experience."";
         $resultats = $base->query($requete);
@@ -104,6 +105,7 @@
             $idProduit = $resultat['idProduit'];
             echo "<img class='objet' src='".$lienPhoto."' id='produit-".$idProduit."' />";
         }
+    }
     ?>
 
 </div>
