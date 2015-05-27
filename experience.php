@@ -449,12 +449,13 @@
                 angle = getAngle(bone.getWorldPosition(), mousePosMove, tmpMousePosMove);
                 mousePosMove = mouseToWorld(evt);
                 if (angle)
-                    if (Math.abs(avatarRotation) > Math.PI/2)
+                    if (Math.abs(avatarRotation) > Math.PI/2) {
                         bone.rotateX(angle);
-                        bodyRot+=angle;
-                    else
+                        bodyRot += angle;
+                    } else {
                         bone.rotateX(-angle);
-                        bodyRot-=angle;
+                        bodyRot -= angle;
+                    }
                 break;
             case 'avatarRot':
                 var v1 = mousePosMove.clone().normalize();
