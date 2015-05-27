@@ -13,7 +13,7 @@ include('includes/en-tete.php');
 <section class="nouvelle-experience">
     <div class="avatarFemme"></div>
     <div>
-        <form action="#">
+        <form action="includes/traitement.php" method="post">
             <select name="experience" id="select-experience">
                 <?php
                 // on veut afficher uniquement les expériences avec au moins un produit

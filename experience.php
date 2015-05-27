@@ -1,9 +1,13 @@
 <!--<!DOCTYPE html>-->
 <html lang="en">
+<?php
+    include("includes/connexion.php");
+?>
 <head>
     <title>three.js webgl - collada - skinning</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" href="styles/font-awesome.min.css">
     <style>
         body {
             color: #000;
@@ -37,48 +41,79 @@
         #containerObjet {
             position: absolute;
             /*height: 39%;*/
-            /*width: 15%;*/
-            /*top: 24%;*/
-            /*left: 72%;*/
+            width: 15%;
+            top: 23%;
+            left: 76%;
             -webkit-perspective: 198px;
             perspective: 198px;
-            -webkit-transform: rotate(-90deg);
-            transform: rotate(-90deg);
+            /*-webkit-transform: rotate(-90deg);*/
+            /*transform: rotate(-90deg);*/
         }
 
-        #objet {
-            padding: 12% 20%;
-            width: 91%;
-            height: 81%;
+        .objet {
+            display: none;
+            /*padding: 12% 20%;*/
+            width: 100%;
+            /*height: 81%;*/
             position: absolute;
-            border: 1px solid black;
-            background-color: red;
-            -webkit-transform: rotateX(12deg);
-            transform: rotateX(12deg);
+            /*-webkit-transform: rotateX(12deg);*/
+            /*transform: rotateX(12deg);*/
             color: red;
+            /*transform: perspective( 600px ) rotateY( -45deg );*/
         }
 
         #resetButton {
             z-index: 1000;
             position: fixed;
-            height: 50px;
-            width: 100px;
-            bottom: 0;
+            bottom: 20px;
+            cursor: pointer;
+            color: #fff;
+            font-size: 66px;
+            padding: 15px;
+            left: 20px;
+        }
+        .icon_env{
+            display: inline-block;
+            color: #fff;
+            font-size: 66px;
+            padding: 15px;
+        }
+        #icon-env{
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
             cursor: pointer;
         }
-        #resetButton:hover{
-            border:solid 3px #004f79;
+        .display{
+            display: block;
         }
     </style>
 </head>
 <body>
 
-<input id="resetButton" type="reset" value="Réinitialiser">
+<i class="fa fa-refresh icon-refresh" id="resetButton"></i>
+<!--<input id="resetButton" type="reset" value="Réinitialiser">-->
 <div id="console"></div>
 <div id="containerObjet">
-    <div id="objet"></div>
+    <?php
+        $experience = $_GET['experience'];
+        $requete = "SELECT * FROM produit WHERE idExperience=".$experience."";
+        $resultats = $base->query($requete);
+        while(($resultat = $resultats->fetch_array())){
+            $lienPhoto = $resultat['lienPhoto'];
+            $idProduit = $resultat['idProduit'];
+            echo "<img class='objet' src='".$lienPhoto."' id='produit-".$idProduit."' />";
+        }
+    ?>
+
 </div>
-<div id="container"></div>
+<div id="icon-env">
+    <i class="fa fa-chevron-circle-left icon_env"></i>
+    <i class="fa fa-chevron-circle-right icon_env"></i>
+</div>
+
+<div id="container">
+</div>
 
 <script src="js/three.min.js"></script>
 <script src="js/ColladaLoader.js"></script>
@@ -266,22 +301,17 @@
     }
 
     function loadObject(){
-//
-//        var w = $('canvas').height();
-//        var h = $('canvas').width();
-//        var t = w*0.23+offsetHeight/2;
-//        var l = h*0.72+offsetWidth/2;
-//        h = h*0.24;
-//        w = w*0.24;
-//        console.log(offsetHeight);
-//        console.log(h);
-//        console.log(w);
-//        $('#containerObjet').css({
-//            'top': t+"px",
-//            'left': l+"px",
-//            'width' : w+"px",
-//            'height' : h+"px"
-//        });
+
+        var w = $('canvas').height();
+        var h = $('canvas').width();
+        var t = w*0.18+offsetHeight/2;
+        var l = h*0.76+offsetWidth/2;
+        w = w*0.27;
+        $('#containerObjet').css({
+            'top': t+"px",
+            'left': l+"px",
+            'width' : w+"px"
+        });
     }
 
 
@@ -525,9 +555,33 @@
     function sphereGenerator(width, color) {
         var planeGeometry = new THREE.SphereGeometry(width, 100, 100);
         var material = new THREE.MeshPhongMaterial({color: color, visible: false});
-        new THREE.Mater
+
         return new THREE.Mesh(planeGeometry, material);
     }
+
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.objet:first').addClass('display');
+
+        $(".fa-chevron-circle-right").on('touchstart', function(){
+            var r = confirm("Avez-vous vraiment terminé ?");
+            if (r == true) {
+                $('.display').next('.objet').addClass('display');
+                $('.display').prev('.display').removeClass('display');
+            }
+
+        });
+
+        $(".fa-chevron-circle-left").on('touchstart', function(){
+            var r = confirm("Voulez-vous vraiment revenir à l'objet précédent ?");
+            if (r == true) {
+                $('.display').prev('.objet').addClass('display');
+                $('.display').next('.display').removeClass('display');
+            }
+        });
+    });
 </script>
 
 </body>

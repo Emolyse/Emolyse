@@ -208,3 +208,8 @@ if(isset($_POST['finaliser-experience'])){
     header("Location: ../finalisation.php");
 
 }
+
+if(isset($_POST['start-experience'])){
+    $id = $_POST['experience'];
+    header("Location: ../experience.php?experience=".$id);
+}
