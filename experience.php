@@ -93,7 +93,7 @@
     var targetList = [];
     var idBonesTargeted = [14, 17, 18];
     var intersects = [];
-    var borneMin=-140, borneMax=9;
+    var borneMin=-140, borneMax=30;
     var mousePosDown, mousePosMove;
     var animation, animationState;
     var originalSkeleton, skeleton, avatarRotation = 0;
@@ -154,9 +154,7 @@
             var screen;
             loaderObject.load("3D/dae/meubles/screen.dae", function (collada) {
                 screen = collada.scene;
-                console.log(collada);
                 scene.add(screen);
-                console.log(scene);
                 screen.position.set(170,120,-150);
                 screen.scale.set(1.0,0.75,0.75);
                 screen.rotateY(THREE.Math.degToRad(-80));
@@ -459,8 +457,8 @@
         var p = pos.clone();
         var vector = p.project(camera);
 
-        vector.x = (vector.x + 1) / 2 * window.innerWidth;
-        vector.y = -(vector.y - 1) / 2 * window.innerHeight;
+        vector.x = (vector.x + 1) / 2 * (window.innerWidth-offsetWidth)+offsetWidth;
+        vector.y = -(vector.y - 1) / 2 * (window.innerHeight-offsetHeight)+offsetHeight;
 
         return vector;
     }
@@ -514,6 +512,8 @@
 
     function resetBones(){
         takePose(originalSkeleton);
+        avatar.rotateY(-avatarRotation);
+        avatarRotation = 0;
     }
     function takePose(skeleton){
         for(var i=0;i<originalSkeleton.length;i++){
@@ -524,7 +524,7 @@
 
     function sphereGenerator(width, color) {
         var planeGeometry = new THREE.SphereGeometry(width, 100, 100);
-        var material = new THREE.MeshPhongMaterial({color: color, visible: true});
+        var material = new THREE.MeshPhongMaterial({color: color, visible: false});
         return new THREE.Mesh(planeGeometry, material);
     }
 </script>
