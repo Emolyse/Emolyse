@@ -40,10 +40,10 @@
 <section class="liste-participants">
     <table class="table-participants">
         <thead>
-            <th><a href="<?php echo sort_link('Sexe', 'sexe') ?>"><?php if(SEXE != ''){echo SEXE;}else{ echo('SEXE');}; ?> <i class="fa fa-sort-desc"></i></a></th>
-            <th><a href="<?php echo sort_link('Nom', 'nom') ?>"><?php if(NOM != ''){echo NOM;}else{ echo('NOM');}; ?> <i class="fa fa-sort-desc"></i></a></th>
-            <th><a href="<?php echo sort_link('Prenom', 'prenom') ?>"><?php if(PRENOM != ''){echo PRENOM;}else{ echo('PRENOM');}; ?> <i class="fa fa-sort-desc"></i></a></th>
-            <th><a href="<?php echo sort_link('Naissance', 'naissance') ?>"><?php if(AGE != ''){echo AGE;}else{ echo('AGE');}; ?> <i class="fa fa-sort-desc"></i></a></th>
+            <th><a href="<?php echo sort_link('Sexe', 'sexe') ?>"><?php if(SEXE != ''){echo SEXE;}else{ echo('SEXE');}; ?> <i class="fa fa-sort"></i></a></th>
+            <th><a href="<?php echo sort_link('Nom', 'nom') ?>"><?php if(NOM != ''){echo NOM;}else{ echo('NOM');}; ?> <i class="fa fa-sort"></i></a></th>
+            <th><a href="<?php echo sort_link('Prenom', 'prenom') ?>"><?php if(PRENOM != ''){echo PRENOM;}else{ echo('PRENOM');}; ?> <i class="fa fa-sort"></i></a></th>
+            <th><a href="<?php echo sort_link('Naissance', 'naissance') ?>"><?php if(AGE != ''){echo AGE;}else{ echo('AGE');}; ?> <i class="fa fa-sort"></i></a></th>
             <th></th>
         </thead>
         <tbody>

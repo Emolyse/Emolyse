@@ -191,6 +191,17 @@ include('includes/en-tete.php');
             xhr.send(file);
         }
     });
+    function updateTraduction(ID_element)
+    {
+        var value = document.getElementsByName(ID_element).item(0).value;
+
+        console.log('http://'+window.location.host+'/Emolyse/includes/modifTraduction.php?ID_element='+escape(ID_element)
+            +'&value='+escape(value));
+
+        texte = file('http://'+window.location.host+'/Emolyse/includes/modifTraduction.php?ID_element='+escape(ID_element)
+            +'&value='+escape(value)
+        )
+    }
 </script>
 </body>
 </html>

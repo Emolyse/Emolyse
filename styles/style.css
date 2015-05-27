@@ -82,7 +82,7 @@ i.fa.fa-arrow-circle-left{
     bottom: 100px;
     font-size: 40px;
     position: fixed;
-    color: #b900ff;
+    color: #8dc4c7;
 }
 #fileLangClic{
     border: 2px solid #0087F7;
@@ -121,8 +121,8 @@ label.radioImage > input:checked + img{
     padding: 20px;
     border: none;
     position: absolute;
-    left: 285px;
-    top: 301px;
+    left: 563px;
+    top: 188px;
     z-index: 999;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
