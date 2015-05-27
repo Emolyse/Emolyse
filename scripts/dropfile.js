@@ -7,9 +7,10 @@
     $.fn.dropfile = function(oo){
         if(oo) $.extend(o, oo);
         this.each(function(){
-            $(this).bind({
+            $('.dropfile').bind({
                 dragenter : function(e){
                     e.preventDefault();
+                    console.log('toto');
                 },
                 dragover : function(e){
                     e.preventDefault();

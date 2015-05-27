@@ -29,7 +29,7 @@ $idExperience = $_GET['id'];
 ?>
 
 <section class="ajout-experience">
-    <form action="#" id="formulaire-experience">
+<!--    <form action="#" id="formulaire-experience">-->
         <div class="params1">
             <input type="text" name="nom" id="champs-nom-experience" onkeyup="updateExperience('nom')" value="<?php if($resultatExperience['nom'] != ''){echo $resultatExperience['nom'];}else{ echo('');}; ?>"/>
             <div id="btn-update-lang">
@@ -87,7 +87,7 @@ $idExperience = $_GET['id'];
             </div>
         </div>
         <input type="submit" id="btn-add-experience" style="visibility: hidden" name="add-experience" value="<?php if(AJOUTER != ''){echo AJOUTER;}else{ echo('AJOUTER');}; ?>"/>
-    </form>
+<!--    </form>-->
     <!--POP-UP AU CLIC SUR "CONSIGNE"-->
     <div class="pop-up-consigne">
         <i class="fa fa-times-circle-o close"></i>
@@ -146,19 +146,25 @@ $idExperience = $_GET['id'];
         });
 
         // suppression d'un produit
-         $('.liste-objets').on('doubletap','.objets', function(){
+        document.oncontextmenu = function() {return false;}; // suppression de l'apparition de la pop-up au clic long
+
+        var timeoutId = 0;
+        $('.liste-objets').on('mousedown','.objets', function(){
             var id = $(this).attr("data-id");
             var idExperience = $('#idExperience').val();
+            timeoutId = setTimeout(function(){
+                var r = confirm("Etes vous sûr de vouloir supprimer ce produit ?");
+                if (r == true) {
+                    texte = file('http://'+window.location.host+'/Emolyse/Emolyse/includes/traitement.php?id='+escape(id)
+                        +'&idExperience='+escape(idExperience)
+                        +'&deleteProduit="deleteProduit"'
+                    )
+                    location.reload();
+                }
+            }, 1000);
+        }).bind('mouseup mouseleave', function() {
+            clearTimeout(timeoutId);
 
-            var r = confirm("Etes vous sûr de vouloir supprimer ce produit ?");
-            if (r == true) {
-                texte = file('http://'+window.location.host+'/Emolyse/Emolyse/includes/traitement.php?id='+escape(id)
-                    //+'&order='+escape(order)
-                    +'&idExperience='+escape(idExperience)
-                    +'&deleteProduit="deleteProduit"'
-                )
-                location.reload();
-            }
         });
 
         // quand on click sur la croix dans la pop-up de la consigne de l'expérience on ferme celle-ci
@@ -203,6 +209,7 @@ $idExperience = $_GET['id'];
             +'&updateExperience="updateExperience"'
         )
     }
+
 </script>
 
 </body>

@@ -22,5 +22,6 @@
     <script type="text/javascript" src="../Emolyse/scripts/dropfile.js"></script>
     <script type="text/javascript" src="../Emolyse/scripts/uploadFile.js"></script>
     <script type="text/javascript" src="../Emolyse/scripts/order.js"></script>
+    <script type="text/javascript" src="../Emolyse/scripts/jquery.ui.touch-punch.min.js"></script>
 </head>
 <body>

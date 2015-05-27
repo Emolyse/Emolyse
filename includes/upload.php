@@ -17,7 +17,14 @@
         $name = $name['filename'];
         $idExperience = $h['idExperience'];
 
-        $requeteInsert = "INSERT INTO produit VALUES ('', '".$idExperience."', '','".$name."', 'images/imgExperience/".$nameOriginal."')";
+        $requeteMax = "SELECT MAX(position) as max FROM produit WHERE idExperience=".$idExperience."";
+        $resultatsMax = $base->query($requeteMax);
+        while(($resultat = $resultatsMax->fetch_array())){
+            $position = $resultat['max'];
+        }
+        $position = $position+1;
+
+        $requeteInsert = "INSERT INTO produit VALUES ('', '".$idExperience."', '".$position."','".$name."', 'images/imgExperience/".$nameOriginal."')";
         $base->query($requeteInsert);
 
         $id = $base->insert_id;

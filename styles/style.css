@@ -325,13 +325,12 @@ button#add-env {
     padding: 20px 10px;
     background: #E4E4E4;
     width: 300px;
-    margin: 20px auto 0 auto;
+    margin: -20px auto 0 auto;
     text-align: center;
     font-size: 24px;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
-    margin-top: 110px;
 }
 .gerer-parametres {
     text-align: center;
@@ -436,7 +435,7 @@ span.obligatoire {
 .pop-up .box, .pop-up-consigne .box {
     display: block;
     width: 600px;
-    margin: 16% auto 0 auto;
+    margin: 12% auto 0 auto;
     background: #f2f2f2;
     padding: 15px;
 }
@@ -470,7 +469,7 @@ span.obligatoire {
     padding: 20px 10px;
     background: #E4E4E4;
     width: 100%;
-    margin: -30px auto 0 auto;
+    margin: 20px auto 0 auto;
     text-align: center;
     font-size: 24px;
     -webkit-border-radius: 5px;
