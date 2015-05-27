@@ -25,7 +25,7 @@
         }
 
         #console {
-            display: none;
+            /*display: none;*/
             position: fixed;
             background-color: #ffffff;
             color: #000000;
@@ -131,7 +131,10 @@
     var borneMin=-140, borneMax=30;
     var mousePosDown, mousePosMove;
     var animation, animationState;
-    var originalSkeleton, skeleton, avatarRotation = 0;
+    var originalSkeleton, skeleton;
+
+    var avatarRotation = 0,lArmRotX = 0,lArmRotZ = 0, rArmRotX = 0, rArmRotZ = 0, bodyRot = 0;
+
     var clock = new THREE.Clock();
     var offsetWidth=0,offsetHeight=0;
     var mouseMoving = false;
@@ -323,7 +326,7 @@
         avatar.updateMatrixWorld(true);
         var res = [];
         for (var i = 0; i < idBonesTargeted.length; i++) {
-            var target = sphereGenerator(10, "#01B0F0");
+            var target = sphereGenerator(20, "#01B0F0");
             var pos = avatar.skeleton.bones[idBonesTargeted[i]].getWorldPosition();
             target.position.set(pos.x, pos.y, pos.z);
             target.name = avatar.skeleton.bones[idBonesTargeted[i]].name;
@@ -331,7 +334,7 @@
             res.push(target);
         }
         //On créé la cible de rotation de l'avatar
-        var avatarTarget = sphereGenerator(12, "#01B0F0");
+        var avatarTarget = sphereGenerator(20, "#01B0F0");
         avatarTarget.position.set(0, -80, 0);
         avatarTarget.name = 'avatarRot';
         scene.add(avatarTarget);
@@ -406,12 +409,16 @@
                 if (angle) {
                     if (Math.abs(avatarRotation) <= 0.8) {
                         bone.rotateX(angle);
+                        rArmRotX+=angle;
                     } else if (Math.abs(avatarRotation) >= Math.PI - 0.8) {
                         bone.rotateX(-angle);
+                        rArmRotX-=angle;
                     } else if (avatarRotation < 0) {
                         bone.rotateZ(angle);
+                        rArmRotZ+=angle;
                     } else {
                         bone.rotateZ(-angle);
+                        rArmRotZ-=angle;
                     }
                 }
                 break;
@@ -422,12 +429,16 @@
                 if (angle) {
                     if (Math.abs(avatarRotation) <= 0.8) {
                         bone.rotateX(angle);
+                        lArmRotX+=angle;
                     } else if (Math.abs(avatarRotation) >= Math.PI - 0.8) {
                         bone.rotateX(-angle);
+                        lArmRotX-=angle;
                     } else if (avatarRotation < 0) {
                         bone.rotateZ(angle);
+                        lArmRotZ+=angle;
                     } else {
                         bone.rotateZ(-angle);
+                        lArmRotZ-=angle;
                     }
                 }
                 break;
@@ -438,8 +449,10 @@
                 if (angle)
                     if (Math.abs(avatarRotation) > Math.PI/2)
                         bone.rotateX(angle);
+                        bodyRot+=angle;
                     else
                         bone.rotateX(-angle);
+                        bodyRot-=angle;
                 break;
             case 'avatarRot':
                 var v1 = mousePosMove.clone().normalize();
@@ -450,7 +463,7 @@
                 avatarRotation += angle;
                 if (avatarRotation > Math.PI)
                     avatarRotation = -(2 * Math.PI - avatarRotation);
-                if (avatarRotation < -Math.PI)
+                if (avatarRotation <= -Math.PI)
                     avatarRotation = 2 * Math.PI + avatarRotation;
                 break;
         }
@@ -498,6 +511,13 @@
     function start(translation, nbFrame) {
         if (!animationState) {
             skeleton = saveSkeleton();
+            if(translation>0){
+                avatar.rotateY(-avatarRotation);
+                avatarRotation = 0;
+            }else{
+                avatar.rotateY(Math.PI-avatarRotation);
+                avatarRotation = Math.PI;
+            }
             animation.play();
             loop(translation, nbFrame);
         }
@@ -537,6 +557,8 @@
         for(var i=0;i<avatar.skeleton.bones.length;i++){
             res.push(avatar.skeleton.bones[i].rotation.clone());
         }
+        res.push(avatarRotation);
+        loadConsole(res[res.length-1]);
         return res;
     }
 
@@ -546,17 +568,24 @@
         avatarRotation = 0;
     }
     function takePose(skeleton){
-        for(var i=0;i<originalSkeleton.length;i++){
+        for(var i=0;i<avatar.skeleton.bones.length;i++){
             avatar.skeleton.bones[i].rotation.set(skeleton[i].x,skeleton[i].y,skeleton[i].z);
         }
+        avatar.rotateY(skeleton[skeleton.length-1] - avatarRotation);
+        avatarRotation = skeleton[skeleton.length-1];
         updateTargets();
     }
 
     function sphereGenerator(width, color) {
-        var planeGeometry = new THREE.SphereGeometry(width, 100, 100);
+        var planeGeometry = new THREE.BoxGeometry(width+10, width, width, 3, 3);
         var material = new THREE.MeshPhongMaterial({color: color, visible: false});
 
         return new THREE.Mesh(planeGeometry, material);
+    }
+
+    function extractData(){
+        var res = {ogjId:0,expId:0,avatarRot:avatarRotation,rArmRotX:rArmRotX,rArmRotZ:rArmRotZ,lArmRotX:lArmRotX,lArmRotZ:lArmRotZ,bodyRot:bodyRot};
+        return res;
     }
 
 </script>
