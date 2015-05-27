@@ -97,10 +97,12 @@
 <div id="containerObjet">
     <?php
     if(isset($_GET['experience'])){
+        $nbObjet = 0;
         $experience = $_GET['experience'];
-        $requete = "SELECT * FROM produit WHERE idExperience=".$experience."";
+        $requete = "SELECT * FROM produit WHERE idExperience=".$experience." ORDER BY position DESC";
         $resultats = $base->query($requete);
         while(($resultat = $resultats->fetch_array())){
+            $nbObjet++;
             $lienPhoto = $resultat['lienPhoto'];
             $idProduit = $resultat['idProduit'];
             echo "<img class='objet' src='".$lienPhoto."' id='produit-".$idProduit."' />";
@@ -125,7 +127,16 @@
 
     if (!Detector.webgl) Detector.addGetWebGLMessage();
 
+
+    /*
+    Information récupérees de la BDD
+    */
+    var nbObjects = <?php echo $nbObjet ?>;
+    var idExperience = <?php echo $experience ?>;
+
     var container;
+    var data = [];
+    var posScreen = new THREE.Vector3(170,120,-150);
     var camera, scene, currentFrame=0, renderer, backgroundScene, backgroundCamera, avatar;
     var targetList = [];
     var idBonesTargeted = [14, 17, 18];
@@ -181,11 +192,11 @@
 
         /*
          * Bones :
-         *    1 : buste
+         *    6 : buste
          *   12 : bras droit
          *   13: bras gauche
          */
-        loadAvatar("Remy/male_caucasian_anim_fin.dae", function () {
+        loadAvatar("Remy5/male_caucasian.dae", function () {
             avatar.updateMatrixWorld(true);
             targetList = getTargetList();
             $(document).on('touchstart', onCanvasMouseDown);
@@ -193,9 +204,10 @@
             var loaderObject = new THREE.ColladaLoader();
             var screen;
             loaderObject.load("3D/dae/meubles/screen.dae", function (collada) {
-                screen = collada.scene;
-                scene.add(screen);
-                screen.position.set(170,120,-150);
+                scene.add(collada.scene);
+                console.log(scene);
+                screen = scene.children[7];
+                screen.position.set(posScreen.x, posScreen.y, posScreen.z);
                 screen.scale.set(1.0,0.75,0.75);
                 screen.rotateY(THREE.Math.degToRad(-80));
             });
@@ -269,9 +281,9 @@
 
             var skeleton = avatar.skeleton;
 
-            avatar.material.materials[6].shininess = 0;
-            avatar.material.materials[7].shininess = 0;
-            avatar.material.materials[2].shininess = 0;
+            for(var i = 0;i < avatar.material.materials.length;i++){
+                avatar.material.materials[i].shininess = 10;
+            }
 
             // create a smooth skin
             // On active la manipulation des bones sur tous les matériaux qui composent un mesh
@@ -568,6 +580,7 @@
     function resetBones(){
         takePose(originalSkeleton);
         avatar.rotateY(-avatarRotation);
+        avatar.position.setX(0);
         avatarRotation = 0;
     }
     function takePose(skeleton){
@@ -587,30 +600,54 @@
     }
 
     function extractData(){
-        var res = {ogjId:0,expId:0,avatarRot:avatarRotation,rArmRotX:rArmRotX,rArmRotZ:rArmRotZ,lArmRotX:lArmRotX,lArmRotZ:lArmRotZ,bodyRot:bodyRot};
+        var skeleton = saveSkeleton();
+        var res = {objId:posObject,expId:idExperience,avatarRot:avatarRotation,rArmRotX:rArmRotX,rArmRotZ:rArmRotZ,lArmRotX:lArmRotX,lArmRotZ:lArmRotZ,bodyRot:bodyRot,distance:posScreen.x-avatar.position.x, skeleton:skeleton};
         return res;
     }
 
 </script>
 
 <script type="text/javascript">
+    var posObject = 0;
     $(document).ready(function () {
         $('.objet:first').addClass('display');
 
         $(".fa-chevron-circle-right").on('touchstart', function(){
             var r = confirm("Avez-vous vraiment terminé ?");
             if (r == true) {
-                $('.display').next('.objet').addClass('display');
-                $('.display').prev('.display').removeClass('display');
+                data[posObject] = extractData();
+                if(posObject<nbObjects-1) {
+                    posObject++;
+                    if (data[posObject] == undefined) {
+                        resetBones();
+                    }
+                    else {
+                        avatar.position.setX(posScreen.x - data[posObject].distance);
+                        takePose(data[posObject].skeleton);
+                    }
+                    $('.display').next('.objet').addClass('display');
+                    $('.display').prev('.display').removeClass('display');
+                }
+                else{
+                    alert('FINI  !!! ');
+                }
             }
-
         });
 
         $(".fa-chevron-circle-left").on('touchstart', function(){
             var r = confirm("Voulez-vous vraiment revenir à l'objet précédent ?");
             if (r == true) {
-                $('.display').prev('.objet').addClass('display');
-                $('.display').next('.display').removeClass('display');
+                data[posObject] = extractData();
+                if(posObject>0) {
+                    posObject--;
+                    avatar.position.setX(posScreen.x - data[posObject].distance);
+                    takePose(data[posObject].skeleton);
+                    $('.display').prev('.objet').addClass('display');
+                    $('.display').next('.display').removeClass('display');
+                }
+                else{
+                    alert('PAS D\'OBJET !!! ');
+                }
             }
         });
     });
