@@ -525,6 +525,7 @@
     function sphereGenerator(width, color) {
         var planeGeometry = new THREE.SphereGeometry(width, 100, 100);
         var material = new THREE.MeshPhongMaterial({color: color, visible: false});
+        new THREE.Mater
         return new THREE.Mesh(planeGeometry, material);
     }
 </script>
