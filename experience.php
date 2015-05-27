@@ -99,7 +99,7 @@
     if(isset($_GET['experience'])){
         $nbObjet = 0;
         $experience = $_GET['experience'];
-        $requete = "SELECT * FROM produit WHERE idExperience=".$experience." ORDER BY position DESC";
+        $requete = "SELECT * FROM produit WHERE idExperience=".$experience." ORDER BY position ASC";
         $resultats = $base->query($requete);
         while(($resultat = $resultats->fetch_array())){
             $nbObjet++;
@@ -196,7 +196,7 @@
          *   12 : bras droit
          *   13: bras gauche
          */
-        loadAvatar("Remy5/male_caucasian.dae", function () {
+        loadAvatar("Homme/male_caucasian.dae", function () {
             avatar.updateMatrixWorld(true);
             targetList = getTargetList();
             $(document).on('touchstart', onCanvasMouseDown);

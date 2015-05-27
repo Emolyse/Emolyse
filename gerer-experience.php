@@ -155,7 +155,7 @@ $idExperience = $_GET['id'];
             timeoutId = setTimeout(function(){
                 var r = confirm("Etes vous sûr de vouloir supprimer ce produit ?");
                 if (r == true) {
-                    texte = file('http://'+window.location.host+'/Emolyse/Emolyse/includes/traitement.php?id='+escape(id)
+                    texte = file('http://'+window.location.host+'/Emolyse/includes/traitement.php?id='+escape(id)
                         +'&idExperience='+escape(idExperience)
                         +'&deleteProduit="deleteProduit"'
                     )
@@ -198,12 +198,11 @@ $idExperience = $_GET['id'];
         if(element == 'codeLangue'){
             value = $(".codeLangueCheckbox:checked").val();
         }
-        console.log(element);
         if(element == 'nom' && element != 'codeLangue'){
             value = document.getElementsByName(element).item(0).value;
         }
 
-        texte = file('http://'+window.location.host+'/Emolyse/Emolyse/includes/traitement.php?element='+escape(element)
+        texte = file('http://'+window.location.host+'/Emolyse/includes/traitement.php?element='+escape(element)
             +'&value='+escape(value)
             +'&id='+escape(idExperience)
             +'&updateExperience="updateExperience"'

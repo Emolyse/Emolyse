@@ -9,7 +9,7 @@ $(function() {
                 var id = $(this).attr("data-id");
                 var order = $(this).attr("data-order");
 
-                texte = file('http://'+window.location.host+'/Emolyse/Emolyse/includes/traitement.php?id='+escape(id)
+                texte = file('http://'+window.location.host+'/Emolyse/includes/traitement.php?id='+escape(id)
                     +'&order='+escape(order)
                     +'&updateOrderList="updateOrderList"'
                 )

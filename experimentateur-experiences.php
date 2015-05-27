@@ -48,7 +48,7 @@ include('includes/en-tete.php');
 
             var r = confirm("Etes vous sûr de vouloir supprimer cette expérience ?");
             if (r == true) {
-                texte = file('http://'+window.location.host+'/Emolyse/Emolyse/includes/traitement.php?id='+escape(idExperience)
+                texte = file('http://'+window.location.host+'/Emolyse/includes/traitement.php?id='+escape(idExperience)
                     +'&deleteExp="deleteExp"'
                 )
                 location.reload();
