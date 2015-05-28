@@ -115,6 +115,25 @@ label.radioImage > input:checked + img{
     border:2px solid #ffffff;
     border-radius: 3px;
 }
+img.apercuEnv {
+    height: 20%;
+}
+input.apercuEnvCheckbox {
+    position: absolute;
+    visibility: hidden;
+}
+.radioEnv:nth-child(2){
+    margin-left: 10px;
+}
+.select-environnement{
+    margin-left: 30px;
+}
+label.radioEnv > input + img{
+    border: 3px solid transparent;
+}
+label.radioEnv > input:checked + img{
+    border: 3px solid #0087F7;
+}
 #langueAddExp{
     display: none;
     background: #3C3B3B;
