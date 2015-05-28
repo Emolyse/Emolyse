@@ -29,6 +29,10 @@ include('includes/en-tete.php');
                 $resultats = $base->query($requete);
                 while(($resultat = $resultats->fetch_array())){
                     $idExperience = $resultat['idExperience'];
+                    if($resultat['nom'] == '' && $resultat['nbProduit'] == 0){
+                        $requeteDelete = "DELETE FROM experience WHERE idExperience=".$idExperience."";
+                        $base->query($requeteDelete);
+                    }
                     echo "<tr>";
                     echo "<td width=80% onclick='document.location = \"gerer-experience.php?id=$idExperience\"' class='ligneClic'>".$resultat['nom']."</td>";
                     echo "<td width=10%><a href='#'><i class='fa fa-download'></i></a></td>";

@@ -34,12 +34,16 @@ if(isset($_POST['ajoutLangue'])){
         $base->query($requete);
 
         // à décommenter (ajout de tous les champs dans la table des traductions)
-        /*$requeteId = "SELECT * FROM identifiant";
+        $requeteId = "SELECT * FROM identifiant";
         $resultatsId = $base->query($requeteId);
         while($resultatId = $resultatsId->fetch_array()){
-            $requeteInsert = "INSERT INTO traduction VALUES ('".$codeLangue."', '".$resultatId['codeIdentifiant']."', '')";
-            $base->query($requeteInsert);
-        }*/
+            $requeteTradDefaut = "SELECT traduction FROM traduction WHERE codeLangue='EN' AND codeIdentifiant='".$resultatId['codeIdentifiant']."'";
+            $resultatsTradDefaut = $base->query($requeteTradDefaut);
+            while($resultatTradDefaut = $resultatsTradDefaut->fetch_array()){
+                $requeteInsert = "INSERT INTO traduction VALUES ('".$codeLangue."', '".$resultatId['codeIdentifiant']."', '".$resultatTradDefaut['traduction']."')";
+                $base->query($requeteInsert);
+            }
+        }
 
         $base->close();
 
@@ -180,33 +184,43 @@ if(isset($_GET['deleteExp'])){
 
 // Enregistrement à la fin d'une expérience
 if(isset($_POST['finaliser-experience'])){
-    $nom = $_POST['nom'];
-    $prenom = $_POST['prenom'];
-    $jour = $_POST['jour'];
-    $mois = $_POST['mois'];
-    $annee = $_POST['annee'];
-    $sexe = $_POST['sexe'];
-    $lienPhoto = $_POST['lienPhotoUser'];
+    if(empty($_POST['jour']) || empty($_POST['mois']) || empty($_POST['annee'])){
+        header("Location: ../finalisation.php?erreur=naissance");
+    }elseif(empty($_POST['sexe'])){
+        header("Location: ../finalisation.php?erreur=sexe");
+    }else{
+        $nom = $_POST['nom'];
+        $prenom = $_POST['prenom'];
+        $jour = $_POST['jour'];
+        $mois = $_POST['mois'];
+        $annee = $_POST['annee'];
+        $sexe = $_POST['sexe'];
+        $lienPhoto = $_POST['lienPhotoUser'];
 
-    $naissance = $annee."-".$mois."-".$jour;
+        $naissance = $annee."-".$mois."-".$jour;
 
-    if($sexe != '' && $jour != '' && $mois != '' && $annee != ''){
         $requete = "INSERT INTO participant VALUES ('', '".$nom."', '".$prenom."', '".$naissance."', '".$sexe."', '".$lienPhoto."')";
         $base->query($requete);
+        // Id de l'expérience qui vient d'être créée ////////////////////////
+        $id = $base->insert_id;
+        if($nom == ''){
+            $requete = "UPDATE participant SET nom='sujet-".$id."' WHERE idParticipant=".$id."";
+            $base->query($requete);
+        }
+
         $base->close();
+
+        unset($nom);
+        unset($prenom);
+        unset($jour);
+        unset($mois);
+        unset($annee);
+        unset($sexe);
+        unset($lienPhoto);
+        unset($naissance);
+
+        header("Location: ../index.php");
     }
-
-    unset($nom);
-    unset($prenom);
-    unset($jour);
-    unset($mois);
-    unset($annee);
-    unset($sexe);
-    unset($lienPhoto);
-    unset($naissance);
-
-    header("Location: ../finalisation.php");
-
 }
 
 if(isset($_POST['start-experience'])){
