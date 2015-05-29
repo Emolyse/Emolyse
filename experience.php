@@ -171,7 +171,6 @@
 <i class="fa fa-refresh icon-refresh" id="resetButton"></i>
 
 <div id="console"></div>
-
 <div id="containerObjet">
     <?php
     if(isset($_GET['experience'])){
@@ -230,9 +229,7 @@
     ?>
 
 </div>
-
 <div id="icon-env">
-    <i class="fa fa-chevron-circle-left icon_env"></i>
     <i class="fa fa-chevron-circle-right icon_env"></i>
 </div>
 
@@ -242,6 +239,7 @@
 <script src="js/ColladaLoader.js"></script>
 <script src="js/Detector.js"></script>
 <script src="js/jquery.min.js"></script>
+<script src="scripts/file.js"></script>
 <script>
 
     if (!Detector.webgl) Detector.addGetWebGLMessage();
@@ -253,6 +251,12 @@
     var nbObjects = <?php echo $nbObjet ?>;
     var idExperience = <?php echo $experience ?>;
 
+    /*
+     Information récupérees du get
+     */
+
+    var choixAvatar = '<?php echo $_GET['avatarselect'] ?>';
+    var urlAvatar;
     var container;
     var data = [];
     var posScreen = new THREE.Vector3(170,120,-150);
@@ -281,7 +285,7 @@
         scene = new THREE.Scene();
 
         var axisHelper = new THREE.AxisHelper(100);
-//        scene.add(axisHelper);
+        scene.add(axisHelper);
         /***************
          *    CAMERA   *
          **************/
@@ -318,7 +322,14 @@
          *   12 : bras droit
          *   13: bras gauche
          */
-        loadAvatar("Femme/avatar_femme.dae", function () {
+        //Url de l'avatar
+        if(choixAvatar == 'man'){
+            urlAvatar = 'Homme/avatar_man.dae';
+        }
+        else{
+            urlAvatar = 'Femme/avatar_woman.dae'
+        }
+        loadAvatar(urlAvatar, function () {
             avatar.updateMatrixWorld(true);
             targetList = getTargetList();
             $(document).on('touchstart', onCanvasMouseDown);
@@ -712,12 +723,19 @@
     function start(translation, nbFrame) {
         if (!animationState) {
             skeleton = saveSkeleton();
-            if(translation>0){
+            if(translation>0){ // Il avance et donc marche à l'endroit
                 avatar.rotateY(-avatarRotation);
                 avatarRotation = 0;
-            }else{
-                avatar.rotateY(Math.PI-avatarRotation);
-                avatarRotation = Math.PI;
+
+            }else{ // Il recule
+                if(avatarRotation < Math.PI/2 && avatarRotation > -Math.PI/2){ //Il marche à reculons
+                    avatar.rotateY(-avatarRotation);
+                    avatarRotation = 0;
+                }
+                else{ // Il marche à l'endroit
+                    avatar.rotateY(Math.PI-avatarRotation);
+                    avatarRotation = Math.PI;
+                }
             }
             animation.play();
             loop(translation, nbFrame);
@@ -730,7 +748,6 @@
             window.cancelAnimationFrame(animationState);
             animationState = undefined;
             currentFrame = 0;
-
             takePose(skeleton);
             updateTargets();
             avatar.updateMatrixWorld();
@@ -777,8 +794,9 @@
         for(var i=0;i<avatar.skeleton.bones.length;i++){
             avatar.skeleton.bones[i].rotation.set(skeleton[i].x,skeleton[i].y,skeleton[i].z);
         }
-        avatar.rotateY(skeleton[skeleton.length-1] - avatarRotation);
-        avatarRotation = skeleton[skeleton.length-1];
+        /*Enregistre la roatation de l'avatar*/
+        //avatar.rotateY(skeleton[skeleton.length-1] - avatarRotation);
+        //avatarRotation = skeleton[skeleton.length-1];
     }
 
     function sphereGenerator(width, color) {
@@ -789,8 +807,7 @@
     }
 
     function extractData(){
-        var skeleton = saveSkeleton();
-        var res = {objId:posObject,expId:idExperience,avatarRot:avatarRotation,rArmRotX:rArmRotX,rArmRotZ:rArmRotZ,lArmRotX:lArmRotX,lArmRotZ:lArmRotZ,bodyRot:bodyRot,distance:posScreen.x-avatar.position.x, skeleton:skeleton};
+        var res = {objId:posObject,expId:idExperience,avatarRot:avatarRotation,rArmRotX:rArmRotX,rArmRotZ:rArmRotZ,lArmRotX:lArmRotX,lArmRotZ:lArmRotZ,bodyRot:bodyRot,distance:posScreen.x-avatar.position.x};
         return res;
     }
 
@@ -799,6 +816,8 @@
 <script type="text/javascript">
     var posObject = 0;
     $(document).ready(function () {
+
+        //Affichage des objets
         $('.objet:first').addClass('display');
 
         $(".fa-chevron-circle-right").on('touchstart', function(){
@@ -807,37 +826,12 @@
                 data[posObject] = extractData();
                 if(posObject<nbObjects-1) {
                     posObject++;
-                    if (data[posObject] == undefined) {
-                        resetBones();
-                    }
-                    else {
-                        avatar.position.setX(posScreen.x - data[posObject].distance);
-                        takePose(data[posObject].skeleton);
-                        updateTargets();
-                    }
+                    resetBones();
                     $('.display').next('.objet').addClass('display');
                     $('.display').prev('.display').removeClass('display');
                 }
                 else{
-                    alert('FINI  !!! ');
-                }
-            }
-        });
 
-        $(".fa-chevron-circle-left").on('touchstart', function(){
-            var r = confirm("Voulez-vous vraiment revenir à l'objet précédent ?");
-            if (r == true) {
-                data[posObject] = extractData();
-                if(posObject>0) {
-                    posObject--;
-                    avatar.position.setX(posScreen.x - data[posObject].distance);
-                    takePose(data[posObject].skeleton);
-                    updateTargets();
-                    $('.display').prev('.objet').addClass('display');
-                    $('.display').next('.display').removeClass('display');
-                }
-                else{
-                    alert('PAS D\'OBJET !!! ');
                 }
             }
         });
