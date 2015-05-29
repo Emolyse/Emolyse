@@ -25,6 +25,7 @@
         }
 
         #console {
+            /*display: none;*/
             position: fixed;
             background-color: #ffffff;
             color: #000000;
@@ -42,8 +43,6 @@
             width: 15%;
             top: 23%;
             left: 76%;
-            -webkit-perspective: 198px;
-            perspective: 198px;
         }
 
         .objet {
@@ -169,7 +168,9 @@
 
     var clock = new THREE.Clock();
     var offsetWidth=0,offsetHeight=0;
-    var mouseMoving = false;
+
+    var synchroneArm = true;
+
     init();
 
     function init() {
@@ -178,7 +179,7 @@
         scene = new THREE.Scene();
 
         var axisHelper = new THREE.AxisHelper(100);
-        scene.add(axisHelper);
+//        scene.add(axisHelper);
         /***************
          *    CAMERA   *
          **************/
@@ -215,20 +216,13 @@
          *   12 : bras droit
          *   13: bras gauche
          */
-        loadAvatar("Homme/male_caucasian.dae", function () {
+        loadAvatar("Femme/avatar_femme.dae", function () {
             avatar.updateMatrixWorld(true);
             targetList = getTargetList();
             $(document).on('touchstart', onCanvasMouseDown);
             $("#resetButton").on('touchstart', resetBones);
-            var loaderObject = new THREE.ColladaLoader();
-            var screen;
-            loaderObject.load("3D/dae/meubles/screen.dae", function (collada) {
-                scene.add(collada.scene);
-                console.log(scene);
-                screen = scene.children[7];
-                screen.position.set(posScreen.x, posScreen.y, posScreen.z);
-                screen.scale.set(1.0,0.75,0.75);
-                screen.rotateY(THREE.Math.degToRad(-80));
+            loadScreen(function(){
+                //C EST ICI !!!!!!!! LE LOADER
             });
         });
 
@@ -351,6 +345,18 @@
         });
     }
 
+    function loadScreen(callback){
+        var loaderObject = new THREE.ColladaLoader();
+        var screen;
+        loaderObject.load("3D/dae/meubles/screen.dae", function (collada) {
+            screen = collada.scene;
+            scene.add(screen);
+            screen.position.set(posScreen.x, posScreen.y, posScreen.z);
+            screen.scale.set(1.0,0.75,0.75);
+            screen.rotateY(THREE.Math.degToRad(-80));
+            callback();
+        });
+    }
 
     /*******************************************************
      * @description Couch de dialogue avatar/touchInterface
@@ -360,7 +366,7 @@
         avatar.updateMatrixWorld(true);
         var res = [];
         for (var i = 0; i < idBonesTargeted.length; i++) {
-            var target = sphereGenerator(20, "#01B0F0");
+            var target = sphereGenerator(15, "#01B0F0");
             var pos = avatar.skeleton.bones[idBonesTargeted[i]].getWorldPosition();
             target.position.set(pos.x, pos.y, pos.z);
             target.name = avatar.skeleton.bones[idBonesTargeted[i]].name;
@@ -368,7 +374,7 @@
             res.push(target);
         }
         //On créé la cible de rotation de l'avatar
-        var avatarTarget = sphereGenerator(20, "#01B0F0");
+        var avatarTarget = sphereGenerator(15, "#01B0F0");
         avatarTarget.position.set(0, -80, 0);
         avatarTarget.name = 'avatarRot';
         scene.add(avatarTarget);
@@ -409,7 +415,6 @@
         $("#container").off();
         $(document).off('touchend');
         if (intersects.length > 0) {
-            loadConsole(avatarRotation);
         } else {
             var mousePosUp = mouseToWorld(evt);
             var long = mousePosUp.x - mousePosDown.x; // long est la longueur de déplacement du touch
@@ -433,46 +438,100 @@
     function onContainerMouseMove(evt) {
         evt.preventDefault();
         evt = evt.originalEvent.changedTouches[0];
-        var bone, angle;
+
+        var name = intersects[0].object.name;
+        if(synchroneArm && (name == 'rHand' || name == 'lHand')) {
+            if(name == 'rHand'){
+                loadConsole()
+                applyRotation('rHand', evt, function (angle) {
+                    applyRotation('lHand', evt, updateTargets,angle);
+                });
+            } else {
+                applyRotation('lHand', evt, function (angle) {
+                    applyRotation('rHand', evt, updateTargets,angle);
+                });
+            }
+        } else {
+            applyRotation(name, evt, updateTargets);
+        }
+
+    }
+
+    function applyRotation(name,evt,callback, angle){
+        var bone, res = 0;
         var tmpMousePosMove = mouseToWorld(evt);
-        switch (intersects[0].object.name) {
+        var first = false;
+        if(angle === undefined && synchroneArm) {
+            first = true;
+        }
+        var minRotXArm = THREE.Math.degToRad(-55), maxRotXArm = THREE.Math.degToRad(135);
+        var minRotZArm = 0, maxRotZArm = THREE.Math.degToRad(100);
+        var minRotBody = THREE.Math.degToRad(-30), maxRotBody = THREE.Math.degToRad(90);
+
+        switch (name) {
             case 'rHand':
                 bone = avatar.skeleton.bones[12];
-                angle = getAngle(bone.getWorldPosition(), mousePosMove, tmpMousePosMove);
-                mousePosMove = mouseToWorld(evt);
+                if(first) {
+                    res = angle;
+                    angle = getAngle(bone.getWorldPosition(), mousePosMove, tmpMousePosMove);
+                    mousePosMove = mouseToWorld(evt);
+                    loadConsole("rHand First : "+rArmRotX);
+                }
+                if(!synchroneArm) {
+                    angle = getAngle(bone.getWorldPosition(), mousePosMove, tmpMousePosMove);
+                }
+
                 if (angle) {
-                    if (Math.abs(avatarRotation) <= 0.8) {
-                        bone.rotateX(angle);
-                        rArmRotX+=angle;
-                    } else if (Math.abs(avatarRotation) >= Math.PI - 0.8) {
-                        bone.rotateX(-angle);
-                        rArmRotX-=angle;
-                    } else if (avatarRotation < 0) {
-                        bone.rotateZ(angle);
-                        rArmRotZ+=angle;
-                    } else {
-                        bone.rotateZ(-angle);
-                        rArmRotZ-=angle;
+                    if (Math.abs(avatarRotation) <= 0.8 || Math.abs(avatarRotation) >= Math.PI - 0.8) {//On rotate autour de l'axe des épaules
+                        if(Math.abs(avatarRotation) > 0.8){//l'avatar est dos à l'objet -> on inverse la rotation
+                            angle = -angle;
+                        }
+                        if(rArmRotX+angle<maxRotXArm && rArmRotX+angle>minRotXArm) {//on vérifie l'angle de rotation
+                            //on applique la rotation
+                            bone.rotateX(angle);
+                            rArmRotX += angle;
+                        }
+                    } else {//On rotate de manière à écarter les bras
+                        res = -res;
+                        if(avatarRotation>=0){//l'avatar est de dos par rapport à l'utilisateur -> on inverse la rotation
+                            angle = -angle;
+                        }
+                        if(rArmRotZ+angle>-maxRotZArm && rArmRotZ+angle<=minRotZArm) {
+                            bone.rotateZ(angle);
+                            rArmRotZ += angle;
+                        }
                     }
                 }
                 break;
             case 'lHand':
                 bone = avatar.skeleton.bones[13];
-                angle = getAngle(bone.getWorldPosition(), mousePosMove, tmpMousePosMove);
-                mousePosMove = mouseToWorld(evt);
-                if (angle) {
-                    if (Math.abs(avatarRotation) <= 0.8) {
+                if(angle === undefined) {
+                    res = angle;
+                    angle = getAngle(bone.getWorldPosition(), mousePosMove, tmpMousePosMove);
+                    mousePosMove = mouseToWorld(evt);
+                    loadConsole("lHand First : "+lArmRotX);
+                }
+                if(!synchroneArm) {
+                    angle = getAngle(bone.getWorldPosition(), mousePosMove, tmpMousePosMove);
+                }
+
+                if (Math.abs(avatarRotation) <= 0.8 || Math.abs(avatarRotation) >= Math.PI - 0.8) {//On rotate autour de l'axe des épaules
+                    if(Math.abs(avatarRotation) > 0.8){//l'avatar est dos à l'objet -> on inverse la rotation
+                        angle = -angle;
+                    }
+                    if(lArmRotX+angle<maxRotXArm && lArmRotX+angle>minRotXArm) {//on vérifie l'angle de rotation
+                        //on applique la rotation
                         bone.rotateX(angle);
-                        lArmRotX+=angle;
-                    } else if (Math.abs(avatarRotation) >= Math.PI - 0.8) {
-                        bone.rotateX(-angle);
-                        lArmRotX-=angle;
-                    } else if (avatarRotation < 0) {
+                        lArmRotX += angle;
+                    }
+                } else {//On rotate de manière à écarter les bras
+                    res = -res;
+                    if(avatarRotation>=0){//l'avatar est de dos par rapport à l'utilisateur -> on inverse la rotation
+                        angle = -angle;
+                    }
+                    if(lArmRotZ+angle<maxRotZArm && lArmRotZ+angle>=minRotZArm) {
                         bone.rotateZ(angle);
-                        lArmRotZ+=angle;
-                    } else {
-                        bone.rotateZ(-angle);
-                        lArmRotZ-=angle;
+                        lArmRotZ += angle;
                     }
                 }
                 break;
@@ -480,14 +539,15 @@
                 bone = avatar.skeleton.bones[3];
                 angle = getAngle(bone.getWorldPosition(), mousePosMove, tmpMousePosMove);
                 mousePosMove = mouseToWorld(evt);
-                if (angle)
-                    if (Math.abs(avatarRotation) > Math.PI/2) {
+                if (angle) {
+                    if (Math.abs(avatarRotation) <= Math.PI / 2) {
+                        angle = -angle;
+                    }
+                    if (bodyRot + angle < maxRotBody && bodyRot + angle > minRotBody) {
                         bone.rotateX(angle);
                         bodyRot += angle;
-                    } else {
-                        bone.rotateX(-angle);
-                        bodyRot -= angle;
                     }
+                }
                 break;
             case 'avatarRot':
                 var v1 = mousePosMove.clone().normalize();
@@ -502,7 +562,9 @@
                     avatarRotation = 2 * Math.PI + avatarRotation;
                 break;
         }
-        updateTargets();
+        if(first)
+            callback(res);
+        else callback();
     }
 
     function getAngle(origin, v1, v2) {
@@ -566,6 +628,7 @@
             currentFrame = 0;
 
             takePose(skeleton);
+            updateTargets();
             avatar.updateMatrixWorld();
         }
     }
@@ -593,7 +656,6 @@
             res.push(avatar.skeleton.bones[i].rotation.clone());
         }
         res.push(avatarRotation);
-        loadConsole(res[res.length-1]);
         return res;
     }
 
@@ -602,6 +664,10 @@
         avatar.rotateY(-avatarRotation);
         avatar.position.setX(0);
         avatarRotation = 0;
+        rArmRotX = 0; rArmRotZ = 0;
+        lArmRotX = 0; lArmRotZ = 0;
+        bodyRot = 0;
+        updateTargets();
     }
     function takePose(skeleton){
         for(var i=0;i<avatar.skeleton.bones.length;i++){
@@ -609,12 +675,11 @@
         }
         avatar.rotateY(skeleton[skeleton.length-1] - avatarRotation);
         avatarRotation = skeleton[skeleton.length-1];
-        updateTargets();
     }
 
     function sphereGenerator(width, color) {
-        var planeGeometry = new THREE.BoxGeometry(width+10, width, width, 3, 3);
-        var material = new THREE.MeshPhongMaterial({color: color, visible: false});
+        var planeGeometry = new THREE.SphereGeometry(width, 100, 100);
+        var material = new THREE.MeshPhongMaterial({color: color, visible: true});
 
         return new THREE.Mesh(planeGeometry, material);
     }
@@ -644,6 +709,7 @@
                     else {
                         avatar.position.setX(posScreen.x - data[posObject].distance);
                         takePose(data[posObject].skeleton);
+                        updateTargets();
                     }
                     $('.display').next('.objet').addClass('display');
                     $('.display').prev('.display').removeClass('display');
@@ -662,6 +728,7 @@
                     posObject--;
                     avatar.position.setX(posScreen.x - data[posObject].distance);
                     takePose(data[posObject].skeleton);
+                    updateTargets();
                     $('.display').prev('.objet').addClass('display');
                     $('.display').next('.display').removeClass('display');
                 }
