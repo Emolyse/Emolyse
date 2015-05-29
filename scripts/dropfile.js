@@ -10,7 +10,6 @@
             $('.dropfile').bind({
                 dragenter : function(e){
                     e.preventDefault();
-                    console.log('toto');
                 },
                 dragover : function(e){
                     e.preventDefault();
