@@ -29,7 +29,6 @@ $idExperience = $_GET['id'];
 ?>
 
 <section class="ajout-experience">
-<!--    <form action="#" id="formulaire-experience">-->
         <div class="params1">
             <input type="text" name="nom" id="champs-nom-experience" onkeyup="updateExperience('nom')" value="<?php if($resultatExperience['nom'] != ''){echo $resultatExperience['nom'];}else{ echo('');}; ?>"/>
             <div id="btn-update-lang">
@@ -40,7 +39,6 @@ $idExperience = $_GET['id'];
                         echo "<img src='".$resultatFlag['lienDrapeau']."'  id='current_flag_img'/>";
                     }
                 ?>
-
             </div>
 
             <div id="langueAddExp">
@@ -61,6 +59,7 @@ $idExperience = $_GET['id'];
         </div>
         <div class="objet">
             <h3><?php if(OBJETS != ''){echo OBJETS;}else{ echo('OBJETS');}; ?></h3><input type="checkbox" name="random" onchange="updateExperience('random')" class="randomCheckbox" <?php if($resultatExperience['random'] == 1){echo "checked='checked'";}else{ echo('');}; ?>/> <?php if(AFFICHAGE_ALEATOIRE_OBJETS != ''){echo AFFICHAGE_ALEATOIRE_OBJETS;}else{ echo('AFFICHAGE_ALEATOIRE_OBJETS');}; ?>
+            <input type="checkbox" name="syncroBras" onchange="updateExperience('syncroBras')" class="syncroBrasCheckbox" <?php if($resultatExperience['syncroBras'] == 1){echo "checked='checked'";}else{ echo('');}; ?>/> <?php if(AFFICHAGE_SYNCRO_BRAS != ''){echo AFFICHAGE_SYNCRO_BRAS;}else{ echo('AFFICHAGE_SYNCRO_BRAS');}; ?>
             <div class="block-objets dropFile">
                 <ul class="liste-objets" id="sortable">
                     <?php
@@ -100,7 +99,7 @@ $idExperience = $_GET['id'];
             </div>
         </div>
         <input type="submit" id="btn-add-experience" style="visibility: hidden" name="add-experience" value="<?php if(AJOUTER != ''){echo AJOUTER;}else{ echo('AJOUTER');}; ?>"/>
-<!--    </form>-->
+
     <!--POP-UP AU CLIC SUR "CONSIGNE"-->
     <div class="pop-up-consigne">
         <i class="fa fa-times-circle-o close"></i>
@@ -209,6 +208,13 @@ $idExperience = $_GET['id'];
     {
         if(element == 'random'){
             if($('.randomCheckbox').prop('checked')){
+                value = 1;
+            }else{
+                value = 0;
+            }
+        }
+        if(element == 'syncroBras'){
+            if($('.syncroBrasCheckbox').prop('checked')){
                 value = 1;
             }else{
                 value = 0;

@@ -198,7 +198,6 @@
     }
     ?>
 
-
     <?php
     // Récupération de l'environnement
     if(isset($_GET['experience'])){
@@ -213,6 +212,19 @@
             while(($resultatEnv = $resultatsEnv->fetch_array())){
                 $lienEnvironnement = $resultatEnv['lienEnvironnement'];
             }
+        }
+    }
+
+    $experience = $_GET['experience'];
+    $synchroneArm = false;
+    $req = "SELECT syncroBras FROM experience WHERE idExperience=".$experience."";
+    $res = $base->query($req);
+
+    while(($resultatReq = $res->fetch_array())){
+        if($resultatReq['syncroBras'] == 0){
+            $synchroneArm = false;
+        }elseif($resultatReq['syncroBras'] == 1){
+            $synchroneArm = true;
         }
     }
     ?>
@@ -258,7 +270,8 @@
     var clock = new THREE.Clock();
     var offsetWidth=0,offsetHeight=0;
 
-    var synchroneArm = false;
+    var synchroneArm = Boolean(<?php echo $synchroneArm ?>);
+    console.log(synchroneArm);
 
     init();
 
