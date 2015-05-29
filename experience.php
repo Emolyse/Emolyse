@@ -25,7 +25,7 @@
         }
 
         #console {
-            /*display: none;*/
+            display: none;
             position: fixed;
             background-color: #ffffff;
             color: #000000;
@@ -169,7 +169,7 @@
     var clock = new THREE.Clock();
     var offsetWidth=0,offsetHeight=0;
 
-    var synchroneArm = true;
+    var synchroneArm = false;
 
     init();
 
@@ -479,6 +479,7 @@
                 }
                 if(!synchroneArm) {
                     angle = getAngle(bone.getWorldPosition(), mousePosMove, tmpMousePosMove);
+                    mousePosMove = mouseToWorld(evt);
                 }
 
                 if (angle) {
@@ -505,13 +506,14 @@
                 break;
             case 'lHand':
                 bone = avatar.skeleton.bones[13];
-                if(angle === undefined) {
+                if(first) {
                     angle = getAngle(bone.getWorldPosition(), mousePosMove, tmpMousePosMove);
                     res = angle;
                     mousePosMove = mouseToWorld(evt);
                 }
                 if(!synchroneArm) {
                     angle = getAngle(bone.getWorldPosition(), mousePosMove, tmpMousePosMove);
+                    mousePosMove = mouseToWorld(evt);
                 }
 
                 if (Math.abs(avatarRotation) <= 0.8 || Math.abs(avatarRotation) >= Math.PI - 0.8) {//On rotate autour de l'axe des épaules
