@@ -25,7 +25,7 @@
         }
 
         #console {
-            /*display: none;*/
+            display: none;
             position: fixed;
             background-color: #ffffff;
             color: #000000;
@@ -258,7 +258,7 @@
     var clock = new THREE.Clock();
     var offsetWidth=0,offsetHeight=0;
 
-    var synchroneArm = true;
+    var synchroneArm = false;
 
     init();
 
@@ -529,9 +529,10 @@
         evt = evt.originalEvent.changedTouches[0];
 
         var name = intersects[0].object.name;
+        //si on synchronise et qu'on a ciblé un bras
         if(synchroneArm && (name == 'rHand' || name == 'lHand')) {
+            //on applique d'abord la rotation au bras ciblé et on l'applique ensuite à l'autre bras grace a l'angle résultant
             if(name == 'rHand'){
-                loadConsole()
                 applyRotation('rHand', evt, function (angle) {
                     applyRotation('lHand', evt, updateTargets,angle);
                 });
@@ -540,7 +541,7 @@
                     applyRotation('rHand', evt, updateTargets,angle);
                 });
             }
-        } else {
+        } else {//dans tous les autres cas on applique une rotation unique
             applyRotation(name, evt, updateTargets);
         }
 
@@ -550,7 +551,7 @@
         var bone, res = 0;
         var tmpMousePosMove = mouseToWorld(evt);
         var first = false;
-        if(angle === undefined && synchroneArm) {
+        if(angle == undefined && synchroneArm) {
             first = true;
         }
         var minRotXArm = THREE.Math.degToRad(-55), maxRotXArm = THREE.Math.degToRad(135);
@@ -561,13 +562,13 @@
             case 'rHand':
                 bone = avatar.skeleton.bones[12];
                 if(first) {
-                    res = angle;
                     angle = getAngle(bone.getWorldPosition(), mousePosMove, tmpMousePosMove);
+                    res = angle;
                     mousePosMove = mouseToWorld(evt);
-                    loadConsole("rHand First : "+rArmRotX);
                 }
                 if(!synchroneArm) {
                     angle = getAngle(bone.getWorldPosition(), mousePosMove, tmpMousePosMove);
+                    mousePosMove = mouseToWorld(evt);
                 }
 
                 if (angle) {
@@ -581,7 +582,7 @@
                             rArmRotX += angle;
                         }
                     } else {//On rotate de manière à écarter les bras
-                        res = -res;
+                        res = -res;//on inverse l'angle de synchronisé pour l'autre bras
                         if(avatarRotation>=0){//l'avatar est de dos par rapport à l'utilisateur -> on inverse la rotation
                             angle = -angle;
                         }
@@ -594,14 +595,14 @@
                 break;
             case 'lHand':
                 bone = avatar.skeleton.bones[13];
-                if(angle === undefined) {
-                    res = angle;
+                if(first) {
                     angle = getAngle(bone.getWorldPosition(), mousePosMove, tmpMousePosMove);
+                    res = angle;
                     mousePosMove = mouseToWorld(evt);
-                    loadConsole("lHand First : "+lArmRotX);
                 }
                 if(!synchroneArm) {
                     angle = getAngle(bone.getWorldPosition(), mousePosMove, tmpMousePosMove);
+                    mousePosMove = mouseToWorld(evt);
                 }
 
                 if (Math.abs(avatarRotation) <= 0.8 || Math.abs(avatarRotation) >= Math.PI - 0.8) {//On rotate autour de l'axe des épaules
@@ -614,7 +615,7 @@
                         lArmRotX += angle;
                     }
                 } else {//On rotate de manière à écarter les bras
-                    res = -res;
+                    res = -res;//on inverse l'angle de synchronisé pour l'autre bras
                     if(avatarRotation>=0){//l'avatar est de dos par rapport à l'utilisateur -> on inverse la rotation
                         angle = -angle;
                     }
@@ -651,9 +652,10 @@
                     avatarRotation = 2 * Math.PI + avatarRotation;
                 break;
         }
-        if(first)
+        if(first) {//si on synchronise les bras et qu'on traite le bras ciblé on envoie l'angle pour synchroniser l'autre bras
             callback(res);
-        else callback();
+        }
+        else callback();//sinon on update les target
     }
 
     function getAngle(origin, v1, v2) {
