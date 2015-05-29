@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Jeu 21 Mai 2015 à 18:06
+-- Généré le :  Mer 27 Mai 2015 à 11:57
 -- Version du serveur :  5.6.17
 -- Version de PHP :  5.5.12
 
@@ -61,14 +61,14 @@ CREATE TABLE IF NOT EXISTS `experience` (
   `codeLangue` varchar(2) COLLATE utf8_bin NOT NULL,
   `random` tinyint(1) NOT NULL,
   PRIMARY KEY (`idExperience`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=22 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=21 ;
 
 --
 -- Contenu de la table `experience`
 --
 
 INSERT INTO `experience` (`idExperience`, `idEnvironnement`, `nom`, `consigne`, `nbProduit`, `codeLangue`, `random`) VALUES
-(16, 0, 'Exp en italien', 'changement de la consigne pour exp 16 !!', 2, 'IT', 1),
+(16, 0, 'Expérience en italien', 'changement de la consigne pour exp 16 !!', 2, 'IT', 1),
 (17, 0, 'test', 'test de la consigne en franÃ§ais', 3, 'FR', 0),
 (20, 0, 'test', 'Order bla', 1, 'FR', 0);
 
@@ -160,7 +160,7 @@ CREATE TABLE IF NOT EXISTS `participant` (
   `sexe` varchar(45) COLLATE utf8_bin NOT NULL,
   `lienPhoto` varchar(500) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`idParticipant`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=2 ;
 
 --
 -- Contenu de la table `participant`

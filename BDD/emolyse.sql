@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Mer 27 Mai 2015 à 11:57
+-- Généré le :  Ven 29 Mai 2015 à 08:40
 -- Version du serveur :  5.6.17
 -- Version de PHP :  5.5.12
 
@@ -44,7 +44,15 @@ CREATE TABLE IF NOT EXISTS `environnement` (
   `nom` varchar(45) COLLATE utf8_bin NOT NULL,
   `lienEnvironnement` varchar(500) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`idEnvironnement`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=3 ;
+
+--
+-- Contenu de la table `environnement`
+--
+
+INSERT INTO `environnement` (`idEnvironnement`, `nom`, `lienEnvironnement`) VALUES
+(1, 'salon', 'img/salon_2.jpg'),
+(2, 'Salle d''attente', 'img/salle_dattente.jpg');
 
 -- --------------------------------------------------------
 
@@ -61,16 +69,17 @@ CREATE TABLE IF NOT EXISTS `experience` (
   `codeLangue` varchar(2) COLLATE utf8_bin NOT NULL,
   `random` tinyint(1) NOT NULL,
   PRIMARY KEY (`idExperience`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=21 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=33 ;
 
 --
 -- Contenu de la table `experience`
 --
 
 INSERT INTO `experience` (`idExperience`, `idEnvironnement`, `nom`, `consigne`, `nbProduit`, `codeLangue`, `random`) VALUES
-(16, 0, 'Expérience en italien', 'changement de la consigne pour exp 16 !!', 2, 'IT', 1),
-(17, 0, 'test', 'test de la consigne en franÃ§ais', 3, 'FR', 0),
-(20, 0, 'test', 'Order bla', 1, 'FR', 0);
+(16, 2, 'Expérience en italien', 'changement de la consigne pour exp 16 !!', 2, 'IT', 1),
+(17, 1, 'test', 'test de la consigne en franÃ§ais', 3, 'FR', 0),
+(20, 1, 'test drat', 'Order bla', 4, 'FR', 1),
+(22, 1, 'test position', '', 2, 'EN', 1);
 
 -- --------------------------------------------------------
 
@@ -143,8 +152,7 @@ CREATE TABLE IF NOT EXISTS `langue` (
 
 INSERT INTO `langue` (`codeLangue`, `nom`, `lienDrapeau`) VALUES
 ('EN', 'Anglais', 'images/drapeau-anglais.png'),
-('FR', 'Francais', '../Emolyse/images/drapeau-francais.png'),
-('IT', 'Italien', 'images/drapeau-italien.png');
+('FR', 'Francais', '../Emolyse/images/drapeau-francais.png');
 
 -- --------------------------------------------------------
 
@@ -160,14 +168,17 @@ CREATE TABLE IF NOT EXISTS `participant` (
   `sexe` varchar(45) COLLATE utf8_bin NOT NULL,
   `lienPhoto` varchar(500) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`idParticipant`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=7 ;
 
 --
 -- Contenu de la table `participant`
 --
 
 INSERT INTO `participant` (`idParticipant`, `nom`, `prenom`, `naissance`, `sexe`, `lienPhoto`) VALUES
-(1, 'Arnaud', 'Alizee', '1992-08-31', 'F', '');
+(1, 'ARNAUD', 'Alizee', '1992-08-31', 'F', ''),
+(2, 'DROUET', 'Rémy', '1992-01-12', 'H', ''),
+(3, 'DAITA', 'Jordan', '1993-02-15', 'H', ''),
+(6, 'sujet-6', '', '1947-06-03', 'F', '');
 
 -- --------------------------------------------------------
 
@@ -182,7 +193,7 @@ CREATE TABLE IF NOT EXISTS `produit` (
   `nom` varchar(45) COLLATE utf8_bin NOT NULL,
   `lienPhoto` varchar(255) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`idProduit`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=132 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=172 ;
 
 --
 -- Contenu de la table `produit`
@@ -192,10 +203,15 @@ INSERT INTO `produit` (`idProduit`, `idExperience`, `position`, `nom`, `lienPhot
 (25, 8, 0, '05', 'images/imgExperience/05.jpg'),
 (60, 16, 4, '13', 'images/imgExperience/13.jpg'),
 (75, 16, 2, '39', 'images/imgExperience/39.jpg'),
-(119, 17, 3, '05', 'images/imgExperience/05.jpg'),
-(124, 17, 0, '03', 'images/imgExperience/03.jpg'),
-(126, 17, 0, '06', 'images/imgExperience/06.jpg'),
-(131, 20, 0, '05', 'images/imgExperience/05.jpg');
+(155, 20, 3, '28', 'images/imgExperience/28.jpg'),
+(156, 20, 1, '29', 'images/imgExperience/29.jpg'),
+(158, 20, 4, '18', 'images/imgExperience/18.jpg'),
+(161, 17, 1, 'test', 'images/imgExperience/test.jpg'),
+(162, 17, 2, 'wallpaper-2124106', 'images/imgExperience/wallpaper-2124106.jpg'),
+(163, 17, 3, 'wallpaper-1475125', 'images/imgExperience/wallpaper-1475125.jpg'),
+(165, 22, 2, 'wallpaper-2112045', 'images/imgExperience/wallpaper-2112045.jpg'),
+(170, 22, 7, 'wallpaper-3027963', 'images/imgExperience/wallpaper-3027963.jpg'),
+(171, 20, 5, '23', 'images/imgExperience/23.jpg');
 
 -- --------------------------------------------------------
 
@@ -266,7 +282,7 @@ INSERT INTO `traduction` (`codeLangue`, `codeIdentifiant`, `traduction`) VALUES
 ('EN', 'OBJETS', 'Objects'),
 ('EN', 'PRENOM', 'Firstname'),
 ('EN', 'SEXE', 'Sex'),
-('EN', 'TEXT_CONSIGNE', 'Une consigne en anglais yeah !'),
+('EN', 'TEXT_CONSIGNE', 'Une consigne en anglais'),
 ('FR', 'AFFICHAGE_ALEATOIRE_OBJETS', 'Aléatoire'),
 ('FR', 'AGE', 'Age'),
 ('FR', 'AJOUTER', 'Ajouter'),
@@ -278,7 +294,7 @@ INSERT INTO `traduction` (`codeLangue`, `codeIdentifiant`, `traduction`) VALUES
 ('FR', 'BTN_PARTICIPANT_HOME', 'Participant'),
 ('FR', 'CHAMPS_OBLIGATOIRE', 'Champs Obligatoires'),
 ('FR', 'CHOISIR_LA_LANGUE', 'Choisir la langue'),
-('FR', 'CONSIGNE', 'Consigne en francais'),
+('FR', 'CONSIGNE', 'Consigne'),
 ('FR', 'DEMARRER', 'Démarrer'),
 ('FR', 'EDITER_LA_CONSIGNE', 'Editer la consigne'),
 ('FR', 'ENVIRONNEMENT', 'Environnement'),
@@ -299,40 +315,7 @@ INSERT INTO `traduction` (`codeLangue`, `codeIdentifiant`, `traduction`) VALUES
 ('FR', 'OBJETS', 'Objets'),
 ('FR', 'PRENOM', 'Prénom'),
 ('FR', 'SEXE', 'Sexe'),
-('FR', 'TEXT_CONSIGNE', 'Consigne en fran?ais                          '),
-('IT', 'AFFICHAGE_ALEATOIRE_OBJETS', ''),
-('IT', 'AGE', ''),
-('IT', 'AJOUTER', 'Add'),
-('IT', 'ANGLAIS', 'Inglese'),
-('IT', 'BTN_EXPERIENCES', ''),
-('IT', 'BTN_EXPERIMENTATEUR_HOME', ''),
-('IT', 'BTN_PARAMETRES', ''),
-('IT', 'BTN_PARTICIPANTS', ''),
-('IT', 'BTN_PARTICIPANT_HOME', ''),
-('IT', 'CHAMPS_OBLIGATOIRE', ''),
-('IT', 'CHOISIR_LA_LANGUE', ''),
-('IT', 'CONSIGNE', ''),
-('IT', 'DEMARRER', ''),
-('IT', 'EDITER_LA_CONSIGNE', ''),
-('IT', 'ENVIRONNEMENT', ''),
-('IT', 'EXPERIENCE', ''),
-('IT', 'EXPERIENCE_TERMINEE', ''),
-('IT', 'FEMME', ''),
-('IT', 'FINALISATION', ''),
-('IT', 'FINALISER', ''),
-('IT', 'FRANCAIS', ''),
-('IT', 'HOMME', ''),
-('IT', 'ID', ''),
-('IT', 'IDENTIFIANT', ''),
-('IT', 'LANGUE', ''),
-('IT', 'MODIFIER', ''),
-('IT', 'NEE_LE', ''),
-('IT', 'NOM', ''),
-('IT', 'NOUVELLE_EXPERIENCE', ''),
-('IT', 'OBJETS', ''),
-('IT', 'PRENOM', ''),
-('IT', 'SEXE', ''),
-('IT', 'TEXT_CONSIGNE', 'consigne en italien !');
+('FR', 'TEXT_CONSIGNE', 'Consigne en francais pour test             ');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
