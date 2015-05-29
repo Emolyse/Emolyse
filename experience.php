@@ -40,26 +40,18 @@
 
         #containerObjet {
             position: absolute;
-            /*height: 39%;*/
             width: 15%;
             top: 23%;
             left: 76%;
             -webkit-perspective: 198px;
             perspective: 198px;
-            /*-webkit-transform: rotate(-90deg);*/
-            /*transform: rotate(-90deg);*/
         }
 
         .objet {
             display: none;
-            /*padding: 12% 20%;*/
             width: 100%;
-            /*height: 81%;*/
             position: absolute;
-            /*-webkit-transform: rotateX(12deg);*/
-            /*transform: rotateX(12deg);*/
             color: red;
-            /*transform: perspective( 600px ) rotateY( -45deg );*/
         }
 
         #resetButton {
@@ -92,7 +84,6 @@
 <body>
 
 <i class="fa fa-refresh icon-refresh" id="resetButton"></i>
-<!--<input id="resetButton" type="reset" value="Réinitialiser">-->
 <div id="console"></div>
 <div id="containerObjet">
     <?php
@@ -106,6 +97,25 @@
             $lienPhoto = $resultat['lienPhoto'];
             $idProduit = $resultat['idProduit'];
             echo "<img class='objet' src='".$lienPhoto."' id='produit-".$idProduit."' />";
+        }
+    }
+    ?>
+
+
+    <?php
+    // Récupération de l'environnement
+    if(isset($_GET['experience'])){
+        $lienEnvironnement = "img/salon_2.jpg";
+        $experience = $_GET['experience'];
+        $requeteExp = "SELECT idEnvironnement FROM experience WHERE idExperience=".$experience."";
+        $resultatsExp = $base->query($requeteExp);
+        while(($resultatExp = $resultatsExp->fetch_array())){
+            $idEnvironnement = $resultatExp['idEnvironnement'];
+            $requeteEnv = "SELECT * FROM environnement WHERE idEnvironnement=".$idEnvironnement."";
+            $resultatsEnv = $base->query($requeteEnv);
+            while(($resultatEnv = $resultatsEnv->fetch_array())){
+                $lienEnvironnement = $resultatEnv['lienEnvironnement'];
+            }
         }
     }
     ?>
@@ -216,7 +226,8 @@
         /************************************
          *          Environnement           *
          ************************************/
-        var texture = THREE.ImageUtils.loadTexture('img/grey_space.jpg');
+        var lienEnvironnement = "<?php echo $lienEnvironnement ?>";
+        var texture = THREE.ImageUtils.loadTexture(lienEnvironnement);
         var backgroundMesh = new THREE.Mesh(
                 new THREE.PlaneGeometry(2, 2, 0),
                 new THREE.MeshBasicMaterial({
@@ -262,7 +273,7 @@
         renderer.autoClear = false;
         renderer.antialias=true;
         renderer.clear();
-        //renderer.render( backgroundScene, backgroundCamera);
+        renderer.render( backgroundScene, backgroundCamera);
         renderer.render( scene, camera );
     }
     /*****************************************************************************************

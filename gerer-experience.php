@@ -75,7 +75,6 @@ $idExperience = $_GET['id'];
                         }
                     ?>
                 </ul>
-<!--                <div class="dropFile"></div>-->
                 <div id="manualAdd"></div>
                 <input type="file" style="visibility: hidden;" name="lienPhoto" id="lienPhoto" multiple/>
             </div>
@@ -83,7 +82,21 @@ $idExperience = $_GET['id'];
         <div class="environnement">
             <h3><?php if(ENVIRONNEMENT != ''){echo ENVIRONNEMENT;}else{ echo('ENVIRONNEMENT');}; ?></h3>
             <div class="select-environnement">
-                <button type="button" id="add-env"><i class="fa fa-plus-circle"></i></button>
+                <?php
+                $requeteEnv = "SELECT * FROM environnement";
+                $resultatsEnv = $base->query($requeteEnv);
+                while($resultatEnv = $resultatsEnv->fetch_array()){
+                    echo "<label class='radioEnv'>";
+                    if($resultatEnv['idEnvironnement'] == $resultatExperience['idEnvironnement']){
+                        $checked = "checked";
+                    }else{
+                        $checked = "";
+                    }
+                    echo "<input type='radio' name='idEnvironnement' value='".$resultatEnv['idEnvironnement']."' id='".$resultatEnv['lienEnvironnement']."' class='apercuEnvCheckbox' ".$checked."/>";
+                    echo "<img src='".$resultatEnv['lienEnvironnement']."' class='apercuEnv' />";
+                    echo "</label>";
+                }
+                ?>
             </div>
         </div>
         <input type="submit" id="btn-add-experience" style="visibility: hidden" name="add-experience" value="<?php if(AJOUTER != ''){echo AJOUTER;}else{ echo('AJOUTER');}; ?>"/>
@@ -138,12 +151,18 @@ $idExperience = $_GET['id'];
             $('#langueAddExp').hide();
         });
         // quand on click sur un drapeau au choix dans la div des langues dispos le drapeau derrière change et on change dans la base la valeurs avec la fonction 'updateExperience'
-        $( "input" ).on( "click", function() {
-            var current_flag = $("input:checked").attr("id");
-            var current_flag_value = $("input:checked").attr("name");
+        $( "input.codeLangueCheckbox" ).on( "click", function() {
+            var current_flag = $("input.codeLangueCheckbox:checked").attr("id");
+            var current_flag_value = $("input.codeLangueCheckbox:checked").attr("name");
             updateExperience(current_flag_value);
             $('#current_flag_img').attr('src', current_flag);
         });
+
+        // pour changer d'environnement
+        $( "input.apercuEnvCheckbox" ).on( "click", function() {
+            var current_env_value = $("input.apercuEnvCheckbox:checked").attr("name");
+            updateExperience(current_env_value);
+        })
 
         // suppression d'un produit
         document.oncontextmenu = function() {return false;}; // suppression de l'apparition de la pop-up au clic long
@@ -197,6 +216,9 @@ $idExperience = $_GET['id'];
         }
         if(element == 'codeLangue'){
             value = $(".codeLangueCheckbox:checked").val();
+        }
+        if(element == 'idEnvironnement'){
+            value = $(".apercuEnvCheckbox:checked").val();
         }
         if(element == 'nom' && element != 'codeLangue'){
             value = document.getElementsByName(element).item(0).value;

@@ -115,6 +115,25 @@ label.radioImage > input:checked + img{
     border:2px solid #ffffff;
     border-radius: 3px;
 }
+img.apercuEnv {
+    height: 20%;
+}
+input.apercuEnvCheckbox {
+    position: absolute;
+    visibility: hidden;
+}
+.radioEnv:nth-child(2){
+    margin-left: 10px;
+}
+.select-environnement{
+    margin-left: 30px;
+}
+label.radioEnv > input + img{
+    border: 3px solid transparent;
+}
+label.radioEnv > input:checked + img{
+    border: 3px solid #0087F7;
+}
 #langueAddExp{
     display: none;
     background: #3C3B3B;
@@ -383,7 +402,7 @@ button#add-env {
     margin-bottom: 15px;
 }
 .sexeForm input[type="radio"] {
-    margin-left: 40px;
+    margin-left: 30px;
 }
 .dateNaissForm {
     margin-bottom: 15px;
@@ -393,6 +412,10 @@ button#add-env {
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
+    padding: 5px 0;
+}
+select#select-mois{
+    width: 93px;
 }
 .infos {
     display: inline-block;
@@ -401,11 +424,12 @@ button#add-env {
     font-size: 16px;
     margin-bottom: 5px;
     width: 272px;
-    padding: 5px;
+    padding: 9px;
 }
 .fileForm {
     display: inline-block;
     width: 50%;
+    margin-top: 7px;
 }
 input#finaliser-experience{
     text-decoration: none;
@@ -423,6 +447,11 @@ input#finaliser-experience{
 span.obligatoire {
     font-size: 12px;
     font-style: italic;
+    display: block;
+}
+.infosParticipants {
+    width: 75%;
+    margin: 0 auto;
 }
 .pop-up, .pop-up-consigne{
     display: none;

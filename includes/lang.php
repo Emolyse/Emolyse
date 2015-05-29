@@ -1,7 +1,7 @@
 <?php
 // gestion de la langue de l'application
 if(!isset($_SESSION['lang'])){
-    $_SESSION['lang'] = 'FR';
+    $_SESSION['lang'] = 'EN';
 
     $requete = "SELECT codeIdentifiant, traduction FROM traduction WHERE codeLangue='".$_SESSION['lang']."'";
     $resultats = $base->query($requete);
@@ -26,7 +26,7 @@ if(!isset($_SESSION['lang'])){
             define($resultat['codeIdentifiant'], $resultat['traduction']);
         }
     }else{
-        $requete = "SELECT codeIdentifiant, traduction FROM traduction WHERE codeLangue='FR'";
+        $requete = "SELECT codeIdentifiant, traduction FROM traduction WHERE codeLangue='EN'";
         $resultats = $base->query($requete);
         while($resultat = $resultats->fetch_array())
         {
