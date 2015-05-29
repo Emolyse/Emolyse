@@ -9,6 +9,10 @@ $(function() {
         },
         stop: function( event, ui ) {
             $(ui.item).css({ opacity: 1 });
+            $("#delete").css('background-position', '52px');
+        },
+        over: function( event, ui ) {
+            $("#delete").css('background-position', '0px');
         },
         update : function(event, ui){
             if(this.id == 'delete') {
