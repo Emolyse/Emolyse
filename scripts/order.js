@@ -4,6 +4,12 @@ $(function() {
         tolerance: 'pointer',
         dropOnEmpty: true,
         connectWith: 'ul.sortable',
+        activate: function( event, ui ) {
+            $(ui.item).css({ opacity: 0.5 });
+        },
+        stop: function( event, ui ) {
+            $(ui.item).css({ opacity: 1 });
+        },
         update : function(event, ui){
             if(this.id == 'delete') {
                 var dataid = ui.item.attr("data-id");
@@ -15,7 +21,6 @@ $(function() {
                     +'&idExperience='+escape(idExperience)
                     +'&deleteProduitListe="deleteProduitListe"'
                 )
-
             }
             var pos = 0;
             $(".liste-objets li").each(function(index,element){
