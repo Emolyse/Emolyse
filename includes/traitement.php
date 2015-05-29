@@ -228,3 +228,30 @@ if(isset($_POST['start-experience'])){
     $id = $_POST['experience'];
     header("Location: ../experience.php?experience=".$id."&avatarselect=".$avatarSelection);
 }
+
+if(isset($_GET['deleteProduitListe'])){
+    $idProduit = $_GET['id'];
+    $idExperience = $_GET['idExperience'];
+
+    $requete = "SELECT lienPhoto FROM produit WHERE idProduit='".$idProduit."'";
+    $resultats = $base->query($requete);
+    while(($resultat = $resultats->fetch_array())){
+        unlink("../".$resultat['lienPhoto']);
+    }
+
+    $requete = "DELETE FROM produit WHERE idProduit='".$idProduit."'";
+    $base->query($requete);
+
+    // on compte le nombre de produits dans la base
+    $requeteCountProduit = "SELECT * FROM produit WHERE idExperience=".$idExperience."";
+    $resultatsCountProduit = $base->query($requeteCountProduit);
+
+    $count = 0;
+    while(($resultatsCountProduit->fetch_array())){
+        $count++;
+    }
+
+    // on modifie la ligne de l'experience pour mettre à jour le nombre de produits
+    $requeteUpdateNbProduit = "UPDATE experience SET nbProduit=".$count." WHERE idExperience=".$idExperience."";
+    $base->query($requeteUpdateNbProduit);
+}
