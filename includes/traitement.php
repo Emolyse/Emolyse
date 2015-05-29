@@ -224,6 +224,7 @@ if(isset($_POST['finaliser-experience'])){
 }
 
 if(isset($_POST['start-experience'])){
+    $avatarSelection = $_POST['choixAvatar'];
     $id = $_POST['experience'];
-    header("Location: ../experience.php?experience=".$id);
+    header("Location: ../experience.php?experience=".$id."&avatarselect=".$avatarSelection);
 }

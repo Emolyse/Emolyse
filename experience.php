@@ -120,6 +120,8 @@
     }
     ?>
 
+
+
 </div>
 <div id="icon-env">
     <i class="fa fa-chevron-circle-right icon_env"></i>
@@ -144,6 +146,12 @@
     var nbObjects = <?php echo $nbObjet ?>;
     var idExperience = <?php echo $experience ?>;
 
+    /*
+     Information récupérees du get
+     */
+
+    var choixAvatar = '<?php echo $_GET['avatarselect'] ?>';
+    var urlAvatar;
     var container;
     var data = [];
     var posScreen = new THREE.Vector3(170,120,-150);
@@ -161,6 +169,7 @@
     var clock = new THREE.Clock();
     var offsetWidth=0,offsetHeight=0;
     var mouseMoving = false;
+
     init();
 
     function init() {
@@ -169,7 +178,7 @@
         scene = new THREE.Scene();
 
         var axisHelper = new THREE.AxisHelper(100);
-        //scene.add(axisHelper);
+        scene.add(axisHelper);
         /***************
          *    CAMERA   *
          **************/
@@ -206,7 +215,14 @@
          *   12 : bras droit
          *   13: bras gauche
          */
-        loadAvatar("Femme/avatar_femme.dae", function () {
+        //Url de l'avatar
+        if(choixAvatar == 'man'){
+            urlAvatar = 'Homme/avatar_man.dae';
+        }
+        else{
+            urlAvatar = 'Femme/avatar_woman.dae'
+        }
+        loadAvatar(urlAvatar, function () {
             avatar.updateMatrixWorld(true);
             targetList = getTargetList();
             $(document).on('touchstart', onCanvasMouseDown);
@@ -629,6 +645,8 @@
 <script type="text/javascript">
     var posObject = 0;
     $(document).ready(function () {
+
+        //Affichage des objets
         $('.objet:first').addClass('display');
 
         $(".fa-chevron-circle-right").on('touchstart', function(){

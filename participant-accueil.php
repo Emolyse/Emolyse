@@ -3,6 +3,7 @@ include('includes/header.php');
 include('includes/en-tete.php');
 ?>
 
+
 <section class="breadcrumb">
     <ul>
         <li><a href="index.php"><img src="images/home.png" alt="Revenir à l'accueil de l'application" id="pictoHome"/></a></li>
@@ -11,7 +12,7 @@ include('includes/en-tete.php');
 </section>
 
 <section class="nouvelle-experience">
-    <div class="avatarFemme"></div>
+    <div id="avatarWoman" onclick="avatarSelected('woman');"><img src="images/imgAvatar/avatar_woman.png" alt="Choix de l'avatar femme" id="avatarW"/></div>
     <div>
         <form action="includes/traitement.php" method="post">
             <select name="experience" id="select-experience">
@@ -25,11 +26,29 @@ include('includes/en-tete.php');
                 }
                 ?>
             </select>
+            <input type="hidden" id="choixAvatarInput" name="choixAvatar" value=""/>
             <input type="submit" id="btn-start-experience" name="start-experience" value="<?php if(DEMARRER != ''){echo DEMARRER;}else{ echo('DEMARRER');}; ?>"/>
         </form>
     </div>
-    <div class="avatarHomme"></div>
+    <div id="avatarMan" onclick="avatarSelected('man');"><img src="images/imgAvatar/avatar_man.png" alt="Choix de l'avatar femme" id="avatarM"/></div>
 </section>
+
+<script>
+    var avatarSelection;
+    function avatarSelected(choix)
+    {
+        avatarSelection = choix;
+        $('input[name="choixAvatar"]').val(avatarSelection);
+        if(avatarSelection == 'woman'){
+            $("#avatarW").attr("src","images/imgAvatar/avatar_woman_selected.png");
+            $("#avatarM").attr("src","images/imgAvatar/avatar_man.png");
+        }
+        else{
+            $("#avatarW").attr("src","images/imgAvatar/avatar_woman.png");
+            $("#avatarM").attr("src","images/imgAvatar/avatar_man_selected.png");
+        }
+    }
+</script>
 
 </body>
 </html>
