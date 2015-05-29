@@ -89,13 +89,23 @@
     if(isset($_GET['experience'])){
         $nbObjet = 0;
         $experience = $_GET['experience'];
-        $requete = "SELECT * FROM produit WHERE idExperience=".$experience." ORDER BY position ASC";
-        $resultats = $base->query($requete);
-        while(($resultat = $resultats->fetch_array())){
-            $nbObjet++;
-            $lienPhoto = $resultat['lienPhoto'];
-            $idProduit = $resultat['idProduit'];
-            echo "<img class='objet' src='".$lienPhoto."' id='produit-".$idProduit."' />";
+
+        // random ?
+        $req = "SELECT random FROM experience WHERE idExperience=".$experience."";
+        $res = $base->query($req);
+        while(($resultatReq = $res->fetch_array())){
+            if($resultatReq['random'] == 0){
+                $requete = "SELECT * FROM produit WHERE idExperience=".$experience." ORDER BY position ASC";
+            }elseif($resultatReq['random'] == 1){
+                $requete = "SELECT * FROM produit WHERE idExperience=".$experience." ORDER BY Rand()";
+            }
+            $resultats = $base->query($requete);
+            while(($resultat = $resultats->fetch_array())){
+                $nbObjet++;
+                $lienPhoto = $resultat['lienPhoto'];
+                $idProduit = $resultat['idProduit'];
+                echo "<img class='objet' src='".$lienPhoto."' id='produit-".$idProduit."' />";
+            }
         }
     }
     ?>
