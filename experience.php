@@ -901,9 +901,9 @@
                 $('.display').prev('.display').removeClass('display');
             }
             else{
-                $('#icon-env').slideToggle(200, function () {
-//                alert("C'est fini maintenant que je que je fasse le screen de fin =D");
-                });
+                manipulable = false;
+                $("#resetButton").slideToggle(200);
+                $('#icon-env').slideToggle(200);
             }
         });
         $(".fa-chevron-circle-right").on('touchstart', function(e){
