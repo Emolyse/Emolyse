@@ -74,13 +74,6 @@ include("includes/connexion.php");
             font-size: 66px;
             padding: 15px;
         }
-        #icon-env{
-            display: block;
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            cursor: pointer;
-        }
         #icon_confirm{
             display: none;
             color: #289148;
@@ -89,6 +82,7 @@ include("includes/connexion.php");
 
         #icon-env{
             position: fixed;
+            display: block;
             bottom: 20px;
             right: 20px;
         }
@@ -205,6 +199,7 @@ include("includes/connexion.php");
             display: inline-block;
             margin : 10% 10% auto 10%;
             padding : 10px;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -884,7 +879,8 @@ include("includes/connexion.php");
 
     var posObject = 0;
     $(document).ready(function () {
-        $("#btn-start").on('touchstart', function () {
+        $("#btn-start").on('touchstart', function (e) {
+            e.preventDefault();
             $('#overlay-instruction').fadeOut(400, function () {
                 $('#overlay-instruction').hide();
                 startExperience();
@@ -895,7 +891,9 @@ include("includes/connexion.php");
         manipulable = true;
         //Affichage des objets
         $('.objet:first').addClass('display');
-        $('#icon_confirm').on('touchstart', function () {
+
+        $('#icon_confirm').on('touchstart', function (e) {
+            e.preventDefault();
             $('.fa-times-circle').addClass('fa-chevron-circle-right').removeClass('fa-times-circle').css('color', '#ffffff');
             $(this).slideToggle();
             manipulable = true;
@@ -907,11 +905,15 @@ include("includes/connexion.php");
                 $('.display').prev('.display').removeClass('display');
             }
             else{
+                manipulable = false;
+                $("#resetButton").slideToggle(200);
+                $('#icon-env').slideToggle(200);
                 <?php $_SESSION['data'] = json_encode(data) ?>
                 window.location.replace(redirect);
             }
         });
-        $(".fa-chevron-circle-right").on('touchstart', function(){
+        $(".fa-chevron-circle-right").on('touchstart', function(e){
+            e.preventDefault();
             $("#icon_confirm").slideToggle(200);
             if($(this).hasClass('fa-times-circle')) {
                 $(this).addClass('fa-chevron-circle-right').removeClass('fa-times-circle').css('color', '#ffffff');
@@ -922,19 +924,6 @@ include("includes/connexion.php");
                 manipulable = false;
             }
         });
-    }
-    function popup(type){
-        switch (type){
-            case 'confirm' :
-                break;
-            case 'finished' :
-                break;
-            case 'instruction' :
-                $.get("includes/popup_instruction.php",function(data){
-                    $("body").append(data);
-                });
-                break;
-        }
     }
 </script>
 
