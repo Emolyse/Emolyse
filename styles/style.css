@@ -334,7 +334,7 @@ input#champs-nom-experience {
     position: relative;
     margin: 16px 0 0 30px;
 }
-ul#sortable {
+ul.sortable {
     margin-top: 10px;
 }
 button#add-env, button#add-objects {
@@ -600,6 +600,23 @@ a.tab.active {
 }
 #lienPhoto{
     cursor: pointer;
+}
+#delete{
+    background-image: url("../images/poubellebis.png");
+    background-position: 52px;
+    height: 70px;
+    width: 50px;
+    position: absolute;
+    right: 60px;
+    top: 26%;
+}
+#delete li {
+    height: 0;
+    width: 0;
+    overflow: hidden;
+}
+#delete:hover{
+    background-position: 0px;
 }
 span.instruction {
     display: block;

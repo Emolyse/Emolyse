@@ -6,6 +6,7 @@
     $source = file_get_contents('php://input');
     $types = Array('image/png', 'image/gif', 'image/jpeg');
 
+//    echo '<pre>', print_r($h['x-file-type'], 1), '</pre>';
     if(!in_array($h['x-file-type'], $types)){
         $o->error = 'Format du fichier non supporté';
     }else{

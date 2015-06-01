@@ -28,7 +28,7 @@ $idExperience = $_GET['id'];
     while(($resultatExperience = $resultatsExperience->fetch_array())){
 ?>
 
-<section class="ajout-experience">
+    <section class="ajout-experience">
         <div class="params1">
             <input type="text" name="nom" id="champs-nom-experience" onkeyup="updateExperience('nom')" value="<?php if($resultatExperience['nom'] != ''){echo $resultatExperience['nom'];}else{ echo('');}; ?>"/>
             <div id="btn-update-lang">
@@ -60,8 +60,11 @@ $idExperience = $_GET['id'];
         <div class="objet">
             <h3><?php if(OBJETS != ''){echo OBJETS;}else{ echo('OBJETS');}; ?></h3><input type="checkbox" name="random" onchange="updateExperience('random')" class="randomCheckbox" <?php if($resultatExperience['random'] == 1){echo "checked='checked'";}else{ echo('');}; ?>/> <?php if(AFFICHAGE_ALEATOIRE_OBJETS != ''){echo AFFICHAGE_ALEATOIRE_OBJETS;}else{ echo('AFFICHAGE_ALEATOIRE_OBJETS');}; ?>
             <input type="checkbox" name="syncroBras" onchange="updateExperience('syncroBras')" class="syncroBrasCheckbox" <?php if($resultatExperience['syncroBras'] == 1){echo "checked='checked'";}else{ echo('');}; ?>/> <?php if(AFFICHAGE_SYNCRO_BRAS != ''){echo AFFICHAGE_SYNCRO_BRAS;}else{ echo('AFFICHAGE_SYNCRO_BRAS');}; ?>
+
+            <ul id="delete" class="sortable"></ul>
+
             <div class="block-objets dropFile">
-                <ul class="liste-objets" id="sortable">
+                <ul class="liste-objets sortable">
                     <?php
                         $requete = "SELECT * FROM produit WHERE idExperience=".$idExperience." ORDER BY position ASC";
                         $resultats = $base->query($requete);
@@ -166,7 +169,7 @@ $idExperience = $_GET['id'];
         // suppression d'un produit
         document.oncontextmenu = function() {return false;}; // suppression de l'apparition de la pop-up au clic long
 
-        var timeoutId = 0;
+        /*var timeoutId = 0;
         $('.liste-objets').on('mousedown','.objets', function(){
             var id = $(this).attr("data-id");
             var idExperience = $('#idExperience').val();
@@ -183,7 +186,7 @@ $idExperience = $_GET['id'];
         }).bind('mouseup mouseleave', function() {
             clearTimeout(timeoutId);
 
-        });
+        });*/
 
         // quand on click sur la croix dans la pop-up de la consigne de l'expérience on ferme celle-ci
         $(".close").click(function() {

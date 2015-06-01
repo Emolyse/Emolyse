@@ -62,18 +62,35 @@ include("includes/connexion.php");
             font-size: 66px;
             padding: 15px;
             left: 20px;
+            transition: all 500ms ease;
+        }
+        .rotate360{
+            -webkit-transform : rotate(360deg);
+            transform : rotate(360deg);
         }
         .icon_env{
-            display: inline-block;
+            display: block;
             color: #fff;
             font-size: 66px;
             padding: 15px;
         }
         #icon-env{
+            display: block;
             position: fixed;
             bottom: 20px;
             right: 20px;
             cursor: pointer;
+        }
+        #icon_confirm{
+            display: none;
+            color: #289148;
+            font-size: 66px;
+        }
+
+        #icon-env{
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
         }
         .display{
             display: block;
@@ -160,6 +177,35 @@ include("includes/connexion.php");
             width: 250px;
         }
 
+        /*OVERLAY INSTRUCTION*/
+        #overlay-instruction{
+            position: fixed;
+            z-index: 9998;
+            width: 70%;
+            height: 70%;
+            opacity: 0.85;
+            background-color: #262526;
+            color: #FFFFFF;
+            padding: 15%;
+        }
+        #overlay-content{
+        }
+        #overlay-content h1{
+            font-size: 3em;
+            text-align: left;
+            border-bottom: solid 1px #FFFFFF;
+        }
+        #overlay-content p{
+            text-align: justify;
+            font-size: 1.4em;
+        }
+        .btn-overlay{
+            border : solid 1px #FFFFFF;
+            font-size: 2em;
+            display: inline-block;
+            margin : 10% 10% auto 10%;
+            padding : 10px;
+        }
     </style>
 </head>
 <body>
@@ -168,7 +214,18 @@ include("includes/connexion.php");
     <p class="txtLoading">Chargement de l'application</p>
     <img src="images/logo.png" alt="" class="logoChargement "/>
 </div>
-
+<div id="overlay-instruction">
+    <div id="overlay-content">
+        <h1>Consigne</h1>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut eu dapibus leo. Nunc non nulla ligula.
+            Ut dignissim ac tellus ut lacinia. Donec nisi lorem, faucibus eget justo a, sodales vulputate erat.
+            Nullam ut sapien facilisis nulla gravida efficitur. Aliquam ex metus, vulputate in lectus eu,
+            pulvinar aliquet ipsum. Mauris luctus libero felis, vitae maximus ipsum luctus sed.
+            Nunc hendrerit massa porttitor ex sagittis egestas. Duis nec accumsan neque.</p>
+        <div id="btn-tuto" class="btn-overlay">Tutoriel</div>
+        <div id="btn-start" class="btn-overlay">Démarrer</div>
+    </div>
+</div>
 <i class="fa fa-refresh icon-refresh" id="resetButton"></i>
 
 <div id="console"></div>
@@ -231,6 +288,7 @@ include("includes/connexion.php");
 
 </div>
 <div id="icon-env">
+    <i id="icon_confirm" class="fa fa-check-circle"></i>
     <i class="fa fa-chevron-circle-right icon_env"></i>
 </div>
 
@@ -276,6 +334,7 @@ include("includes/connexion.php");
     var offsetWidth=0,offsetHeight=0;
 
     var synchroneArm = Boolean(<?php echo $synchroneArm ?>);
+    var manipulable = false;
     console.log(synchroneArm);
 
     init();
@@ -285,8 +344,8 @@ include("includes/connexion.php");
 
         scene = new THREE.Scene();
 
-        var axisHelper = new THREE.AxisHelper(100);
-        scene.add(axisHelper);
+//        var axisHelper = new THREE.AxisHelper(100);
+//        scene.add(axisHelper);
         /***************
          *    CAMERA   *
          **************/
@@ -334,7 +393,10 @@ include("includes/connexion.php");
             avatar.updateMatrixWorld(true);
             targetList = getTargetList();
             $(document).on('touchstart', onCanvasMouseDown);
-            $("#resetButton").on('touchstart', resetBones);
+            $("#resetButton").on('touchstart', function () {
+                $(this).toggleClass("rotate360");
+                resetBones();
+            });
             loadScreen(function(){
                 $('.fullLoader').hide();
             });
@@ -506,20 +568,22 @@ include("includes/connexion.php");
     }
 
     function onCanvasMouseDown(evt) {
-        evt.preventDefault();
-        evt = evt.originalEvent.changedTouches[0];
-        var vector = mouseToWorld(evt);
+        if(manipulable) {
+            evt.preventDefault();
+            evt = evt.originalEvent.changedTouches[0];
+            var vector = mouseToWorld(evt);
 
-        mousePosDown = vector.clone();
-        mousePosMove = vector.clone();
+            mousePosDown = vector.clone();
+            mousePosMove = vector.clone();
 
-        var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
+            var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
 
-        intersects = raycaster.intersectObjects(targetList);
+            intersects = raycaster.intersectObjects(targetList);
 
-        $(document).on('touchend', onDocumentMouseUp);
-        if (intersects.length > 0) {
-            $("#container").on('touchmove', onContainerMouseMove);
+            $(document).on('touchend', onDocumentMouseUp);
+            if (intersects.length > 0) {
+                $("#container").on('touchmove', onContainerMouseMove);
+            }
         }
     }
 
@@ -802,7 +866,7 @@ include("includes/connexion.php");
 
     function sphereGenerator(width, color) {
         var planeGeometry = new THREE.SphereGeometry(width, 100, 100);
-        var material = new THREE.MeshPhongMaterial({color: color, visible: true});
+        var material = new THREE.MeshPhongMaterial({color: color, visible: false});
 
         return new THREE.Mesh(planeGeometry, material);
     }
@@ -820,27 +884,58 @@ include("includes/connexion.php");
 
     var posObject = 0;
     $(document).ready(function () {
-
+        $("#btn-start").on('touchstart', function () {
+            $('#overlay-instruction').fadeOut(400, function () {
+                $('#overlay-instruction').hide();
+                startExperience();
+            })
+        })
+    });
+    function startExperience () {
+        manipulable = true;
         //Affichage des objets
         $('.objet:first').addClass('display');
-
-        $(".fa-chevron-circle-right").on('touchstart', function(){
-            var r = confirm("Avez-vous vraiment terminé ?");
-            if (r == true) {
-                data[posObject] = extractData();
-                if(posObject<nbObjects-1) {
-                    posObject++;
-                    resetBones();
-                    $('.display').next('.objet').addClass('display');
-                    $('.display').prev('.display').removeClass('display');
-                }
-                else{
-                    <?php $_SESSION['data'] = json_encode(data) ?>
-                    window.location.replace(redirect);
-                }
+        $('#icon_confirm').on('touchstart', function () {
+            $('.fa-times-circle').addClass('fa-chevron-circle-right').removeClass('fa-times-circle').css('color', '#ffffff');
+            $(this).slideToggle();
+            manipulable = true;
+            data[posObject] = extractData();
+            if(posObject<nbObjects-1) {
+                posObject++;
+                resetBones();
+                $('.display').next('.objet').addClass('display');
+                $('.display').prev('.display').removeClass('display');
+            }
+            else{
+                <?php $_SESSION['data'] = json_encode(data) ?>
+                window.location.replace(redirect);
             }
         });
-    });
+        $(".fa-chevron-circle-right").on('touchstart', function(){
+            $("#icon_confirm").slideToggle(200);
+            if($(this).hasClass('fa-times-circle')) {
+                $(this).addClass('fa-chevron-circle-right').removeClass('fa-times-circle').css('color', '#ffffff');
+                manipulable = true;
+            }
+            else {
+                $(this).removeClass('fa-chevron-circle-right').addClass('fa-times-circle').css('color', 'rgb(199, 58, 76)');
+                manipulable = false;
+            }
+        });
+    }
+    function popup(type){
+        switch (type){
+            case 'confirm' :
+                break;
+            case 'finished' :
+                break;
+            case 'instruction' :
+                $.get("includes/popup_instruction.php",function(data){
+                    $("body").append(data);
+                });
+                break;
+        }
+    }
 </script>
 
 </body>

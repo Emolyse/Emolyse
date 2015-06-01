@@ -18,7 +18,6 @@ include('includes/en-tete.php');
     </div>
     <table class="table-experience">
         <thead>
-<!--            <th></th>-->
             <th><?php if(NOM != ''){echo NOM;}else{ echo('NOM');}; ?></th>
             <th></th>
             <th></th>
