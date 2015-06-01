@@ -1,8 +1,9 @@
+<?php
+session_start();
+include("includes/connexion.php");
+?>
 <!--<!DOCTYPE html>-->
 <html lang="en">
-<?php
-    include("includes/connexion.php");
-?>
 <head>
     <title>three.js webgl - collada - skinning</title>
     <meta charset="utf-8">
@@ -814,6 +815,9 @@
 </script>
 
 <script type="text/javascript">
+
+    var redirect = 'http://'+window.location.host+'/Emolyse/finalisation.php';
+
     var posObject = 0;
     $(document).ready(function () {
 
@@ -831,7 +835,8 @@
                     $('.display').prev('.display').removeClass('display');
                 }
                 else{
-
+                    <?php $_SESSION['data'] = json_encode(data) ?>
+                    window.location.replace(redirect);
                 }
             }
         });

@@ -43,6 +43,19 @@ ul{margin: 0; padding: 0}
     margin: 100px auto 0 auto;
     width: 400px;
 }
+
+section.menu{
+    height: 30%;
+}
+
+section.breadcrumb{
+    height: 5%;
+}
+
+section.nouvelle-experience{
+    height: 65%;
+}
+
 #logoEmolyse{
     width: 100%;
 }
@@ -74,7 +87,7 @@ a.btn-home:active{
 .logoEmolyseEnTete{
     display: block;
     width: 300px;
-    margin: 20px;
+    padding: 20px;
 }
 i.fa.fa-arrow-circle-left{
     display: block;
@@ -359,13 +372,15 @@ button#add-env {
     padding: 0 20px;
 }
 
-
+img{
+    max-height: 100%;
+}
 
 .nouvelle-experience > div{
     display: inline-block;
-    text-align: center;
     width: 33.1%;
     vertical-align: middle;
+    height: 100%;
 }
 #select-experience{
     display: block;
@@ -600,10 +615,10 @@ span.instruction {
     height: 100%;
 }
 
-#choixAvatar{
-    width: 300px;
-    height: 800px;
+.choixAvatar{
+    text-align: center;
 }
+
 
 #filePhotoUserClic {
     border: 2px solid #0087F7;

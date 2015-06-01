@@ -3,6 +3,7 @@ include('includes/header.php');
 include('includes/en-tete.php');
 ?>
 
+<?php if(isset($_SESSION['data'])) echo $_SESSION['data'] ?>
 <section class="breadcrumb">
     <ul>
         <li><a href="index.php"><img src="images/home.png" alt="Revenir à l'accueil de l'application" id="pictoHome"/></a></li>
