@@ -12,13 +12,13 @@ include('includes/en-tete.php');
 </section>
 
 <section class="nouvelle-experience">
-    <div class="choixAvatar" onclick="avatarSelected('woman');"><img src="images/imgAvatar/avatar_woman.png" alt="Choix de l'avatar femme" id="avatarW"/></div>
+    <div id="avatarWoman" onclick="avatarSelected('woman');"><img src="images/imgAvatar/avatar_woman.png" alt="Choix de l'avatar femme" id="avatarW"/></div>
     <div>
         <form action="includes/traitement.php" method="post">
             <select name="experience" id="select-experience">
                 <?php
                 // on veut afficher uniquement les expériences avec au moins un produit
-                $requete = "SELECT * FROM experience WHERE nbProduit > 1";
+                $requete = "SELECT * FROM experience WHERE nbProduit > 0";
                 $resultats = $base->query($requete);
                 while(($resultat = $resultats->fetch_array())){
                     $idExperience = $resultat['idExperience'];
@@ -30,7 +30,7 @@ include('includes/en-tete.php');
             <input type="submit" id="btn-start-experience" name="start-experience" value="<?php if(DEMARRER != ''){echo DEMARRER;}else{ echo('DEMARRER');}; ?>"/>
         </form>
     </div>
-    <div class="choixAvatar" onclick="avatarSelected('man');"><img src="images/imgAvatar/avatar_man.png" alt="Choix de l'avatar femme" id="avatarM"/></div>
+    <div id="avatarMan" onclick="avatarSelected('man');"><img src="images/imgAvatar/avatar_man.png" alt="Choix de l'avatar femme" id="avatarM"/></div>
 </section>
 
 <script>

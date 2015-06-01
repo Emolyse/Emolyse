@@ -20,11 +20,9 @@ include("includes/connexion.php");
             margin: 0;
             overflow: hidden;
         }
-
         a {
             color: #f00;
         }
-
         #console {
             display: none;
             position: fixed;
@@ -38,21 +36,18 @@ include("includes/connexion.php");
             font-size: 30px;
             opacity: 0.8;
         }
-
         #containerObjet {
             position: absolute;
             width: 15%;
             top: 23%;
             left: 76%;
         }
-
         .objet {
             display: none;
             width: 100%;
             position: absolute;
             color: red;
         }
-
         #resetButton {
             z-index: 1000;
             position: fixed;
@@ -79,7 +74,6 @@ include("includes/connexion.php");
             color: #289148;
             font-size: 66px;
         }
-
         #icon-env{
             position: fixed;
             display: block;
@@ -201,6 +195,39 @@ include("includes/connexion.php");
             padding : 10px;
             cursor: pointer;
         }
+
+        /*FINALIZER*/
+        #finalizer{
+            display: none;
+            width: 0;
+            height: 0;
+            position: fixed;
+            z-index: 1000;
+            left:50%;
+            top: 50%;
+            padding: 20px;
+            background-color: #FFFFFF;
+            border : solid 3px #aaaaaa;
+            border-radius : 10px;
+            opacity: 0;
+            box-sizing: border-box;
+        }
+        #finalizer div{
+            opacity: 0;
+        }
+        #finalizer span {
+            font-size: 1.5em;
+            display: inline-block;
+            max-width: 90%;
+            text-align: left;
+        }#finalizer p {
+            font-size: 2em;
+        }
+        #finalizer i{
+            font-size: 4em;
+            display: inline-block;
+            color: #00B236;
+        }
     </style>
 </head>
 <body>
@@ -288,6 +315,14 @@ include("includes/connexion.php");
 </div>
 
 <div id="container"></div>
+
+<div id="finalizer">
+    <div>
+        <p>Félicitation !</p>
+        <span> Vous allez maintenant compléter votre profil afin de finaliser votre participation</span>
+        <i class="fa fa-arrow-circle-o-right"></i>
+    </div>
+</div>
 
 <script src="js/three.min.js"></script>
 <script src="js/ColladaLoader.js"></script>
@@ -874,9 +909,6 @@ include("includes/connexion.php");
 </script>
 
 <script type="text/javascript">
-
-    var redirect = 'http://'+window.location.host+'/Emolyse/finalisation.php';
-
     var posObject = 0;
     $(document).ready(function () {
         $("#btn-start").on('touchstart', function (e) {
@@ -896,20 +928,31 @@ include("includes/connexion.php");
             e.preventDefault();
             $('.fa-times-circle').addClass('fa-chevron-circle-right').removeClass('fa-times-circle').css('color', '#ffffff');
             $(this).slideToggle();
-            manipulable = true;
             data[posObject] = extractData();
             if(posObject<nbObjects-1) {
+                manipulable = true;
                 posObject++;
                 resetBones();
                 $('.display').next('.objet').addClass('display');
                 $('.display').prev('.display').removeClass('display');
             }
             else{
-                manipulable = false;
                 $("#resetButton").slideToggle(200);
                 $('#icon-env').slideToggle(200);
-                <?php $_SESSION['data'] = json_encode(data) ?>
-                window.location.replace(redirect);
+                $('#finalizer').show().animate({
+                    opacity : 0.9,
+                    height : '30%',
+                    width : '50%',
+                    left : '25%',
+                    top : '35%'
+                },800, function () {
+                    $("#finalizer div").animate({
+                        opacity : 1
+                    },500);
+                });
+                $('#finalizer div i').on('touchstart', function () {
+                    console.log("les bananas");
+                });
             }
         });
         $(".fa-chevron-circle-right").on('touchstart', function(e){
