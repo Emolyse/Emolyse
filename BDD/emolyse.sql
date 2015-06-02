@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Mar 02 Juin 2015 à 09:51
+-- Généré le :  Mar 02 Juin 2015 à 16:31
 -- Version du serveur :  5.6.17
 -- Version de PHP :  5.5.12
 
@@ -19,19 +19,6 @@ SET time_zone = "+00:00";
 --
 -- Base de données :  `emolyse`
 --
-
--- --------------------------------------------------------
-
---
--- Structure de la table `avatar`
---
-
-CREATE TABLE IF NOT EXISTS `avatar` (
-  `idAvatar` int(11) NOT NULL AUTO_INCREMENT,
-  `genre` varchar(45) COLLATE utf8_bin NOT NULL,
-  `nom` varchar(45) COLLATE utf8_bin NOT NULL,
-  PRIMARY KEY (`idAvatar`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -69,7 +56,9 @@ CREATE TABLE IF NOT EXISTS `experience` (
   `codeLangue` varchar(2) COLLATE utf8_bin NOT NULL,
   `syncroBras` tinyint(1) NOT NULL,
   `random` tinyint(1) NOT NULL,
-  PRIMARY KEY (`idExperience`)
+  PRIMARY KEY (`idExperience`),
+  KEY `idEnvironnement` (`idEnvironnement`),
+  KEY `codeLangue` (`codeLangue`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=33 ;
 
 --
@@ -77,10 +66,10 @@ CREATE TABLE IF NOT EXISTS `experience` (
 --
 
 INSERT INTO `experience` (`idExperience`, `idEnvironnement`, `nom`, `consigne`, `nbProduit`, `codeLangue`, `syncroBras`, `random`) VALUES
-(16, 1, 'Expérience en italien', 'changement de la consigne pour exp 16 !!', 4, 'EN', 1, 1),
-(17, 1, 'test', 'test de la consigne en franÃ§ais', 1, 'FR', 0, 0),
+(16, 2, 'Expérience en italien', 'changement de la consigne pour exp 16 !!', 0, 'EN', 1, 1),
+(17, 1, 'test', 'test de la consigne en franÃ§ais', 0, 'FR', 0, 0),
 (20, 1, 'test drat', 'Order bla', 1, 'FR', 0, 1),
-(22, 1, 'test position', '', 2, 'EN', 0, 1);
+(22, 1, 'test position', '', 1, 'EN', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -182,7 +171,7 @@ CREATE TABLE IF NOT EXISTS `participant` (
   `sexe` varchar(45) COLLATE utf8_bin NOT NULL,
   `lienPhoto` varchar(500) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`idParticipant`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=12 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=16 ;
 
 --
 -- Contenu de la table `participant`
@@ -192,7 +181,9 @@ INSERT INTO `participant` (`idParticipant`, `nom`, `prenom`, `naissance`, `sexe`
 (1, 'ARNAUD', 'Alizee', '1992-08-31', 'F', ''),
 (2, 'DROUET', 'Rémy', '1992-01-12', 'H', ''),
 (3, 'DAITA', 'Jordan', '1993-02-15', 'H', ''),
-(6, 'sujet-6', '', '1947-06-03', 'F', '');
+(6, 'sujet-6', '', '1947-06-03', 'F', ''),
+(14, 'Julie', 'routaud', '1991-03-04', 'F', ''),
+(15, 'ARNAUD', 'Alizée', '1992-08-31', 'F', 'images/imgUsers/10913092_10205979193705612_1900876804_n.jpg');
 
 -- --------------------------------------------------------
 
@@ -206,23 +197,9 @@ CREATE TABLE IF NOT EXISTS `produit` (
   `position` int(2) NOT NULL,
   `nom` varchar(45) COLLATE utf8_bin NOT NULL,
   `lienPhoto` varchar(255) COLLATE utf8_bin NOT NULL,
-  PRIMARY KEY (`idProduit`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=199 ;
-
---
--- Contenu de la table `produit`
---
-
-INSERT INTO `produit` (`idProduit`, `idExperience`, `position`, `nom`, `lienPhoto`) VALUES
-(25, 8, 0, '05', 'images/imgExperience/05.jpg'),
-(158, 20, 1, '18', 'images/imgExperience/18.jpg'),
-(165, 22, 2, 'wallpaper-2112045', 'images/imgExperience/wallpaper-2112045.jpg'),
-(170, 22, 7, 'wallpaper-3027963', 'images/imgExperience/wallpaper-3027963.jpg'),
-(188, 17, 1, '18', 'images/imgExperience/18.jpg'),
-(192, 16, 1, '17', 'images/imgExperience/17.jpg'),
-(193, 16, 2, '18', 'images/imgExperience/18.jpg'),
-(194, 16, 3, '19', 'images/imgExperience/19.jpg'),
-(195, 16, 4, '20', 'images/imgExperience/20.jpg');
+  PRIMARY KEY (`idProduit`),
+  KEY `idExperience` (`idExperience`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=212 ;
 
 -- --------------------------------------------------------
 
@@ -233,7 +210,9 @@ INSERT INTO `produit` (`idProduit`, `idExperience`, `position`, `nom`, `lienPhot
 CREATE TABLE IF NOT EXISTS `resultat` (
   `idProduit` int(11) NOT NULL,
   `idParticipant` int(11) NOT NULL,
+  `idExperience` int(11) NOT NULL,
   `genreAvatar` varchar(1) COLLATE utf8_bin NOT NULL,
+  `angleAvatar` float NOT NULL,
   `angleBGx` float NOT NULL,
   `angleBGz` float NOT NULL,
   `angleBDx` float NOT NULL,
@@ -241,21 +220,11 @@ CREATE TABLE IF NOT EXISTS `resultat` (
   `angleBuste` float NOT NULL,
   `distance` float NOT NULL,
   `date` date NOT NULL,
-  PRIMARY KEY (`idProduit`,`idParticipant`),
-  KEY `idParticipant` (`idParticipant`)
+  PRIMARY KEY (`idProduit`,`idParticipant`,`idExperience`),
+  KEY `idParticipant` (`idParticipant`),
+  KEY `idExperience` (`idExperience`),
+  KEY `idProduit` (`idProduit`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
---
--- Contenu de la table `resultat`
---
-
-INSERT INTO `resultat` (`idProduit`, `idParticipant`, `genreAvatar`, `angleBGx`, `angleBGz`, `angleBDx`, `angleBDz`, `angleBuste`, `distance`, `date`) VALUES
-(60, 4, 'H', 0, 0, 0, 0, 0, 170, '2015-06-02'),
-(75, 4, 'H', 0, 0, 0, 0, 0, 170, '2015-06-02'),
-(192, 10, 'M', 0, 0, 0, 0, 0, 246, '2015-06-02'),
-(193, 10, 'M', 0, 0, 0, 0, 0, 140, '2015-06-02'),
-(194, 10, 'M', 59.3072, 0, 59.3072, 0, 0, 170, '2015-06-02'),
-(195, 10, 'M', 0, 0, 0, 0, 0, 170, '2015-06-02');
 
 -- --------------------------------------------------------
 
@@ -267,7 +236,8 @@ CREATE TABLE IF NOT EXISTS `traduction` (
   `codeLangue` varchar(2) NOT NULL,
   `codeIdentifiant` varchar(45) NOT NULL,
   `traduction` mediumtext NOT NULL,
-  PRIMARY KEY (`codeLangue`,`codeIdentifiant`)
+  PRIMARY KEY (`codeLangue`,`codeIdentifiant`),
+  KEY `fk_codeIdentifiant` (`codeIdentifiant`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -367,6 +337,37 @@ INSERT INTO `traduction` (`codeLangue`, `codeIdentifiant`, `traduction`) VALUES
 ('FR', 'SEPTEMBRE', 'Septembre'),
 ('FR', 'SEXE', 'Sexe'),
 ('FR', 'TEXT_CONSIGNE', 'Consigne en francais pour test             ');
+
+--
+-- Contraintes pour les tables exportées
+--
+
+--
+-- Contraintes pour la table `experience`
+--
+ALTER TABLE `experience`
+  ADD CONSTRAINT `fk_exp_env` FOREIGN KEY (`idEnvironnement`) REFERENCES `environnement` (`idEnvironnement`);
+
+--
+-- Contraintes pour la table `produit`
+--
+ALTER TABLE `produit`
+  ADD CONSTRAINT `fk_experience_prod` FOREIGN KEY (`idExperience`) REFERENCES `experience` (`idExperience`);
+
+--
+-- Contraintes pour la table `resultat`
+--
+ALTER TABLE `resultat`
+  ADD CONSTRAINT `fk_experience` FOREIGN KEY (`idExperience`) REFERENCES `experience` (`idExperience`),
+  ADD CONSTRAINT `fk_participant` FOREIGN KEY (`idParticipant`) REFERENCES `participant` (`idParticipant`),
+  ADD CONSTRAINT `fk_produit` FOREIGN KEY (`idProduit`) REFERENCES `produit` (`idProduit`);
+
+--
+-- Contraintes pour la table `traduction`
+--
+ALTER TABLE `traduction`
+  ADD CONSTRAINT `fk_codeIdentifiant` FOREIGN KEY (`codeIdentifiant`) REFERENCES `identifiant` (`codeIdentifiant`),
+  ADD CONSTRAINT `fk_codeLangue` FOREIGN KEY (`codeLangue`) REFERENCES `langue` (`codeLangue`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

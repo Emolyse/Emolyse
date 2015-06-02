@@ -109,7 +109,7 @@ function init() {
         //On affiche la position des bones qui nous intéressent pour déterminer la position des points d'ancrages pour l'interaction tactile
         var idBones = [0,1,6,9,12,10,13];
         avatar.translateX(-100);
-        avatar.translateY(-80);
+        avatar.translateY(-100);
 
         avatar.updateMatrixWorld(true);
 //            avatar.rotateY(THREE.Math.degToRad(75));
@@ -151,7 +151,7 @@ function render() {
 }
 
 /*********************************
- * @description Load the .dae file according to the name et initialize it in the scene
+ * @description Load the avatar_man.dae file according to the name et initialize it in the scene
  * @param name
  * @param callback
  */
@@ -176,11 +176,11 @@ function loadAvatar(name,callback){
         animation = new THREE.Animation( avatar, avatar.geometry.animation );
         animation.loop = true;
         animation.timeScale = 0.7;
-
-        skeleton.bones[12].rotateZ(THREE.Math.degToRad(30));
-        skeleton.bones[12].rotateX(THREE.Math.degToRad(-15));
-        skeleton.bones[13].rotateZ(THREE.Math.degToRad(-30));
-        skeleton.bones[13].rotateX(THREE.Math.degToRad(-15));
+//
+//        skeleton.bones[12].rotateZ(THREE.Math.degToRad(30));
+//        skeleton.bones[12].rotateX(THREE.Math.degToRad(-15));
+//        skeleton.bones[13].rotateZ(THREE.Math.degToRad(-30));
+//        skeleton.bones[13].rotateX(THREE.Math.degToRad(-15));
         avatar.updateMatrixWorld(true);
         callback();
     } );
@@ -225,7 +225,6 @@ function onMouseUp(evt){
     } else {
         var vector = mouseToWorld(evt);
         mousePosUp = vector.clone();
-        loadConsole(Math.abs(mousePosUp.x-mousePosDown.x));
         var long = mousePosUp.x-mousePosDown.x;
         if(Math.abs(long) > 10) {
             if (mousePosDown.x < mousePosUp.x) {
@@ -245,7 +244,6 @@ function onMouseMove(evt){
         switch (target.name){
             case 'rHand':
                 var angle = Math.acos(dotProduct(mousePosDown.normalize(),mousePosMove.normalize));
-                console.log(avatar.skeleton.bones[12].rotation);
                 break;
             case 'lHand':
                 break;
@@ -295,7 +293,6 @@ function stop() {
         animationState = undefined;
         currentFrame = 0;
         avatar.updateMatrixWorld();
-        console.log(avatar.position.x);
     }
 }
 
