@@ -97,6 +97,9 @@ if(isset($_GET['deleteProduit'])){
     $id = $_GET['id'];
     $idExperience = $_GET['idExperience'];
 
+    $requeteSupData = "DELETE FROM resultat WHERE idProduit='".$id."'";
+    $base->query($requeteSupData);
+
     $requete = "SELECT lienPhoto FROM produit WHERE idProduit='".$id."'";
     $resultats = $base->query($requete);
     while(($resultat = $resultats->fetch_array())){
@@ -170,6 +173,9 @@ if(isset($_GET['deleteExp'])){
         // on supprime les fichiers des produits
         unlink("../".$resultat['lienPhoto']);
     }
+
+    $requeteSupData = "DELETE FROM resultat WHERE idExperience=".$idExperience."";
+    $base->query($requeteSupData);
 
     $requete = "DELETE FROM experience WHERE idExperience=".$idExperience."";
     $base->query($requete);
@@ -259,6 +265,9 @@ if(isset($_POST['start-experience'])){
 if(isset($_GET['deleteProduitListe'])){
     $idProduit = $_GET['id'];
     $idExperience = $_GET['idExperience'];
+
+    $requeteSupData = "DELETE FROM resultat WHERE idProduit='".$idProduit."'";
+    $base->query($requeteSupData);
 
     $requete = "SELECT lienPhoto FROM produit WHERE idProduit='".$idProduit."'";
     $resultats = $base->query($requete);

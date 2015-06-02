@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Mar 02 Juin 2015 à 15:36
+-- Généré le :  Mar 02 Juin 2015 à 16:31
 -- Version du serveur :  5.6.17
 -- Version de PHP :  5.5.12
 
@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `experience` (
 --
 
 INSERT INTO `experience` (`idExperience`, `idEnvironnement`, `nom`, `consigne`, `nbProduit`, `codeLangue`, `syncroBras`, `random`) VALUES
-(16, 2, 'Expérience en italien', 'changement de la consigne pour exp 16 !!', 4, 'EN', 1, 1),
+(16, 2, 'Expérience en italien', 'changement de la consigne pour exp 16 !!', 0, 'EN', 1, 1),
 (17, 1, 'test', 'test de la consigne en franÃ§ais', 0, 'FR', 0, 0),
 (20, 1, 'test drat', 'Order bla', 1, 'FR', 0, 1),
 (22, 1, 'test position', '', 1, 'EN', 0, 1);
@@ -199,19 +199,7 @@ CREATE TABLE IF NOT EXISTS `produit` (
   `lienPhoto` varchar(255) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`idProduit`),
   KEY `idExperience` (`idExperience`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=206 ;
-
---
--- Contenu de la table `produit`
---
-
-INSERT INTO `produit` (`idProduit`, `idExperience`, `position`, `nom`, `lienPhoto`) VALUES
-(199, 16, 1, 'pad-ps3-rendu', 'images/imgExperience/16-pad-ps3-rendu.jpg'),
-(200, 16, 2, 'ODi', 'images/imgExperience/16-ODi.jpg'),
-(201, 16, 3, 'objet-publicitaire-stylo-bleu_icy', 'images/imgExperience/16-objet-publicitaire-stylo-bleu_icy.jpg'),
-(202, 16, 4, '329780-google-chromecast', 'images/imgExperience/16-329780-google-chromecast.jpeg'),
-(204, 20, 1, 'objet-publicitaire-stylo-bleu_icy', 'images/imgExperience/20-objet-publicitaire-stylo-bleu_icy.jpg'),
-(205, 22, 1, 'votre-objet-publicitaire-parapluie-bordeaux', 'images/imgExperience/22-votre-objet-publicitaire-parapluie-bordeaux.jpg');
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=212 ;
 
 -- --------------------------------------------------------
 
@@ -237,20 +225,6 @@ CREATE TABLE IF NOT EXISTS `resultat` (
   KEY `idExperience` (`idExperience`),
   KEY `idProduit` (`idProduit`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
---
--- Contenu de la table `resultat`
---
-
-INSERT INTO `resultat` (`idProduit`, `idParticipant`, `idExperience`, `genreAvatar`, `angleAvatar`, `angleBGx`, `angleBGz`, `angleBDx`, `angleBDz`, `angleBuste`, `distance`, `date`) VALUES
-(199, 14, 16, 'F', 0, 64.3547, 0, 64.3547, 0, 0, 140, '2015-06-02'),
-(199, 15, 16, 'F', 0, -38.2328, 0, -38.2328, 0, 0, 292, '2015-06-02'),
-(200, 14, 16, 'F', 0, 45.4047, 0, 45.4047, 0, 38.914, 140, '2015-06-02'),
-(200, 15, 16, 'F', 180, 0, 0, 0, 0, 0, 272, '2015-06-02'),
-(201, 14, 16, 'F', -22.7941, 0, 0, 0, 0, 0, 242, '2015-06-02'),
-(201, 15, 16, 'F', -35.2883, 55.6238, 0, 55.6238, 0, 13.3426, 310, '2015-06-02'),
-(202, 14, 16, 'F', -78.6971, -18.8472, 19.719, -18.8472, -19.719, 0, 210, '2015-06-02'),
-(202, 15, 16, 'F', 0, 94.936, 0, 94.936, 0, 28.3148, 140, '2015-06-02');
 
 -- --------------------------------------------------------
 
