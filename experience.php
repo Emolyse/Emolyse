@@ -241,6 +241,7 @@ include("includes/connexion.php");
             }
             $resultats = $base->query($requete);
             while(($resultat = $resultats->fetch_array())){
+                $idObj[$nbObjet] = $resultat['idProduit'];
                 $nbObjet++;
                 $lienPhoto = $resultat['lienPhoto'];
                 $idProduit = $resultat['idProduit'];
@@ -304,7 +305,12 @@ include("includes/connexion.php");
     */
     var nbObjects = <?php echo $nbObjet ?>;
     var idExperience = <?php echo $experience ?>;
-
+    var idObj = [];
+    <?php foreach($idObj as $cle=>$valeur){
+            echo "idObj[$cle] = $valeur;";
+        }
+    ?>
+    console.log(idObj);
     /*
      Information récupérees du get
      */
@@ -867,7 +873,7 @@ include("includes/connexion.php");
     }
 
     function extractData(){
-        var res = {objId:posObject,expId:idExperience,avatarRot:avatarRotation,rArmRotX:rArmRotX,rArmRotZ:rArmRotZ,lArmRotX:lArmRotX,lArmRotZ:lArmRotZ,bodyRot:bodyRot,distance:posScreen.x-avatar.position.x};
+        var res = {objPos:posObject,idObj:idObj[posObject],expId:idExperience,avatarRot:THREE.Math.radToDeg(avatarRotation),rArmRotX:THREE.Math.radToDeg(rArmRotX),rArmRotZ:THREE.Math.radToDeg(rArmRotZ),lArmRotX:THREE.Math.radToDeg(lArmRotX),lArmRotZ:THREE.Math.radToDeg(lArmRotZ),bodyRot:THREE.Math.radToDeg(bodyRot),distance:posScreen.x-avatar.position.x};
         return res;
     }
 
@@ -887,6 +893,15 @@ include("includes/connexion.php");
             })
         })
     });
+
+    var myRedirect = function(redirectUrl, arg, value) {
+        var form = $('<form action="' + redirectUrl + '" method="post">' +
+        '<input type="hidden" id="myForm" name="'+ arg +'"></input>' + '</form>');
+        $('body').append(form);
+        $("#myForm").attr("value",value);
+        $(form).submit();
+    };
+
     function startExperience () {
         manipulable = true;
         //Affichage des objets
@@ -905,11 +920,11 @@ include("includes/connexion.php");
                 $('.display').prev('.display').removeClass('display');
             }
             else{
+                myRedirect(redirect, "data", JSON.stringify(data));
+                //window.location.replace(redirect);
                 manipulable = false;
                 $("#resetButton").slideToggle(200);
                 $('#icon-env').slideToggle(200);
-                <?php $_SESSION['data'] = json_encode(data) ?>
-                window.location.replace(redirect);
             }
         });
         $(".fa-chevron-circle-right").on('touchstart', function(e){

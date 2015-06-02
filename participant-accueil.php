@@ -18,7 +18,7 @@ include('includes/en-tete.php');
             <select name="experience" id="select-experience">
                 <?php
                 // on veut afficher uniquement les expériences avec au moins un produit
-                $requete = "SELECT * FROM experience WHERE nbProduit > 1";
+                $requete = "SELECT * FROM experience WHERE nbProduit > 0";
                 $resultats = $base->query($requete);
                 while(($resultat = $resultats->fetch_array())){
                     $idExperience = $resultat['idExperience'];
