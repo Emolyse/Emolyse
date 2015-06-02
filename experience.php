@@ -12,7 +12,7 @@ include("includes/connexion.php");
     <style>
         body {
             color: #000;
-            font-family: Monospace;
+            font-family: Arial;
             font-size: 13px;
             text-align: center;
 
@@ -228,6 +228,28 @@ include("includes/connexion.php");
             display: inline-block;
             color: #00B236;
         }
+        #console-tuto{
+            display: none;
+            z-index: 1000;
+            width: 100%;
+            text-align: center;
+            position: fixed;
+            top : 50%;
+            color: #ffffff;
+            text-shadow: 4px 4px #333333;
+            font-size: 4em;
+        }
+        #arrow-right, #move-arrow{
+            position: fixed;
+            display: none;
+            width: 15%;
+        }
+
+        #double-arrow{
+            position: fixed;
+            display: none;
+            width: 30%;
+        }
     </style>
 </head>
 <body>
@@ -325,6 +347,13 @@ include("includes/connexion.php");
     </div>
 </div>
 
+<div id="console-tuto"></div>
+
+<img id="arrow-right" src="images/arrow_right.png" alt="arrow-arm-rotation"/>
+<img id="arrow-left" src="images/arrow_right.png" alt="arrow-arm-rotation"/>
+<img id="double-arrow" src="images/double_arrow.png" alt="arrow-avatar-rotation"/>
+<img id="move-arrow" src="images/arrow-move.png" alt="arrow-avatar-move"/>
+
 <script src="js/three.min.js"></script>
 <script src="js/ColladaLoader.js"></script>
 <script src="js/Detector.js"></script>
@@ -359,6 +388,7 @@ include("includes/connexion.php");
     var posScreen = new THREE.Vector3(170,120,-150);
     var camera, scene, currentFrame=0, renderer, backgroundScene, backgroundCamera, avatar;
     var targetList = [];
+    var tutoTargets = [];
     var idBonesTargeted = [14, 17, 18];
     var intersects = [];
     var borneMin=-140, borneMax=30;
@@ -373,7 +403,11 @@ include("includes/connexion.php");
 
     var synchroneArm = Boolean(<?php echo $synchroneArm ?>);
     var manipulable = false;
-    console.log(synchroneArm);
+
+    var lockRotation = false;
+    var iTuto = 0;
+
+    var interval;
 
     init();
 
@@ -431,7 +465,7 @@ include("includes/connexion.php");
         }
         loadAvatar(urlAvatar, function () {
             avatar.updateMatrixWorld(true);
-            targetList = getTargetList();
+            targetList = getTargetList(15,false);
             $(document).on('touchstart', onCanvasMouseDown);
             $("#resetButton").on('touchstart', function () {
                 $(this).toggleClass("rotate360");
@@ -578,11 +612,11 @@ include("includes/connexion.php");
      * @description Couch de dialogue avatar/touchInterface
      *******************************************************/
 
-    function getTargetList() {
+    function getTargetList(size,visible) {
         avatar.updateMatrixWorld(true);
         var res = [];
         for (var i = 0; i < idBonesTargeted.length; i++) {
-            var target = sphereGenerator(15, "#01B0F0");
+            var target = sphereGenerator(size, "#01B0F0",visible);
             var pos = avatar.skeleton.bones[idBonesTargeted[i]].getWorldPosition();
             target.position.set(pos.x, pos.y, pos.z);
             target.name = avatar.skeleton.bones[idBonesTargeted[i]].name;
@@ -590,7 +624,7 @@ include("includes/connexion.php");
             res.push(target);
         }
         //On créé la cible de rotation de l'avatar
-        var avatarTarget = sphereGenerator(15, "#01B0F0");
+        var avatarTarget = sphereGenerator(size, "#01B0F0",visible);
         avatarTarget.position.set(0, -80, 0);
         avatarTarget.name = 'avatarRot';
         scene.add(avatarTarget);
@@ -603,8 +637,12 @@ include("includes/connexion.php");
         for (var i = 0; i < targetList.length - 1; i++) {
             var pos = avatar.skeleton.bones[idBonesTargeted[i]].getWorldPosition();
             targetList[i].position.set(pos.x, pos.y, pos.z);
+            if(tutoTargets.length)
+                tutoTargets[i].position.set(pos.x, pos.y, pos.z);
         }
-        targetList[targetList.length - 1].position.setX(avatar.position.x)
+        targetList[targetList.length - 1].position.setX(avatar.position.x);
+        if(tutoTargets.length)
+            tutoTargets[tutoTargets.length - 1].position.setX(avatar.position.x);
     }
 
     function onCanvasMouseDown(evt) {
@@ -622,7 +660,7 @@ include("includes/connexion.php");
 
             $(document).on('touchend', onDocumentMouseUp);
             if (intersects.length > 0) {
-                $("#container").on('touchmove', onContainerMouseMove);
+                $(document).on('touchmove', onContainerMouseMove);
             }
         }
     }
@@ -630,8 +668,8 @@ include("includes/connexion.php");
     function onDocumentMouseUp(evt) {
         evt.preventDefault();
         evt = evt.originalEvent.changedTouches[0];
-        $("#container").off();
         $(document).off('touchend');
+        $(document).off('touchmove');
         if (intersects.length > 0) {
         } else {
             var mousePosUp = mouseToWorld(evt);
@@ -659,19 +697,21 @@ include("includes/connexion.php");
 
         var name = intersects[0].object.name;
         //si on synchronise et qu'on a ciblé un bras
-        if(synchroneArm && (name == 'rHand' || name == 'lHand')) {
-            //on applique d'abord la rotation au bras ciblé et on l'applique ensuite à l'autre bras grace a l'angle résultant
-            if(name == 'rHand'){
-                applyRotation('rHand', evt, function (angle) {
-                    applyRotation('lHand', evt, updateTargets,angle);
-                });
-            } else {
-                applyRotation('lHand', evt, function (angle) {
-                    applyRotation('rHand', evt, updateTargets,angle);
-                });
+        if(manipulable) {
+            if (synchroneArm && (name == 'rHand' || name == 'lHand')) {
+                //on applique d'abord la rotation au bras ciblé et on l'applique ensuite à l'autre bras grace a l'angle résultant
+                if (name == 'rHand') {
+                    applyRotation('rHand', evt, function (angle) {
+                        applyRotation('lHand', evt, updateTargets, angle);
+                    });
+                } else {
+                    applyRotation('lHand', evt, function (angle) {
+                        applyRotation('rHand', evt, updateTargets, angle);
+                    });
+                }
+            } else {//dans tous les autres cas on applique une rotation unique
+                applyRotation(name, evt, updateTargets);
             }
-        } else {//dans tous les autres cas on applique une rotation unique
-            applyRotation(name, evt, updateTargets);
         }
 
     }
@@ -769,17 +809,19 @@ include("includes/connexion.php");
                 }
                 break;
             case 'avatarRot':
-                var v1 = mousePosMove.clone().normalize();
-                var v2 = tmpMousePosMove.clone().normalize();
-                mousePosMove = mouseToWorld(evt);
-                angle = (v2.x - v1.x) * Math.PI;
-                avatar.rotateY(angle);
-                avatarRotation += angle;
-                if (avatarRotation > Math.PI)
-                    avatarRotation = -(2 * Math.PI - avatarRotation);
-                if (avatarRotation <= -Math.PI)
-                    avatarRotation = 2 * Math.PI + avatarRotation;
-                break;
+                if(!lockRotation) {
+                    var v1 = mousePosMove.clone().normalize();
+                    var v2 = tmpMousePosMove.clone().normalize();
+                    mousePosMove = mouseToWorld(evt);
+                    angle = (v2.x - v1.x) * Math.PI;
+                    avatar.rotateY(angle);
+                    avatarRotation += angle;
+                    if (avatarRotation > Math.PI)
+                        avatarRotation = -(2 * Math.PI - avatarRotation);
+                    if (avatarRotation <= -Math.PI)
+                        avatarRotation = 2 * Math.PI + avatarRotation;
+                    break;
+                }
         }
         if(first) {//si on synchronise les bras et qu'on traite le bras ciblé on envoie l'angle pour synchroniser l'autre bras
             callback(res);
@@ -881,15 +923,17 @@ include("includes/connexion.php");
         for(var i=0;i<avatar.skeleton.bones.length;i++){
             res.push(avatar.skeleton.bones[i].rotation.clone());
         }
-        res.push(avatarRotation);
+//        res.push(avatarRotation);
         return res;
     }
 
     function resetBones(){
         takePose(originalSkeleton);
-        avatar.rotateY(-avatarRotation);
+        if(!lockRotation) {
+            avatar.rotateY(-avatarRotation);
+            avatarRotation = 0;
+        }
         avatar.position.setX(0);
-        avatarRotation = 0;
         rArmRotX = 0; rArmRotZ = 0;
         lArmRotX = 0; lArmRotZ = 0;
         bodyRot = 0;
@@ -904,9 +948,9 @@ include("includes/connexion.php");
         //avatarRotation = skeleton[skeleton.length-1];
     }
 
-    function sphereGenerator(width, color) {
+    function sphereGenerator(width, color, visible) {
         var planeGeometry = new THREE.SphereGeometry(width, 100, 100);
-        var material = new THREE.MeshPhongMaterial({color: color, visible: false});
+        var material = new THREE.MeshPhongMaterial({color: color, visible: visible});
 
         return new THREE.Mesh(planeGeometry, material);
     }
@@ -916,6 +960,199 @@ include("includes/connexion.php");
         return res;
     }
 
+    function tutorial(){
+        var slow = 6000, quick = 4000;
+        console.log(iTuto);
+        switch (iTuto){
+            case 0 :
+                //rotationX des bras
+                msgTuto("How to rotate arms ?",slow, function () {
+                    msgTuto("There are 2 different rotations",quick, function () {
+                        msgTuto("First : Like swimmng crawl",quick, function () {
+                            msgTuto("Keep your avatar profile...",quick, function () {
+                                msgTuto("... and move his hands to rotate his arms",quick, function () {
+                                    avatar.skeleton.bones[17].updateMatrixWorld(true);
+                                    pos = worldToScreen(avatar.skeleton.bones[17].getWorldPosition());
+                                    $('#arrow-right').css({
+                                        left : pos.x + 0.02*$('canvas').width(),
+                                        top : pos.y - $('#arrow-right').height()+0.10*$('canvas').height(),
+                                        '-webkit-transform' : 'rotate(-150deg)',
+                                        transform : 'rotate(-150deg)'
+                                    }).slideToggle(300,function(){
+                                        manipulable = true;
+                                        lockRotation = true;
+                                        interval = setInterval(function () {
+                                            if(Math.abs(THREE.Math.radToDeg(rArmRotX))>70 || Math.abs(THREE.Math.radToDeg(lArmRotX))>70){
+                                                $('#arrow-right').fadeOut(500);
+                                                manipulable = false;
+                                                lockRotation = false;
+                                                iTuto++;
+                                                clearInterval(interval);
+                                                tutorial();
+                                            }
+                                        },500);
+                                    });
+                                })
+                            })
+                        })
+                    });
+                });
+                break;
+            case 1 :
+                msgTuto("Well Done ! Now the second rotation",slow, function () {
+                    resetBones();
+                    msgTuto('To Part arms, put him back or face',slow, function () {
+                        avatar.rotateY(-Math.PI/2);
+                        avatarRotation -= Math.PI/2;
+                        updateTargets();
+                        avatar.skeleton.bones[18].updateMatrixWorld(true);
+                        pos = worldToScreen(avatar.skeleton.bones[18].getWorldPosition());
+                        $('#arrow-right').css({
+                            left : pos.x + 0.02*$('canvas').width(),
+                            top : pos.y - $('#arrow-right').height()+0.10*$('canvas').height(),
+                            '-webkit-transform' : 'rotate(-150deg)',
+                            transform : 'rotate(-150deg)'
+                        }).slideToggle(300,function(){
+                            manipulable = true;
+                            lockRotation = true;
+                            interval = setInterval(function () {
+                                if(Math.abs(THREE.Math.radToDeg(rArmRotZ))>70 || Math.abs(THREE.Math.radToDeg(lArmRotZ))>70){
+                                    $('#arrow-right').fadeOut(500);
+                                    manipulable = false;
+                                    lockRotation = false;
+                                    iTuto++;
+                                    clearInterval(interval);
+                                    tutorial();
+                                }
+                            },500);
+                        });
+                    });
+
+                });
+                break;
+            case 2 :
+                msgTuto("Well Done ! You can also rotate the body",slow, function () {
+                    resetBones();
+                    msgTuto("To do that, grab the head and move it", slow, function () {
+                        avatar.skeleton.bones[14].updateMatrixWorld(true);
+                        console.log(avatar.skeleton.bones[14].getWorldPosition());
+                        pos = worldToScreen(avatar.skeleton.bones[14].getWorldPosition());
+                        $('#arrow-right').css({
+                            left : pos.x + 0.05*$('canvas').width(),
+                            top : pos.y-$('#arrow-right').height()/4,
+//                            '-webkit-transform' : 'rotate(-150deg)  scaleX(-1)',
+                            transform : 'rotate(160deg) scaleY(-1)'
+                        }).slideToggle(300, function () {
+                            manipulable = true;
+                            interval = setInterval(function () {
+                                if(Math.abs(THREE.Math.radToDeg(bodyRot))>60){
+                                    $('#arrow-right').fadeOut(500);
+                                    manipulable = false;
+                                    iTuto++;
+                                    clearInterval(interval);
+                                    tutorial();
+                                }
+                            },500);
+                        });
+                    });
+                });
+                break;
+            case 3 :
+                msgTuto("Well Done ! Let's see how to rate the entire avatar",slow, function () {
+                    resetBones();
+                    msgTuto("Move the sphere on his feets across the width", slow, function () {
+                        pos = worldToScreen(new THREE.Vector3(0,-80,0));
+                        $('#double-arrow').css({
+                            left : pos.x - $('#double-arrow').width()/2,
+                            top : pos.y - $('#double-arrow').height()/2
+                        }).slideToggle(300, function () {
+                            manipulable = true;
+                            interval = setInterval(function () {
+                                if(Math.abs(THREE.Math.radToDeg(avatarRotation))>70){
+                                    $('#double-arrow').fadeOut(500);
+                                    manipulable = false;
+                                    iTuto++;
+                                    clearInterval(interval);
+                                    tutorial();
+                                }
+                            },500);
+                        });
+                    });
+                });
+                break;
+            case 4 :
+                msgTuto("Well Done ! Finally you can move the avatar across the width",slow, function () {
+                    resetBones();
+                    msgTuto("To do it draw a horizontal line with your finger", slow, function () {
+                        pos = worldToScreen(new THREE.Vector3(0,0,0));
+                        $('#move-arrow').css({
+                            left : pos.x + 0.05*$('canvas').width(),
+                            top : pos.y - $('#double-arrow').height()/2
+                        }).slideToggle(300, function () {
+                            manipulable = true;
+                            interval = setInterval(function () {
+                                if(Math.abs(avatar.position.x)>10){
+                                    $('#move-arrow').fadeOut(500);
+                                    manipulable = false;
+                                    iTuto++;
+                                    clearInterval(interval);
+                                    tutorial();
+                                }
+                            },500);
+                        });
+                    });
+                });
+                break;
+            case 5 :
+                msgTuto("Congratulations ! Now you know how to manipulate the avatar", slow, function () {
+                    resetBones();
+                    msgTuto("Tips : At any moment you can reset the avatar position", slow, function(){
+                        msgTuto("Click the reset button on the left bottom corner of the screen", slow, function () {
+                            msgTuto("Free Mode : You are free to manipulate the avatar", slow, function () {
+                                msgTuto("When you are down start the experience by clicking on the right bottom button", slow, function () {
+                                    msgTuto("Good Luck !", quick, function () {
+                                        manipulable = true;
+                                        $('#icon_confirm').on('touchstart', function () {
+                                            $('.fa-times-circle').addClass('fa-chevron-circle-right').removeClass('fa-times-circle').css('color', '#ffffff');
+                                            $(this).slideToggle();
+                                            $(this).off();
+                                            $('.fa-chevron-circle-right').off();
+                                            for(var i=0;i<tutoTargets.length;i++){
+                                                scene.remove(tutoTargets[i]);
+                                            }
+                                            tutoTargets = [];
+                                            startExperience();
+                                        });
+                                        $('.fa-chevron-circle-right').on('touchstart', function (e) {
+                                            e.preventDefault();
+                                            $("#icon_confirm").slideToggle(200);
+                                            if($(this).hasClass('fa-times-circle')) {
+                                                $(this).addClass('fa-chevron-circle-right').removeClass('fa-times-circle').css('color', '#ffffff');
+                                                manipulable = true;
+                                            }
+                                            else {
+                                                $(this).removeClass('fa-chevron-circle-right').addClass('fa-times-circle').css('color', 'rgb(199, 58, 76)');
+                                                manipulable = false;
+                                            }
+                                        });
+                                    });
+                                });
+                            });
+                        });
+                    });
+                });
+        }
+    }
+
+    function msgTuto (msg, temp,callback){
+        $('#console-tuto').html(msg).fadeIn(300, function () {
+            setTimeout(function () {
+                $('#console-tuto').fadeOut(300, function () {
+                    callback();
+                });
+            },temp);
+        });
+    }
 </script>
 
 <script type="text/javascript">
@@ -936,12 +1173,24 @@ include("includes/connexion.php");
                 $('#overlay-instruction').hide();
                 startExperience();
             })
+        });
+        $("#btn-tuto").on('touchstart', function (e) {
+            e.preventDefault();
+            $('#overlay-instruction').fadeOut(400, function () {
+                $('#overlay-instruction').hide();
+
+                tutoTargets = getTargetList(8,true);
+                msgTuto("Welcome to the tutorial",6000,function(){
+                    tutorial();
+                });
+            })
         })
     });
     
 
     function startExperience () {
         manipulable = true;
+        resetBones();
         //Affichage des objets
         $('.objet:first').addClass('display');
 
