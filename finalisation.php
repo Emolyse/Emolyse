@@ -67,18 +67,18 @@ else{
                     </select>
                     <select name="mois" id="select-mois">
                         <option value="">---</option>
-                        <option value="01">janvier</option>
-                        <option value="02">févier</option>
-                        <option value="03">mars</option>
-                        <option value="04">avril</option>
-                        <option value="05">mai</option>
-                        <option value="06">juin</option>
-                        <option value="07">juillet</option>
-                        <option value="08">août</option>
-                        <option value="09">septembre</option>
-                        <option value="10">octobre</option>
-                        <option value="11">novembre</option>
-                        <option value="12">décembre</option>
+                        <option value="01"><?php echo JANVIER; ?></option>
+                        <option value="02"><?php echo FEVRIER; ?></option>
+                        <option value="03"><?php echo MARS; ?></option>
+                        <option value="04"><?php echo AVRIL; ?></option>
+                        <option value="05"><?php echo MAI; ?></option>
+                        <option value="06"><?php echo JUIN; ?></option>
+                        <option value="07"><?php echo JUILLET; ?></option>
+                        <option value="08"><?php echo AOUT; ?></option>
+                        <option value="09"><?php echo SEPTEMBRE; ?></option>
+                        <option value="10"><?php echo OCTOBRE; ?></option>
+                        <option value="11"><?php echo NOVEMBRE; ?></option>
+                        <option value="12"><?php echo DECEMBRE; ?></option>
                     </select>
                     <select name="annee" id="select-annee">
                         <option value="">--</option>
