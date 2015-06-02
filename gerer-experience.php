@@ -107,7 +107,7 @@ $idExperience = $_GET['id'];
     <div class="pop-up-consigne">
         <i class="fa fa-times-circle-o close"></i>
         <div class="box">
-            <h3>Modifier la consigne par défaut</h3>
+            <h3><?php echo MODIFIER_CONSIGNE_PAR_DEFAUT; ?></h3>
 
             <?php
             if($resultatExperience['consigne'] == ''){

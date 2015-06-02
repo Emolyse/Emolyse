@@ -1,5 +1,6 @@
 $(function() {
     // Tri des produits jQuery UI
+
     $( ".sortable").sortable({
         tolerance: 'pointer',
         dropOnEmpty: true,
@@ -9,7 +10,7 @@ $(function() {
         },
         stop: function( event, ui ) {
             $(ui.item).css({ opacity: 1 });
-            $("#delete").css('background-position', '52px');
+            $("#delete").css('background-position', '102px');
         },
         over: function( event, ui ) {
             $("#delete").css('background-position', '0px');
@@ -40,5 +41,10 @@ $(function() {
                 )
             });
         }
+    });
+    $( "#delete").sortable({
+        over: function( event, ui ) {
+            $("#delete").css('background-position', '52px');
+        },
     });
 });

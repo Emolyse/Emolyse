@@ -67,15 +67,16 @@ include('includes/en-tete.php');
 <div class="pop-up">
     <i class="fa fa-times-circle-o close"></i>
     <div class="box">
-        <h3>Ajouter une langue</h3>
+        <h3><?php echo AJOUTER_UNE_LANGUE; ?></h3>
         <form action="includes/traitement.php" method="post" enctype="multipart/form-data">
-            <input type="text" name="codeLangue" id="codeLangue" placeholder="Code langue*"/>
-            <input type="text" name="nom" id="nom" placeholder="Nom de la langue*"/>
-            <div id="fileLangClic"><span id="indicationUploadImg">Ajouter un drapeau</span>
+            <input type="text" name="codeLangue" id="codeLangue" placeholder="<?php echo CODE_LANGUE; ?>*"/>
+            <input type="text" name="nom" id="nom" placeholder="<?php echo NOM_DE_LA_LANGUE; ?>*"/>
+            <div id="fileLangClic">
+                <span id="indicationUploadImg"><?php echo AJOUTER_UN_DRAPEAU; ?></span>
             </div>
             <input type="hidden" name="lienDrapeau" id="lienDrapeau"/>
             <input type="file" name="file" id="fileLang" style="visibility: hidden" />
-            <input type="submit" value="Ajouter" name="ajoutLangue"/>
+            <input type="submit" value="<?php echo AJOUTER; ?>" name="ajoutLangue"/>
         </form>
     </div>
 </div>
@@ -84,7 +85,7 @@ include('includes/en-tete.php');
 <div class="pop-up-consigne">
     <i class="fa fa-times-circle-o close"></i>
     <div class="box">
-        <h3>Modifier la consigne</h3>
+        <h3><?php echo MODIFIER_LA_CONSIGNE; ?></h3>
 
             <ul class="tabs">
                 <?php

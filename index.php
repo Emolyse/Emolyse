@@ -7,7 +7,7 @@
     $requete = "SELECT * FROM langue";
     $resultats = $base->query($requete);
     while(($resultat = $resultats->fetch_array())){
-        echo "<button name='lang' value='".$resultat['codeLangue']."' type='submit' class='drapeauxLang'><img src='".$resultat['lienDrapeau']."' width='30px'/></button>";
+        echo "<button name='lang' value='".$resultat['codeLangue']."' type='submit' class='drapeauxLang'><img src='".$resultat['lienDrapeau']."' width='40px'/></button>";
     }
     ?>
 </form>
