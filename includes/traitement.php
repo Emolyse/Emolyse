@@ -188,6 +188,8 @@ if(isset($_POST['finaliser-experience'])){
         header("Location: ../finalisation.php?erreur=naissance");
     }elseif(empty($_POST['sexe'])){
         header("Location: ../finalisation.php?erreur=sexe");
+    }elseif(empty($_POST['data'])){
+        header("Location: ../index.php?erreur=nodata");
     }else{
         $nom = $_POST['nom'];
         $prenom = $_POST['prenom'];
@@ -196,6 +198,8 @@ if(isset($_POST['finaliser-experience'])){
         $annee = $_POST['annee'];
         $sexe = $_POST['sexe'];
         $lienPhoto = $_POST['lienPhotoUser'];
+        $data = json_decode($_POST['data']);
+        $sexeAvatar = $data[0]->sexeAvatar;
 
         $naissance = $annee."-".$mois."-".$jour;
 
@@ -205,6 +209,18 @@ if(isset($_POST['finaliser-experience'])){
         $id = $base->insert_id;
         if($nom == ''){
             $requete = "UPDATE participant SET nom='sujet-".$id."' WHERE idParticipant=".$id."";
+            $base->query($requete);
+        }
+
+        for($i = 0 ; $i < count($data) ; $i++){
+            $idObj = $data[$i]->idObj;
+            $lArmRotX = $data[$i]->lArmRotX;
+            $lArmRotZ = $data[$i]->lArmRotZ;
+            $rArmRotX = $data[$i]->rArmRotX;
+            $rArmRotZ = $data[$i]->rArmRotZ;
+            $bodyRot = $data[$i]->bodyRot;
+            $distance = $data[$i]->distance;
+            $requete = "INSERT INTO resultat VALUES ($idObj, $id, $sexeAvatar, $lArmRotX , $lArmRotZ , $rArmRotX, $rArmRotZ, $bodyRot,$distance, now())";
             $base->query($requete);
         }
 
@@ -218,8 +234,16 @@ if(isset($_POST['finaliser-experience'])){
         unset($sexe);
         unset($lienPhoto);
         unset($naissance);
+        unset($idObj);
+        unset($lArmRotX);
+        unset($lArmRotZ);
+        unset($rArmRotX);
+        unset($rArmRotZ);
+        unset($bodyRot);
+        unset($distance);
+        unset($sexeAvatar);
 
-        header("Location: ../index.php");
+        header("Location: ../index.php?state=success");
     }
 }
 

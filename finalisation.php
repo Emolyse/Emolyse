@@ -1,9 +1,14 @@
 <?php
 include('includes/header.php');
 include('includes/en-tete.php');
-?>
 
-<?php if(isset($_SESSION['data'])) echo $_SESSION['data'] ?>
+if(isset($_POST['data'])) {
+    $data = $_POST['data'];
+}
+else{
+    $data = '';
+}
+?>
 <section class="breadcrumb">
     <ul>
         <li><a href="index.php"><img src="images/home.png" alt="Revenir à l'accueil de l'application" id="pictoHome"/></a></li>
@@ -167,6 +172,7 @@ include('includes/en-tete.php');
                     <div id="filePhotoUserClic"><span id="indicationUploadImg">Ajouter une photo</span>
                     </div>
                     <input type="hidden" name="lienPhotoUser" id="lienPhotoUser"/>
+                    <input type="hidden" name="data" id="data"/>
                     <input type="file" name="file" id="filePhotoUser" style="visibility: hidden" />
                 </div>
                 <input type="submit" id="finaliser-experience" name="finaliser-experience" value="<?php echo FINALISER; ?>"/>
@@ -177,6 +183,8 @@ include('includes/en-tete.php');
 </section>
 <script>
     $(document).ready(function () {
+        var data = JSON.stringify(<?php echo $data ?>);
+        $("#data").attr("value",data);
         // Custom du bouton d'upload d'une image et envoie des infos pour enregistrement
         $('#filePhotoUserClic').click(function(){
             $('#filePhotoUser').click();
@@ -203,6 +211,7 @@ include('includes/en-tete.php');
             }
             $('#lienPhotoUser').val(json.link);
         });
+
 
             xhr.open('post', 'includes/uploadPhotoUser.php', true);
             xhr.setRequestHeader('content-type', 'multipart/form-data');

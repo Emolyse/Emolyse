@@ -12,7 +12,7 @@ include('includes/en-tete.php');
 </section>
 
 <section class="nouvelle-experience">
-    <div id="avatarWoman" onclick="avatarSelected('woman');"><img src="images/imgAvatar/avatar_woman.png" alt="Choix de l'avatar femme" id="avatarW"/></div>
+    <div class="choixAvatar" onclick="avatarSelected('woman');"><img src="images/imgAvatar/avatar_woman.png" alt="Choix de l'avatar femme" id="avatarW"/></div>
     <div>
         <form action="includes/traitement.php" method="post">
             <select name="experience" id="select-experience">
@@ -30,7 +30,7 @@ include('includes/en-tete.php');
             <input type="submit" id="btn-start-experience" name="start-experience" value="<?php echo DEMARRER; ?>"/>
         </form>
     </div>
-    <div id="avatarMan" onclick="avatarSelected('man');"><img src="images/imgAvatar/avatar_man.png" alt="Choix de l'avatar femme" id="avatarM"/></div>
+    <div class="choixAvatar" onclick="avatarSelected('man');"><img src="images/imgAvatar/avatar_man.png" alt="Choix de l'avatar femme" id="avatarM"/></div>
 </section>
 
 <script>
