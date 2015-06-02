@@ -200,6 +200,7 @@ if(isset($_POST['finaliser-experience'])){
         $lienPhoto = $_POST['lienPhotoUser'];
         $data = json_decode($_POST['data']);
         $sexeAvatar = $data[0]->sexeAvatar;
+        $idExperience = $data[0]->idExperience;
 
         $naissance = $annee."-".$mois."-".$jour;
 
@@ -214,13 +215,14 @@ if(isset($_POST['finaliser-experience'])){
 
         for($i = 0 ; $i < count($data) ; $i++){
             $idObj = $data[$i]->idObj;
+            $avatarRot = $data[$i]->avatarRot;
             $lArmRotX = $data[$i]->lArmRotX;
             $lArmRotZ = $data[$i]->lArmRotZ;
             $rArmRotX = $data[$i]->rArmRotX;
             $rArmRotZ = $data[$i]->rArmRotZ;
             $bodyRot = $data[$i]->bodyRot;
             $distance = $data[$i]->distance;
-            $requete = "INSERT INTO resultat VALUES ($idObj, $id, '".$sexeAvatar."', $lArmRotX , $lArmRotZ , $rArmRotX, $rArmRotZ, $bodyRot,$distance, now())";
+            $requete = "INSERT INTO resultat VALUES ($idObj, $id, $idExperience ,'".$sexeAvatar."', $avatarRot, $lArmRotX , $lArmRotZ , $rArmRotX, $rArmRotZ, $bodyRot,$distance, now())";
             $base->query($requete);
         }
 
@@ -240,6 +242,7 @@ if(isset($_POST['finaliser-experience'])){
         unset($rArmRotX);
         unset($rArmRotZ);
         unset($bodyRot);
+        unset($avatarRot);
         unset($distance);
         unset($sexeAvatar);
 

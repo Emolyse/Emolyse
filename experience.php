@@ -341,11 +341,13 @@ include("includes/connexion.php");
     var nbObjects = <?php echo $nbObjet ?>;
     var idExperience = <?php echo $experience ?>;
     var idObj = [];
-    <?php foreach($idObj as $cle=>$valeur){
-            echo "idObj[$cle] = $valeur;";
+    <?php
+        if(isset($idObj)){
+            foreach($idObj as $cle=>$valeur){
+                    echo "idObj[$cle] = $valeur;";
+            }
         }
     ?>
-    console.log(idObj);
     /*
      Information récupérees du get
      */
@@ -910,7 +912,7 @@ include("includes/connexion.php");
     }
 
     function extractData(){
-        var res = {objPos:posObject,idObj:idObj[posObject],expId:idExperience,avatarRot:THREE.Math.radToDeg(avatarRotation),rArmRotX:THREE.Math.radToDeg(rArmRotX),rArmRotZ:THREE.Math.radToDeg(rArmRotZ),lArmRotX:THREE.Math.radToDeg(lArmRotX),lArmRotZ:THREE.Math.radToDeg(lArmRotZ),bodyRot:THREE.Math.radToDeg(bodyRot),distance:posScreen.x-avatar.position.x,sexeAvatar:sexeAvatar};
+        var res = {objPos:posObject,idObj:idObj[posObject],idExperience:idExperience,avatarRot:THREE.Math.radToDeg(avatarRotation),rArmRotX:THREE.Math.radToDeg(rArmRotX),rArmRotZ:THREE.Math.radToDeg(rArmRotZ),lArmRotX:THREE.Math.radToDeg(lArmRotX),lArmRotZ:THREE.Math.radToDeg(lArmRotZ),bodyRot:THREE.Math.radToDeg(bodyRot),distance:posScreen.x-avatar.position.x,sexeAvatar:sexeAvatar};
         return res;
     }
 
