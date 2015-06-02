@@ -351,7 +351,7 @@ include("includes/connexion.php");
      */
 
     var choixAvatar = '<?php echo $_GET['avatarselect'] ?>';
-    var urlAvatar;
+    var urlAvatar, sexeAvatar='F';
     var container;
     var data = [];
     var posScreen = new THREE.Vector3(170,120,-150);
@@ -421,9 +421,11 @@ include("includes/connexion.php");
         //Url de l'avatar
         if(choixAvatar == 'man'){
             urlAvatar = 'Homme/avatar_man.dae';
+            sexeAvatar = 'M';
         }
         else{
             urlAvatar = 'Femme/avatar_woman.dae'
+            sexeAvatar = 'F';
         }
         loadAvatar(urlAvatar, function () {
             avatar.updateMatrixWorld(true);
@@ -908,7 +910,7 @@ include("includes/connexion.php");
     }
 
     function extractData(){
-        var res = {objPos:posObject,idObj:idObj[posObject],expId:idExperience,avatarRot:THREE.Math.radToDeg(avatarRotation),rArmRotX:THREE.Math.radToDeg(rArmRotX),rArmRotZ:THREE.Math.radToDeg(rArmRotZ),lArmRotX:THREE.Math.radToDeg(lArmRotX),lArmRotZ:THREE.Math.radToDeg(lArmRotZ),bodyRot:THREE.Math.radToDeg(bodyRot),distance:posScreen.x-avatar.position.x};
+        var res = {objPos:posObject,idObj:idObj[posObject],expId:idExperience,avatarRot:THREE.Math.radToDeg(avatarRotation),rArmRotX:THREE.Math.radToDeg(rArmRotX),rArmRotZ:THREE.Math.radToDeg(rArmRotZ),lArmRotX:THREE.Math.radToDeg(lArmRotX),lArmRotZ:THREE.Math.radToDeg(lArmRotZ),bodyRot:THREE.Math.radToDeg(bodyRot),distance:posScreen.x-avatar.position.x,sexeAvatar:sexeAvatar};
         return res;
     }
 
@@ -916,6 +918,7 @@ include("includes/connexion.php");
 
 <script type="text/javascript">
     var posObject = 0;
+    var redirect = "../Emolyse/finalisation.php";
     var myRedirect = function(redirectUrl, arg, value) {
         var form = $('<form action="' + redirectUrl + '" method="post">' +
         '<input type="hidden" id="myForm" name="'+ arg +'"></input>' + '</form>');

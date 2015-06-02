@@ -199,6 +199,7 @@ if(isset($_POST['finaliser-experience'])){
         $sexe = $_POST['sexe'];
         $lienPhoto = $_POST['lienPhotoUser'];
         $data = json_decode($_POST['data']);
+        $sexeAvatar = $data[0]->sexeAvatar;
 
         $naissance = $annee."-".$mois."-".$jour;
 
@@ -219,7 +220,7 @@ if(isset($_POST['finaliser-experience'])){
             $rArmRotZ = $data[$i]->rArmRotZ;
             $bodyRot = $data[$i]->bodyRot;
             $distance = $data[$i]->distance;
-            $requete = "INSERT INTO resultat VALUES ($idObj, $id, 'H', $lArmRotX , $lArmRotZ , $rArmRotX, $rArmRotZ, $bodyRot,$distance, now())";
+            $requete = "INSERT INTO resultat VALUES ($idObj, $id, $sexeAvatar, $lArmRotX , $lArmRotZ , $rArmRotX, $rArmRotZ, $bodyRot,$distance, now())";
             $base->query($requete);
         }
 
@@ -240,8 +241,9 @@ if(isset($_POST['finaliser-experience'])){
         unset($rArmRotZ);
         unset($bodyRot);
         unset($distance);
+        unset($sexeAvatar);
 
-        //header("Location: ../index.php");
+        header("Location: ../index.php?state=success");
     }
 }
 
