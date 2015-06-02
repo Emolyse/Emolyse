@@ -10,13 +10,14 @@
     if(!in_array($h['x-file-type'], $types)){
         $o->error = 'Format du fichier non supporté';
     }else{
-        file_put_contents('../images/imgExperience/'.$h['x-file-name'], $source);
-        $o->name = $h['x-file-name'];
 
         $nameOriginal = $h['x-file-name'];
         $name = pathinfo($nameOriginal);
         $name = $name['filename'];
         $idExperience = $h['idExperience'];
+
+        file_put_contents('../images/imgExperience/'.$idExperience.'-'.$h['x-file-name'], $source);
+        $o->name = $h['x-file-name'];
 
         $requeteMax = "SELECT MAX(position) as max FROM produit WHERE idExperience=".$idExperience."";
         $resultatsMax = $base->query($requeteMax);
@@ -25,11 +26,11 @@
         }
         $position = $position+1;
 
-        $requeteInsert = "INSERT INTO produit VALUES ('', '".$idExperience."', '".$position."','".$name."', 'images/imgExperience/".$nameOriginal."')";
+        $requeteInsert = "INSERT INTO produit VALUES ('', '".$idExperience."', '".$position."','".$name."', 'images/imgExperience/".$idExperience."-".$nameOriginal."')";
         $base->query($requeteInsert);
 
         $id = $base->insert_id;
-        $o->content = '<li class="objets ui-state-default ui-sortable-handle" data-id="'.$id.'" ><img src="images/imgExperience/'.$h['x-file-name'].'" /></li>';
+        $o->content = '<li class="objets ui-state-default ui-sortable-handle" data-id="'.$id.'" ><img src="images/imgExperience/'.$idExperience.'-'.$h['x-file-name'].'" /></li>';
 
         // on compte le nombre de produits dans la base
         $requeteCountProduit = "SELECT * FROM produit WHERE idExperience=".$idExperience."";

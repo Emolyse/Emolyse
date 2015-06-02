@@ -6,8 +6,8 @@ include('includes/en-tete.php');
 <section class="breadcrumb">
     <ul>
         <li><a href="index.php"><img src="images/home.png" alt="Revenir à l'accueil de l'application" id="pictoHome"/></a></li>
-        <li><a href="experimentateur-accueil.php"><?php if(BTN_EXPERIMENTATEUR_HOME != ''){echo BTN_EXPERIMENTATEUR_HOME;}else{ echo('BTN_EXPERIMENTATEUR_HOME');}; ?></a></li>
-        <li><?php if(BTN_EXPERIENCES != ''){echo BTN_EXPERIENCES;}else{ echo('BTN_EXPERIENCES');}; ?></li>
+        <li><a href="experimentateur-accueil.php"><?php echo BTN_EXPERIMENTATEUR_HOME; ?></a></li>
+        <li><?php echo BTN_EXPERIENCES; ?></li>
     </ul>
 </section>
 
@@ -18,7 +18,7 @@ include('includes/en-tete.php');
     </div>
     <table class="table-experience">
         <thead>
-            <th><?php if(NOM != ''){echo NOM;}else{ echo('NOM');}; ?></th>
+            <th><?php echo NOM; ?></th>
             <th></th>
             <th></th>
         </thead>

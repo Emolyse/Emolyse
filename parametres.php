@@ -6,19 +6,19 @@ include('includes/en-tete.php');
 <section class="breadcrumb">
     <ul>
         <li><a href="index.php"><img src="images/home.png" alt="Revenir à l'accueil de l'application" id="pictoHome"/></a></li>
-        <li><a href="experimentateur-accueil.php"><?php if(BTN_EXPERIMENTATEUR_HOME != ''){echo BTN_EXPERIMENTATEUR_HOME;}else{ echo('BTN_EXPERIMENTATEUR_HOME');}; ?></a></li>
-        <li><?php if(BTN_PARAMETRES != ''){echo BTN_PARAMETRES;}else{ echo('BTN_PARAMETRES');}; ?></li>
+        <li><a href="experimentateur-accueil.php"><?php echo BTN_EXPERIMENTATEUR_HOME; ?></a></li>
+        <li><?php echo BTN_PARAMETRES; ?></li>
     </ul>
 </section>
 
 <section class="parametres">
     <div class="gerer-parametres">
-        <a href="#" id="edit-default-consigne"><i class="fa fa-pencil"></i> <?php if(CONSIGNE != ''){echo CONSIGNE;}else{ echo('CONSIGNE');}; ?></a>
-        <a href="#" id="add-language"><i class="fa fa-plus"></i> <?php if(LANGUE != ''){echo LANGUE;}else{ echo('LANGUE');}; ?></a>
+        <a href="#" id="edit-default-consigne"><i class="fa fa-pencil"></i> <?php echo CONSIGNE; ?></a>
+        <a href="#" id="add-language"><i class="fa fa-plus"></i> <?php echo LANGUE; ?></a>
     </div>
     <table class="table-parametres">
         <tr>
-            <th><?php if(IDENTIFIANT != ''){echo IDENTIFIANT;}else{echo('IDENTIFIANT');}; ?></th>
+            <th><?php echo IDENTIFIANT; ?></th>
             <?php
                 $requete = "SELECT * FROM traduction t, langue l WHERE t.codeLangue = l.codeLangue AND codeIdentifiant <> 'TEXT_CONSIGNE' GROUP BY t.codeLangue";
                 $resultats = $base->query($requete);
