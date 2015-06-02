@@ -153,7 +153,7 @@ label.radioEnv > input:checked + img{
     padding: 20px;
     border: none;
     position: absolute;
-    left: 563px;
+    left: 46%;
     top: 188px;
     z-index: 999;
     -webkit-border-radius: 3px;
@@ -602,13 +602,13 @@ a.tab.active {
     cursor: pointer;
 }
 #delete{
-    background-image: url("../images/poubellebis.png");
-    background-position: 52px;
+    background-image: url("../images/poubelleter.png");
+    background-position: 102px;
     height: 70px;
     width: 50px;
     position: absolute;
-    right: 60px;
-    top: 26%;
+    right: 12%;
+    top: 32%;
 }
 #delete li {
     height: 0;
