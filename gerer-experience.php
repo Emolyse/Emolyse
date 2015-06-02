@@ -16,9 +16,9 @@ $idExperience = $_GET['id'];
 <section class="breadcrumb">
     <ul>
         <li><a href="index.php"><img src="images/home.png" alt="Revenir à l'accueil de l'application" id="pictoHome"/></a></li>
-        <li><a href="experimentateur-accueil.php"><?php if(BTN_EXPERIMENTATEUR_HOME != ''){echo BTN_EXPERIMENTATEUR_HOME;}else{ echo('BTN_EXPERIMENTATEUR_HOME');}; ?></a></li>
-        <li><a href="experimentateur-experiences.php"><?php if(BTN_EXPERIENCES != ''){echo BTN_EXPERIENCES;}else{ echo('BTN_EXPERIENCES');}; ?></a></li>
-        <li><?php if(EXPERIENCE != ''){echo EXPERIENCE;}else{ echo('EXPERIENCE');}; ?></li>
+        <li><a href="experimentateur-accueil.php"><?php echo BTN_EXPERIMENTATEUR_HOME; ?></a></li>
+        <li><a href="experimentateur-experiences.php"><?php echo BTN_EXPERIENCES; ?></a></li>
+        <li><?php echo EXPERIENCE; ?></li>
     </ul>
 </section>
 
@@ -54,12 +54,12 @@ $idExperience = $_GET['id'];
                 }
              ?>
             </div>
-            <a href="#" id="edit-default-consigne"><i class="fa fa-pencil"></i> <?php if(EDITER_LA_CONSIGNE != ''){echo EDITER_LA_CONSIGNE;}else{ echo('CONSIGNE');}; ?></a>
+            <a href="#" id="edit-default-consigne"><i class="fa fa-pencil"></i> <?php echo EDITER_LA_CONSIGNE; ?></a>
 
         </div>
         <div class="objet">
-            <h3><?php if(OBJETS != ''){echo OBJETS;}else{ echo('OBJETS');}; ?></h3><input type="checkbox" name="random" onchange="updateExperience('random')" class="randomCheckbox" <?php if($resultatExperience['random'] == 1){echo "checked='checked'";}else{ echo('');}; ?>/> <?php if(AFFICHAGE_ALEATOIRE_OBJETS != ''){echo AFFICHAGE_ALEATOIRE_OBJETS;}else{ echo('AFFICHAGE_ALEATOIRE_OBJETS');}; ?>
-            <input type="checkbox" name="syncroBras" onchange="updateExperience('syncroBras')" class="syncroBrasCheckbox" <?php if($resultatExperience['syncroBras'] == 1){echo "checked='checked'";}else{ echo('');}; ?>/> <?php if(AFFICHAGE_SYNCRO_BRAS != ''){echo AFFICHAGE_SYNCRO_BRAS;}else{ echo('AFFICHAGE_SYNCRO_BRAS');}; ?>
+            <h3><?php echo OBJETS; ?></h3><input type="checkbox" name="random" onchange="updateExperience('random')" class="randomCheckbox" <?php if($resultatExperience['random'] == 1){echo "checked='checked'";}else{ echo('');}; ?>/> <?php echo AFFICHAGE_ALEATOIRE_OBJETS; ?>
+            <input type="checkbox" name="syncroBras" onchange="updateExperience('syncroBras')" class="syncroBrasCheckbox" <?php if($resultatExperience['syncroBras'] == 1){echo "checked='checked'";}else{ echo('');}; ?>/> <?php echo AFFICHAGE_SYNCRO_BRAS; ?>
 
             <ul id="delete" class="sortable"></ul>
 
@@ -82,7 +82,7 @@ $idExperience = $_GET['id'];
             </div>
         </div>
         <div class="environnement">
-            <h3><?php if(ENVIRONNEMENT != ''){echo ENVIRONNEMENT;}else{ echo('ENVIRONNEMENT');}; ?></h3>
+            <h3><?php echo ENVIRONNEMENT; ?></h3>
             <div class="select-environnement">
                 <?php
                 $requeteEnv = "SELECT * FROM environnement";
@@ -101,7 +101,7 @@ $idExperience = $_GET['id'];
                 ?>
             </div>
         </div>
-        <input type="submit" id="btn-add-experience" style="visibility: hidden" name="add-experience" value="<?php if(AJOUTER != ''){echo AJOUTER;}else{ echo('AJOUTER');}; ?>"/>
+        <input type="submit" id="btn-add-experience" style="visibility: hidden" name="add-experience" value="<?php echo AJOUTER; ?>"/>
 
     <!--POP-UP AU CLIC SUR "CONSIGNE"-->
     <div class="pop-up-consigne">
@@ -168,25 +168,6 @@ $idExperience = $_GET['id'];
 
         // suppression d'un produit
         document.oncontextmenu = function() {return false;}; // suppression de l'apparition de la pop-up au clic long
-
-        /*var timeoutId = 0;
-        $('.liste-objets').on('mousedown','.objets', function(){
-            var id = $(this).attr("data-id");
-            var idExperience = $('#idExperience').val();
-            timeoutId = setTimeout(function(){
-                var r = confirm("Etes vous sûr de vouloir supprimer ce produit ?");
-                if (r == true) {
-                    texte = file('http://'+window.location.host+'/Emolyse/includes/traitement.php?id='+escape(id)
-                        +'&idExperience='+escape(idExperience)
-                        +'&deleteProduit="deleteProduit"'
-                    )
-                    location.reload();
-                }
-            }, 1000);
-        }).bind('mouseup mouseleave', function() {
-            clearTimeout(timeoutId);
-
-        });*/
 
         // quand on click sur la croix dans la pop-up de la consigne de l'expérience on ferme celle-ci
         $(".close").click(function() {

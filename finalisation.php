@@ -7,7 +7,7 @@ include('includes/en-tete.php');
 <section class="breadcrumb">
     <ul>
         <li><a href="index.php"><img src="images/home.png" alt="Revenir à l'accueil de l'application" id="pictoHome"/></a></li>
-        <li><?php if(FINALISATION != ''){echo FINALISATION;}else{ echo('FINALISATION');}; ?></li>
+        <li><?php echo FINALISATION; ?></li>
     </ul>
 </section>
 
@@ -16,16 +16,16 @@ include('includes/en-tete.php');
     <div class="form-finalisation">
         <form action="includes/traitement.php" method="post" enctype="multipart/form-data">
             <div class="titreForm">
-                <?php if(EXPERIENCE_TERMINEE != ''){echo EXPERIENCE_TERMINEE;}else{ echo('EXPERIENCE_TERMINEE');}; ?>
+                <?php echo EXPERIENCE_TERMINEE; ?>
             </div>
             <div class="infosParticipants">
                 <div class="sexeForm">
-                    <label style="<?php if(isset($_GET['erreur']) == 'sexe'){echo "color: red;";}else{ echo "";}; ?>"><?php if(SEXE != ''){echo SEXE;}else{ echo('SEXE');}; ?>* : </label>
-                    <input type="radio" name="sexe" value="F"> <?php if(FEMME != ''){echo FEMME;}else{ echo('FEMME');}; ?>
-                    <input type="radio" name="sexe" value="H"> <?php if(HOMME != ''){echo HOMME;}else{ echo('HOMME');}; ?>
+                    <label style="<?php if(isset($_GET['erreur']) == 'sexe'){echo "color: red;";}else{ echo "";}; ?>"><?php echo SEXE; ?>* : </label>
+                    <input type="radio" name="sexe" value="F"> <?php echo FEMME; ?>
+                    <input type="radio" name="sexe" value="H"> <?php echo HOMME; ?>
                 </div>
                 <div class="dateNaissForm">
-                    <label style="<?php if(isset($_GET['erreur']) == 'naissance'){echo "color: red;";}else{ echo "";}; ?>"><?php if(NEE_LE != ''){echo NEE_LE;}else{ echo('NEE_LE');}; ?>* :</label>
+                    <label style="<?php if(isset($_GET['erreur']) == 'naissance'){echo "color: red;";}else{ echo "";}; ?>"><?php echo NEE_LE; ?>* :</label>
                     <select name="jour" id="select-jour">
                         <option value="">--</option>
                         <option value="01">01</option>
@@ -157,10 +157,10 @@ include('includes/en-tete.php');
                 </div>
                 <div class="infos">
                     <div class="nomForm">
-                        <input type="text" name="nom" placeholder="<?php if(NOM != ''){echo NOM;}else{ echo('NOM');}; ?>"/>
+                        <input type="text" name="nom" placeholder="<?php echo NOM; ?>"/>
                     </div>
                     <div class="prenomForm">
-                        <input type="text" name="prenom" placeholder="<?php if(PRENOM != ''){echo PRENOM;}else{ echo('PRENOM');}; ?>"/>
+                        <input type="text" name="prenom" placeholder="<?php echo PRENOM; ?>"/>
                     </div>
                 </div>
                 <div class="fileForm">
@@ -169,8 +169,8 @@ include('includes/en-tete.php');
                     <input type="hidden" name="lienPhotoUser" id="lienPhotoUser"/>
                     <input type="file" name="file" id="filePhotoUser" style="visibility: hidden" />
                 </div>
-                <input type="submit" id="finaliser-experience" name="finaliser-experience" value="<?php if(FINALISER != ''){echo FINALISER;}else{ echo('FINALISER');}; ?>"/>
-                <span class="obligatoire">* <?php if(CHAMPS_OBLIGATOIRE != ''){echo CHAMPS_OBLIGATOIRE;}else{ echo('CHAMPS_OBLIGATOIRE');}; ?></span>
+                <input type="submit" id="finaliser-experience" name="finaliser-experience" value="<?php echo FINALISER; ?>"/>
+                <span class="obligatoire">* <?php echo CHAMPS_OBLIGATOIRE; ?></span>
             </div>
         </form>
     </div>

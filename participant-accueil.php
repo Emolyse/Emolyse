@@ -7,7 +7,7 @@ include('includes/en-tete.php');
 <section class="breadcrumb">
     <ul>
         <li><a href="index.php"><img src="images/home.png" alt="Revenir à l'accueil de l'application" id="pictoHome"/></a></li>
-        <li><?php if(NOUVELLE_EXPERIENCE != ''){echo NOUVELLE_EXPERIENCE;}else{ echo('NOUVELLE_EXPERIENCE');}; ?></li>
+        <li><?php echo NOUVELLE_EXPERIENCE; ?></li>
     </ul>
 </section>
 
@@ -27,7 +27,7 @@ include('includes/en-tete.php');
                 ?>
             </select>
             <input type="hidden" id="choixAvatarInput" name="choixAvatar" value=""/>
-            <input type="submit" id="btn-start-experience" name="start-experience" value="<?php if(DEMARRER != ''){echo DEMARRER;}else{ echo('DEMARRER');}; ?>"/>
+            <input type="submit" id="btn-start-experience" name="start-experience" value="<?php echo DEMARRER; ?>"/>
         </form>
     </div>
     <div id="avatarMan" onclick="avatarSelected('man');"><img src="images/imgAvatar/avatar_man.png" alt="Choix de l'avatar femme" id="avatarM"/></div>
