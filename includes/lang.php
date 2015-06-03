@@ -23,6 +23,7 @@ if(!isset($_SESSION['lang'])){
         $resultats = $base->query($requete);
         while($resultat = $resultats->fetch_array())
         {
+//            echo '<script>console.log("'.utf8_encode($resultat['traduction']).'");</script>';
             define($resultat['codeIdentifiant'], $resultat['traduction']);
         }
     }else{
