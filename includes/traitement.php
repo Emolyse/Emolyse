@@ -137,10 +137,10 @@ if(isset($_GET['updateExperience'])){
     $value = $_GET['value'];
     $id = $_GET['id'];
 
-    $requete = "UPDATE experience SET ".$element."='".$value."' WHERE idExperience=".$id."";
+    $requete = "UPDATE experience SET ".$element."='".addslashes($value)."' WHERE idExperience=".$id."";
     $base->query($requete);
 
-    $base->close();;
+    $base->close();
 
     unset($element);
     unset($value);
@@ -177,11 +177,12 @@ if(isset($_GET['deleteExp'])){
     $requeteSupData = "DELETE FROM resultat WHERE idExperience=".$idExperience."";
     $base->query($requeteSupData);
 
+    $requeteProduit = "DELETE FROM produit WHERE idExperience=".$idExperience."";
+    $base->query($requeteProduit);
+
     $requete = "DELETE FROM experience WHERE idExperience=".$idExperience."";
     $base->query($requete);
 
-    $requeteProduit = "DELETE FROM produit WHERE idExperience=".$idExperience."";
-    $base->query($requeteProduit);
 
     $base->close();
 

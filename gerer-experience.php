@@ -27,10 +27,9 @@ $idExperience = $_GET['id'];
     $resultatsExperience = $base->query($requeteExperience);
     while(($resultatExperience = $resultatsExperience->fetch_array())){
 ?>
-
     <section class="ajout-experience">
         <div class="params1">
-            <input type="text" name="nom" id="champs-nom-experience" onkeyup="updateExperience('nom')" value="<?php if($resultatExperience['nom'] != ''){echo $resultatExperience['nom'];}else{ echo('');}; ?>"/>
+            <input type="text" name="nom" id="champs-nom-experience" onkeyup="updateExperience('nom')" value="<?php echo $resultatExperience['nom']; ?>"/>
             <div id="btn-update-lang">
                 <?php
                     $requeteFlag = "SELECT lienDrapeau FROM langue WHERE codeLangue='".$resultatExperience['codeLangue']."'";
@@ -213,14 +212,12 @@ $idExperience = $_GET['id'];
         if(element == 'nom' && element != 'codeLangue'){
             value = document.getElementsByName(element).item(0).value;
         }
-
         texte = file('http://'+window.location.host+'/Emolyse/includes/traitement.php?element='+escape(element)
             +'&value='+escape(value)
             +'&id='+escape(idExperience)
             +'&updateExperience="updateExperience"'
         )
     }
-
 </script>
 
 </body>
