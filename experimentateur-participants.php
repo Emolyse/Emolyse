@@ -44,7 +44,6 @@
             <th><a href="<?php echo sort_link('Nom', 'nom') ?>"><?php echo NOM; ?> <i class="fa fa-sort"></i></a></th>
             <th><a href="<?php echo sort_link('Prenom', 'prenom') ?>"><?php echo PRENOM; ?> <i class="fa fa-sort"></i></a></th>
             <th><a href="<?php echo sort_link('Naissance', 'naissance') ?>"><?php echo AGE; ?> <i class="fa fa-sort"></i></a></th>
-            <th></th>
         </thead>
         <tbody>
             <?php
@@ -63,7 +62,6 @@
                     $date = $resultat['naissance'];
                     $age = (time() - strtotime($date)) / 3600 / 24 / 365.242;
                     echo "<td>".(int)$age." ans</td>";
-                    echo "<td><a href='#'><i class='fa fa-download'></i></a></td>";
                     echo "</tr>";
                 }
             ?>

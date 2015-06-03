@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Mer 03 Juin 2015 à 13:43
+-- Généré le :  Mer 03 Juin 2015 à 15:36
 -- Version du serveur :  5.6.17
 -- Version de PHP :  5.5.12
 
@@ -59,14 +59,14 @@ CREATE TABLE IF NOT EXISTS `experience` (
   PRIMARY KEY (`idExperience`),
   KEY `idEnvironnement` (`idEnvironnement`),
   KEY `codeLangue` (`codeLangue`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=33 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=35 ;
 
 --
 -- Contenu de la table `experience`
 --
 
 INSERT INTO `experience` (`idExperience`, `idEnvironnement`, `nom`, `consigne`, `nbProduit`, `codeLangue`, `syncroBras`, `random`) VALUES
-(16, 2, 'Expérience en italien', 'changement de la consigne pour exp 16 !!', 0, 'EN', 1, 1),
+(16, 2, 'Expérience en italien', 'changement de la consigne pour exp 16 !!', 1, 'EN', 0, 1),
 (17, 1, 'test', 'test de la consigne en franÃ§ais', 0, 'FR', 0, 0),
 (20, 1, 'test drat', 'Order bla', 1, 'FR', 0, 1),
 (22, 1, 'test position', '', 1, 'EN', 0, 1);
@@ -93,6 +93,8 @@ INSERT INTO `identifiant` (`codeIdentifiant`, `description`) VALUES
 ('AFFICHAGE_SYNCRO_BRAS', ''),
 ('AGE', ''),
 ('AJOUTER', ''),
+('AJOUTER_UN_DRAPEAU', ''),
+('AJOUTER_UNE_LANGUE', ''),
 ('ANGLAIS', ''),
 ('AOUT', ''),
 ('AVRIL', ''),
@@ -103,6 +105,7 @@ INSERT INTO `identifiant` (`codeIdentifiant`, `description`) VALUES
 ('BTN_PARTICIPANTS', ''),
 ('CHAMPS_OBLIGATOIRE', ''),
 ('CHOISIR_LA_LANGUE', ''),
+('CODE_LANGUE', ''),
 ('CONSIGNE', ''),
 ('DECEMBRE', ''),
 ('DEMARRER', ''),
@@ -125,8 +128,11 @@ INSERT INTO `identifiant` (`codeIdentifiant`, `description`) VALUES
 ('MAI', ''),
 ('MARS', ''),
 ('MODIFIER', ''),
+('MODIFIER_CONSIGNE_PAR_DEFAUT', ''),
+('MODIFIER_LA_CONSIGNE', ''),
 ('NEE_LE', ''),
 ('NOM', ''),
+('NOM_DE_LA_LANGUE', ''),
 ('NOUVELLE_EXPERIENCE', ''),
 ('NOVEMBRE', ''),
 ('OBJETS', ''),
@@ -155,7 +161,7 @@ CREATE TABLE IF NOT EXISTS `langue` (
 
 INSERT INTO `langue` (`codeLangue`, `nom`, `lienDrapeau`) VALUES
 ('EN', 'Anglais', 'images/drapeau-anglais.png'),
-('FR', 'Francais', '../Emolyse/images/drapeau-francais.png');
+('FR', 'Francais', 'images/drapeau-francais.png');
 
 -- --------------------------------------------------------
 
@@ -171,7 +177,7 @@ CREATE TABLE IF NOT EXISTS `participant` (
   `sexe` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
   `lienPhoto` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`idParticipant`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=16 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=28 ;
 
 --
 -- Contenu de la table `participant`
@@ -183,7 +189,8 @@ INSERT INTO `participant` (`idParticipant`, `nom`, `prenom`, `naissance`, `sexe`
 (3, 'DAITA', 'Jordan', '1993-02-15', 'H', ''),
 (6, 'sujet-6', '', '1947-06-03', 'F', ''),
 (14, 'Julie', 'routaud', '1991-03-04', 'F', ''),
-(15, 'ARNAUD', 'Alizée', '1992-08-31', 'F', 'images/imgUsers/10913092_10205979193705612_1900876804_n.jpg');
+(15, 'ARNAUD', 'Alizée', '1992-08-31', 'F', 'images/imgUsers/10913092_10205979193705612_1900876804_n.jpg'),
+(16, 'toto', 'toto', '1999-11-14', 'F', '');
 
 -- --------------------------------------------------------
 
@@ -199,7 +206,14 @@ CREATE TABLE IF NOT EXISTS `produit` (
   `lienPhoto` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`idProduit`),
   KEY `idExperience` (`idExperience`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=212 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=214 ;
+
+--
+-- Contenu de la table `produit`
+--
+
+INSERT INTO `produit` (`idProduit`, `idExperience`, `position`, `nom`, `lienPhoto`) VALUES
+(212, 16, 1, '01', 'images/imgExperience/16-01.png');
 
 -- --------------------------------------------------------
 
@@ -226,6 +240,13 @@ CREATE TABLE IF NOT EXISTS `resultat` (
   KEY `idProduit` (`idProduit`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Contenu de la table `resultat`
+--
+
+INSERT INTO `resultat` (`idProduit`, `idParticipant`, `idExperience`, `genreAvatar`, `angleAvatar`, `angleBGx`, `angleBGz`, `angleBDx`, `angleBDz`, `angleBuste`, `distance`, `date`) VALUES
+(212, 16, 16, 'F', 0, 31.6976, 0, 62.3127, 0, 0, 170, '2015-06-03');
+
 -- --------------------------------------------------------
 
 --
@@ -249,6 +270,8 @@ INSERT INTO `traduction` (`codeLangue`, `codeIdentifiant`, `traduction`) VALUES
 ('EN', 'AFFICHAGE_SYNCRO_BRAS', 'Syncro'),
 ('EN', 'AGE', 'Age'),
 ('EN', 'AJOUTER', 'Add'),
+('EN', 'AJOUTER_UN_DRAPEAU', 'Add flag'),
+('EN', 'AJOUTER_UNE_LANGUE', 'Add language'),
 ('EN', 'ANGLAIS', 'English'),
 ('EN', 'AOUT', 'August'),
 ('EN', 'AVRIL', 'April'),
@@ -259,6 +282,7 @@ INSERT INTO `traduction` (`codeLangue`, `codeIdentifiant`, `traduction`) VALUES
 ('EN', 'BTN_PARTICIPANTS', 'Participants'),
 ('EN', 'CHAMPS_OBLIGATOIRE', 'Required Fields'),
 ('EN', 'CHOISIR_LA_LANGUE', 'Select language'),
+('EN', 'CODE_LANGUE', 'Language code'),
 ('EN', 'CONSIGNE', 'Instruction'),
 ('EN', 'DECEMBRE', 'December'),
 ('EN', 'DEMARRER', 'Start'),
@@ -281,8 +305,11 @@ INSERT INTO `traduction` (`codeLangue`, `codeIdentifiant`, `traduction`) VALUES
 ('EN', 'MAI', 'May'),
 ('EN', 'MARS', 'March'),
 ('EN', 'MODIFIER', 'Update'),
+('EN', 'MODIFIER_CONSIGNE_PAR_DEFAUT', 'Update default instruction'),
+('EN', 'MODIFIER_LA_CONSIGNE', 'Update instruction'),
 ('EN', 'NEE_LE', 'Born'),
 ('EN', 'NOM', 'Name'),
+('EN', 'NOM_DE_LA_LANGUE', 'Language name'),
 ('EN', 'NOUVELLE_EXPERIENCE', 'New experience'),
 ('EN', 'NOVEMBRE', 'November'),
 ('EN', 'OBJETS', 'Objects'),
@@ -295,6 +322,8 @@ INSERT INTO `traduction` (`codeLangue`, `codeIdentifiant`, `traduction`) VALUES
 ('FR', 'AFFICHAGE_SYNCRO_BRAS', 'Synchronisation des bras'),
 ('FR', 'AGE', 'Age'),
 ('FR', 'AJOUTER', 'Ajouter'),
+('FR', 'AJOUTER_UN_DRAPEAU', 'Ajouter un drapeau'),
+('FR', 'AJOUTER_UNE_LANGUE', 'Ajouter une langue'),
 ('FR', 'ANGLAIS', 'Anglais'),
 ('FR', 'AOUT', 'Août'),
 ('FR', 'AVRIL', 'Avril'),
@@ -305,6 +334,7 @@ INSERT INTO `traduction` (`codeLangue`, `codeIdentifiant`, `traduction`) VALUES
 ('FR', 'BTN_PARTICIPANTS', 'Participants'),
 ('FR', 'CHAMPS_OBLIGATOIRE', 'Champs Obligatoires'),
 ('FR', 'CHOISIR_LA_LANGUE', 'Choisir la langue'),
+('FR', 'CODE_LANGUE', 'Code langue'),
 ('FR', 'CONSIGNE', 'Consigne'),
 ('FR', 'DECEMBRE', 'Décembre'),
 ('FR', 'DEMARRER', 'Démarrer'),
@@ -327,8 +357,11 @@ INSERT INTO `traduction` (`codeLangue`, `codeIdentifiant`, `traduction`) VALUES
 ('FR', 'MAI', 'Mai'),
 ('FR', 'MARS', 'Mars'),
 ('FR', 'MODIFIER', 'Modifier'),
+('FR', 'MODIFIER_CONSIGNE_PAR_DEFAUT', 'Modifier la consigne par défaut'),
+('FR', 'MODIFIER_LA_CONSIGNE', 'Modifier la consigne'),
 ('FR', 'NEE_LE', 'Né(e) le'),
 ('FR', 'NOM', 'Nom'),
+('FR', 'NOM_DE_LA_LANGUE', 'Nom de la langue'),
 ('FR', 'NOUVELLE_EXPERIENCE', 'Nouvelle expérience'),
 ('FR', 'NOVEMBRE', 'Novembre'),
 ('FR', 'OBJETS', 'Objets'),

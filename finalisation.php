@@ -19,7 +19,7 @@ else{
 <section class="nouvelle-experience">
     <div class="avatarFinal"></div>
     <div class="form-finalisation">
-        <form action="includes/traitement.php" method="post" enctype="multipart/form-data">
+        <form action="includes/traitement.php" method="post" enctype="multipart/form-data" onsubmit="return validationForm()">
             <div class="titreForm">
                 <?php echo EXPERIENCE_TERMINEE; ?>
             </div>
@@ -212,7 +212,6 @@ else{
             $('#lienPhotoUser').val(json.link);
         });
 
-
             xhr.open('post', 'includes/uploadPhotoUser.php', true);
             xhr.setRequestHeader('content-type', 'multipart/form-data');
             xhr.setRequestHeader('x-file-type', file.type);
@@ -220,7 +219,28 @@ else{
             xhr.setRequestHeader('x-file-name', file.name);
             xhr.send(file);
         }
+
     });
+
+    function validationForm(){
+        var retour = true;
+        $(".sexeForm label").css({'color': 'black'});
+        $(".dateNaissForm label").css({'color': 'black'});
+
+        if ($("input[name='sexe']").val() == '' || $("select[name='jour']").val() == '' || $("select[name='mois']").val() == '' || $("select[name='annee']").val() == '' ) {
+            retour = false;
+        }
+
+        if (!$("input[name='sexe']").is(":checked") ) {
+            $(".sexeForm label").css({'color': 'red'});
+        }
+
+        if ($("select[name='jour']").val() == '' || $("select[name='mois']").val() == '' || $("select[name='annee']").val() == '' ) {
+            $(".dateNaissForm label").css({'color': 'red'});
+        }
+
+        return retour;
+    }
 </script>
 
 </body>
