@@ -239,7 +239,7 @@ include("includes/connexion.php");
             text-shadow: 4px 4px #333333;
             font-size: 4em;
         }
-        #arrow-right, #move-arrow{
+        #arrow-right, #arrow-left, #move-arrow{
             position: fixed;
             display: none;
             width: 15%;
@@ -405,6 +405,7 @@ include("includes/connexion.php");
     var manipulable = false;
 
     var lockRotation = false;
+    var lockMove = false;
     var iTuto = 0;
 
     var interval;
@@ -468,8 +469,10 @@ include("includes/connexion.php");
             targetList = getTargetList(15,false);
             $(document).on('touchstart', onCanvasMouseDown);
             $("#resetButton").on('touchstart', function () {
-                $(this).toggleClass("rotate360");
-                resetBones();
+                if(!lockMove && !lockRotation) {
+                    $(this).toggleClass("rotate360");
+                    resetBones();
+                }
             });
             loadScreen(function(){
                 $('.fullLoader').hide();
@@ -674,7 +677,7 @@ include("includes/connexion.php");
         } else {
             var mousePosUp = mouseToWorld(evt);
             var long = mousePosUp.x - mousePosDown.x; // long est la longueur de déplacement du touch
-            if (Math.abs(long) > 10) {
+            if (Math.abs(long) > 10 && !lockMove) {
                 if (long > 0) { // L'avatar avance
                     if(long+avatar.position.x >= borneMax){
                         long = borneMax - avatar.position.x;
@@ -929,10 +932,8 @@ include("includes/connexion.php");
 
     function resetBones(){
         takePose(originalSkeleton);
-        if(!lockRotation) {
-            avatar.rotateY(-avatarRotation);
-            avatarRotation = 0;
-        }
+        avatar.rotateY(-avatarRotation);
+        avatarRotation = 0;
         avatar.position.setX(0);
         rArmRotX = 0; rArmRotZ = 0;
         lArmRotX = 0; lArmRotZ = 0;
@@ -963,6 +964,7 @@ include("includes/connexion.php");
     function tutorial(){
         var slow = 6000, quick = 4000;
         console.log(iTuto);
+        var pos;
         switch (iTuto){
             case 0 :
                 //rotationX des bras
@@ -981,11 +983,13 @@ include("includes/connexion.php");
                                     }).slideToggle(300,function(){
                                         manipulable = true;
                                         lockRotation = true;
+                                        lockMove = true;
                                         interval = setInterval(function () {
                                             if(Math.abs(THREE.Math.radToDeg(rArmRotX))>70 || Math.abs(THREE.Math.radToDeg(lArmRotX))>70){
                                                 $('#arrow-right').fadeOut(500);
                                                 manipulable = false;
                                                 lockRotation = false;
+                                                lockMove = false;
                                                 iTuto++;
                                                 clearInterval(interval);
                                                 tutorial();
@@ -1007,6 +1011,13 @@ include("includes/connexion.php");
                         updateTargets();
                         avatar.skeleton.bones[18].updateMatrixWorld(true);
                         pos = worldToScreen(avatar.skeleton.bones[18].getWorldPosition());
+                        var pos2 = worldToScreen(avatar.skeleton.bones[17].getWorldPosition());
+                        $('#arrow-left').css({
+                            left : pos2.x - $('#arrow-right').width() - 0.02*$('canvas').width(),
+                            top : pos2.y - $('#arrow-right').height()+0.1*$('canvas').height(),
+                            '-webkit-transform' : 'rotate(-150deg) scaleY(-1)',
+                            transform : 'rotate(-30deg) scaleY(-1)'
+                        }).slideToggle(300);
                         $('#arrow-right').css({
                             left : pos.x + 0.02*$('canvas').width(),
                             top : pos.y - $('#arrow-right').height()+0.10*$('canvas').height(),
@@ -1015,11 +1026,14 @@ include("includes/connexion.php");
                         }).slideToggle(300,function(){
                             manipulable = true;
                             lockRotation = true;
+                            lockMove = true;
                             interval = setInterval(function () {
                                 if(Math.abs(THREE.Math.radToDeg(rArmRotZ))>70 || Math.abs(THREE.Math.radToDeg(lArmRotZ))>70){
                                     $('#arrow-right').fadeOut(500);
+                                    $('#arrow-left').fadeOut(500);
                                     manipulable = false;
                                     lockRotation = false;
+                                    lockMove = false;
                                     iTuto++;
                                     clearInterval(interval);
                                     tutorial();
@@ -1044,10 +1058,14 @@ include("includes/connexion.php");
                             transform : 'rotate(160deg) scaleY(-1)'
                         }).slideToggle(300, function () {
                             manipulable = true;
+                            lockMove = true;
+                            lockRotation = true;
                             interval = setInterval(function () {
                                 if(Math.abs(THREE.Math.radToDeg(bodyRot))>60){
                                     $('#arrow-right').fadeOut(500);
                                     manipulable = false;
+                                    lockRotation = false;
+                                    lockMove = false;
                                     iTuto++;
                                     clearInterval(interval);
                                     tutorial();
@@ -1058,19 +1076,21 @@ include("includes/connexion.php");
                 });
                 break;
             case 3 :
-                msgTuto("Well Done ! Let's see how to rate the entire avatar",slow, function () {
+                msgTuto("Well Done ! Let's see how to rotate the entire avatar",slow, function () {
                     resetBones();
-                    msgTuto("Move the sphere on his feets across the width", slow, function () {
+                    msgTuto("Move the sphere on his feet across the width", slow, function () {
                         pos = worldToScreen(new THREE.Vector3(0,-80,0));
                         $('#double-arrow').css({
                             left : pos.x - $('#double-arrow').width()/2,
                             top : pos.y - $('#double-arrow').height()/2
                         }).slideToggle(300, function () {
                             manipulable = true;
+                            lockMove = true;
                             interval = setInterval(function () {
                                 if(Math.abs(THREE.Math.radToDeg(avatarRotation))>70){
                                     $('#double-arrow').fadeOut(500);
                                     manipulable = false;
+                                    lockMove = false;
                                     iTuto++;
                                     clearInterval(interval);
                                     tutorial();
