@@ -69,19 +69,16 @@ include('includes/en-tete.php');
             +'&downloadCsv="downloadCsv"'
         )
         var lien = texte;
-        alert(lien);
         $('.downloadCsv').attr('href', lien);
     }
     function downloadZip(){
         texte = file('http://'+window.location.host+'/Emolyse/includes/traitement.php?downloadZip="downloadZip"')
         var lien = texte;
-        alert(lien);
         $('.downloadCsv').attr('href', lien);
     }
 
     $( window ).unload(function() {
         texte = file('http://'+window.location.host+'/Emolyse/includes/traitement.php?suppressionFichier="suppressionFichier"')
-        console.log(texte);
     });
 
 </script>

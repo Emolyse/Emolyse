@@ -191,13 +191,6 @@ if(isset($_GET['deleteExp'])){
 
 // Enregistrement à la fin d'une expérience
 if(isset($_POST['finaliser-experience'])){
-    if(empty($_POST['jour']) || empty($_POST['mois']) || empty($_POST['annee'])){
-        header("Location: ../finalisation.php?erreur=naissance");
-    }elseif(empty($_POST['sexe'])){
-        header("Location: ../finalisation.php?erreur=sexe");
-    }elseif(empty($_POST['data'])){
-        header("Location: ../index.php?erreur=nodata");
-    }else{
         $nom = $_POST['nom'];
         $prenom = $_POST['prenom'];
         $jour = $_POST['jour'];
@@ -253,8 +246,7 @@ if(isset($_POST['finaliser-experience'])){
         unset($distance);
         unset($sexeAvatar);
 
-        header("Location: ../index.php?state=success");
-    }
+        header("Location: ../index.php");
 }
 
 if(isset($_POST['start-experience'])){
