@@ -1,6 +1,8 @@
 <?php
 session_start();
+include("includes/init.php");
 include("includes/connexion.php");
+include("includes/lang.php");
 ?>
 <!--<!DOCTYPE html>-->
 <html lang="en">
@@ -221,8 +223,8 @@ include("includes/connexion.php");
             max-width: 90%;
             text-align: left;
         }#finalizer p {
-            font-size: 2em;
-        }
+             font-size: 2em;
+         }
         #finalizer i{
             font-size: 4em;
             display: inline-block;
@@ -258,18 +260,6 @@ include("includes/connexion.php");
     <p class="txtLoading">Chargement de l'application</p>
     <img src="images/logo.png" alt="" class="logoChargement "/>
 </div>
-<div id="overlay-instruction">
-    <div id="overlay-content">
-        <h1>Consigne</h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut eu dapibus leo. Nunc non nulla ligula.
-            Ut dignissim ac tellus ut lacinia. Donec nisi lorem, faucibus eget justo a, sodales vulputate erat.
-            Nullam ut sapien facilisis nulla gravida efficitur. Aliquam ex metus, vulputate in lectus eu,
-            pulvinar aliquet ipsum. Mauris luctus libero felis, vitae maximus ipsum luctus sed.
-            Nunc hendrerit massa porttitor ex sagittis egestas. Duis nec accumsan neque.</p>
-        <div id="btn-tuto" class="btn-overlay">Tutoriel</div>
-        <div id="btn-start" class="btn-overlay">Démarrer</div>
-    </div>
-</div>
 <i class="fa fa-refresh icon-refresh" id="resetButton"></i>
 
 <div id="console"></div>
@@ -278,60 +268,58 @@ include("includes/connexion.php");
     if(isset($_GET['experience'])){
         $nbObjet = 0;
         $experience = $_GET['experience'];
+        $reqExp = "SELECT consigne, nbProduit, codeLangue, syncroBras, random, lienEnvironnement from experience exp, environnement env where exp.idEnvironnement=env.idEnvironnement and exp.idExperience =".$experience;
+        $resExp = $base->query($reqExp);
+        while(($rowExp = $resExp->fetch_array())){
+            //On récupère l'environnement
+            $lienEnvironnement = $rowExp['lienEnvironnement'];
 
-        // random ?
-        $req = "SELECT random FROM experience WHERE idExperience=".$experience."";
-        $res = $base->query($req);
-        while(($resultatReq = $res->fetch_array())){
-            if($resultatReq['random'] == 0){
-                $requete = "SELECT * FROM produit WHERE idExperience=".$experience." ORDER BY position ASC";
-            }elseif($resultatReq['random'] == 1){
-                $requete = "SELECT * FROM produit WHERE idExperience=".$experience." ORDER BY Rand()";
+            //On vérifie si les bras doivent être synchronisés
+            $synchroneArm = false;
+            if($rowExp['syncroBras'] == 1){
+                $synchroneArm = true;
             }
-            $resultats = $base->query($requete);
-            while(($resultat = $resultats->fetch_array())){
-                $idObj[$nbObjet] = $resultat['idProduit'];
+
+            //La consigne
+            $consigne = $rowExp['consigne'];
+            if($consigne == ''){
+                if($rowExp['codeLangue'] == $_SESSION['lang']){
+                    $consigne = $_SESSION['TEXT_CONSIGNE'];
+                } else {
+                    $reqConsigne = "SELECT traduction from traduction when codeLangue=".$rowExp['codeLangue']." and codeIdentifiant=TEXT_CONSIGNE";
+                }
+            }
+            //Puis les Objets
+            if($rowExp['random'] == 0){
+                $reqObjet = "SELECT * FROM produit WHERE idExperience=".$experience." ORDER BY position ASC";
+            }elseif($rowExp['random'] == 1){
+                $reqObjet = "SELECT * FROM produit WHERE idExperience=".$experience." ORDER BY Rand()";
+            }
+            $resObjet = $base->query($reqObjet);
+            while(($rowObjet = $resObjet->fetch_array())){
+                $idObj[$nbObjet] = $rowObjet['idProduit'];
                 $nbObjet++;
-                $lienPhoto = $resultat['lienPhoto'];
-                $idProduit = $resultat['idProduit'];
+                $lienPhoto = $rowObjet['lienPhoto'];
+                $idProduit = $rowObjet['idProduit'];
                 echo "<img class='objet' src='".$lienPhoto."' id='produit-".$idProduit."' />";
             }
         }
     }
-    ?>
 
-    <?php
-    // Récupération de l'environnement
-    if(isset($_GET['experience'])){
-        $lienEnvironnement = "img/salon_2.jpg";
-        $experience = $_GET['experience'];
-        $requeteExp = "SELECT idEnvironnement FROM experience WHERE idExperience=".$experience."";
-        $resultatsExp = $base->query($requeteExp);
-        while(($resultatExp = $resultatsExp->fetch_array())){
-            $idEnvironnement = $resultatExp['idEnvironnement'];
-            $requeteEnv = "SELECT * FROM environnement WHERE idEnvironnement=".$idEnvironnement."";
-            $resultatsEnv = $base->query($requeteEnv);
-            while(($resultatEnv = $resultatsEnv->fetch_array())){
-                $lienEnvironnement = $resultatEnv['lienEnvironnement'];
-            }
-        }
-    }
 
-    $experience = $_GET['experience'];
-    $synchroneArm = false;
-    $req = "SELECT syncroBras FROM experience WHERE idExperience=".$experience."";
-    $res = $base->query($req);
-
-    while(($resultatReq = $res->fetch_array())){
-        if($resultatReq['syncroBras'] == 0){
-            $synchroneArm = false;
-        }elseif($resultatReq['syncroBras'] == 1){
-            $synchroneArm = true;
-        }
-    }
     ?>
 
 </div>
+
+<div id="overlay-instruction">
+    <div id="overlay-content">
+        <h1>Consigne</h1>
+        <p><?php echo $consigne;?></p>
+        <div id="btn-tuto" class="btn-overlay">Tutoriel</div>
+        <div id="btn-start" class="btn-overlay">Démarrer</div>
+    </div>
+</div>
+
 <div id="icon-env">
     <i id="icon_confirm" class="fa fa-check-circle"></i>
     <i class="fa fa-chevron-circle-right icon_env"></i>
@@ -365,8 +353,8 @@ include("includes/connexion.php");
 
 
     /*
-    Information récupérees de la BDD
-    */
+     Information récupérees de la BDD
+     */
     var nbObjects = <?php echo $nbObjet ?>;
     var idExperience = <?php echo $experience ?>;
     var idObj = [];
@@ -469,7 +457,7 @@ include("includes/connexion.php");
             targetList = getTargetList(15,false);
             $(document).on('touchstart', onCanvasMouseDown);
             $("#resetButton").on('touchstart', function () {
-                if(!lockMove && !lockRotation) {
+                if(!lockMove && !lockRotation && manipulable) {
                     $(this).toggleClass("rotate360");
                     resetBones();
                 }
@@ -485,10 +473,10 @@ include("includes/connexion.php");
         var lienEnvironnement = "<?php echo $lienEnvironnement ?>";
         var texture = THREE.ImageUtils.loadTexture(lienEnvironnement);
         var backgroundMesh = new THREE.Mesh(
-                new THREE.PlaneGeometry(2, 2, 0),
-                new THREE.MeshBasicMaterial({
-                    map: texture
-                }));
+            new THREE.PlaneGeometry(2, 2, 0),
+            new THREE.MeshBasicMaterial({
+                map: texture
+            }));
 
         backgroundMesh.material.depthTest = false;
         backgroundMesh.material.depthWrite = false;
@@ -840,10 +828,10 @@ include("includes/connexion.php");
         var cosTeta = (v1.x * v2.x + v1.y * v2.y) / (Math.sqrt(Math.pow(v1.x, 2) + Math.pow(v1.y, 2)) * Math.sqrt(Math.pow(v2.x, 2) + Math.pow(v2.y, 2)));
         var teta = Math.acos(cosTeta);
         if ((( v1.x > 0 && v2.y < 0 || v1.x < 0 && v2.y > 0) && ( v1.y > 0 && v2.x > 0 || v1.y < 0 && v2.x < 0))
-                || (v1.x > 0 && v1.y > 0 && v2.x > 0 && v2.y > 0 && (v1.y > v2.y || v1.x < v2.x))
-                || (v1.x > 0 && v1.y < 0 && v2.x > 0 && v2.y < 0 && (v1.y > v2.y || v1.x > v2.x))
-                || (v1.x < 0 && v1.y < 0 && v2.x < 0 && v2.y < 0 && (v1.y < v2.y || v1.x > v2.x))
-                || (v1.x < 0 && v1.y > 0 && v2.x < 0 && v2.y > 0 && (v1.y < v2.y || v1.x < v2.x))
+            || (v1.x > 0 && v1.y > 0 && v2.x > 0 && v2.y > 0 && (v1.y > v2.y || v1.x < v2.x))
+            || (v1.x > 0 && v1.y < 0 && v2.x > 0 && v2.y < 0 && (v1.y > v2.y || v1.x > v2.x))
+            || (v1.x < 0 && v1.y < 0 && v2.x < 0 && v2.y < 0 && (v1.y < v2.y || v1.x > v2.x))
+            || (v1.x < 0 && v1.y > 0 && v2.x < 0 && v2.y > 0 && (v1.y < v2.y || v1.x < v2.x))
         )
             teta = -teta;
         return teta;
@@ -907,10 +895,10 @@ include("includes/connexion.php");
 
     function loop(translation, nbFrame){
         animationState = requestAnimationFrame(
-                function(){
-                    loop(translation, nbFrame);
-                    updateTargets();
-                }, renderer.domElement);
+            function(){
+                loop(translation, nbFrame);
+                updateTargets();
+            }, renderer.domElement);
         THREE.AnimationHandler.update(clock.getDelta());
         avatar.position.x+=translation;
         currentFrame++;
@@ -963,7 +951,6 @@ include("includes/connexion.php");
 
     function tutorial(){
         var slow = 6000, quick = 4000;
-        console.log(iTuto);
         var pos;
         switch (iTuto){
             case 0 :
@@ -1049,7 +1036,6 @@ include("includes/connexion.php");
                     resetBones();
                     msgTuto("To do that, grab the head and move it", slow, function () {
                         avatar.skeleton.bones[14].updateMatrixWorld(true);
-                        console.log(avatar.skeleton.bones[14].getWorldPosition());
                         pos = worldToScreen(avatar.skeleton.bones[14].getWorldPosition());
                         $('#arrow-right').css({
                             left : pos.x + 0.05*$('canvas').width(),
@@ -1185,7 +1171,7 @@ include("includes/connexion.php");
         $("#myForm").attr("value",value);
         $(form).submit();
     };
-    
+
     $(document).ready(function () {
         $("#btn-start").on('touchstart', function (e) {
             e.preventDefault();
@@ -1206,7 +1192,7 @@ include("includes/connexion.php");
             })
         })
     });
-    
+
 
     function startExperience () {
         manipulable = true;

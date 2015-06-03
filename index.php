@@ -17,5 +17,7 @@
 <a href="experimentateur-accueil.php" class="btn-home btn-experimentateur"><?php echo BTN_EXPERIMENTATEUR_HOME; ?></a>
 <a href="participant-accueil.php" class="btn-home btn-participant"><?php echo BTN_PARTICIPANT_HOME; ?></a>
 
+<span id="footer-index">Emolyse &copy; 2015 Application d&eacute;velopp&eacute;e par <a href="http://alizee-arnaud.com/" target="_blank">Aliz&eacute;e ARNAUD</a>, Jordan DAITA & R&eacute;my Drouet pour le <a
+        href="https://www.liglab.fr/" target="_blank">LIG</a></span>
 </body>
 </html>

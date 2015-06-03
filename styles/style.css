@@ -83,6 +83,15 @@ a.btn-home:active{
 #formLang{
     text-align: right;
 }
+#footer-index{
+    width: 100%;
+    position: fixed;
+    bottom: 10px;
+    text-align: center;
+}
+#footer-index a{
+    text-decoration: underline;
+}
 /* EN-TETE */
 .logoEmolyseEnTete{
     display: block;
