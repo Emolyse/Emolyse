@@ -4,6 +4,8 @@ include('includes/en-tete.php');
 
 if(isset($_POST['data'])) {
     $data = $_POST['data'];
+    $decodeData = json_decode($data);
+    $sexeAvatar = $decodeData[0]->sexeAvatar;
 }
 else{
     $data = '';
@@ -17,7 +19,7 @@ else{
 </section>
 
 <section class="nouvelle-experience">
-    <div class="avatarFinal"></div>
+    <div class="avatarFinal"><img src="images/imgAvatar/<?php if($sexeAvatar == 'M') echo 'avatar_man.png'; else echo 'avatar_woman.png'?>" alt="resumé de l'avatar" id="recapAvatar"/></div>
     <div class="form-finalisation">
         <form action="includes/traitement.php" method="post" enctype="multipart/form-data" onsubmit="return validationForm()">
             <div class="titreForm">
