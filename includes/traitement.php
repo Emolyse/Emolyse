@@ -298,7 +298,7 @@ if(isset($_GET['downloadCsv'])){
 }
 
 function downloadCsv($idExperience, $nbProduit, $nomExperience, $base){
-    $entete = ['ID_PARTICIPANT', 'NOM PARTICIPANT', 'PRENOM PARTICIPANT', 'DATE NAISSANCE', 'GENRE AVATAR'];
+    $entete = array('ID_PARTICIPANT', 'NOM PARTICIPANT', 'PRENOM PARTICIPANT', 'DATE NAISSANCE', 'GENRE AVATAR');
     for($i=1; $i < $nbProduit+1 ; $i++){
         array_push($entete, 'ID_PRODUIT_'.$i, 'NOM_PRODUIT_'.$i, 'NOM_PRODUIT_'.$i, 'ANGLE_BGX_'.$i, 'ANGLE_BGZ_'.$i, 'ANGLE_BDX_'.$i, 'ANGLE_BDZ_'.$i, 'ANGLE_BUSTE_'.$i, 'DISTANCE_'.$i, 'ANGLE_BDX_'.$i);
     }
@@ -338,7 +338,7 @@ function downloadZip($base){
     $resultats = $base->query($requete);
     $zip = new ZipArchive();
     while(($resultat = $resultats->fetch_array())){
-        $entete = ['ID_PARTICIPANT', 'NOM PARTICIPANT', 'PRENOM PARTICIPANT', 'DATE NAISSANCE', 'GENRE AVATAR'];
+        $entete = array('ID_PARTICIPANT', 'NOM PARTICIPANT', 'PRENOM PARTICIPANT', 'DATE NAISSANCE', 'GENRE AVATAR');
         $idExperience = $resultat['idExperience'];
         $nomExperience = $resultat['nom'];
         $nbProduit = $resultat['nbProduit'];
@@ -358,6 +358,9 @@ if(isset($_GET['suppressionFichier'])){
 
 function suppressionFichier()
 {
+    if (!file_exists('../CSVFiles')) {
+        mkdir('../CSVFiles', 0777, true);
+    }
     $repertoire = opendir('../CSVFiles');
     echo $repertoire;
     while(false !== ($fichier = readdir($repertoire)))
