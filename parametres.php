@@ -53,10 +53,10 @@ include('includes/en-tete.php');
                     $j = 1;
                     while(($resultatTrad = $resultatsTraductions->fetch_array()))
                     {
-                        echo "<td><input type='text' name='".$resultatTrad['codeLangue']."-".$resultatTrad['codeIdentifiant']."' value='".$resultatTrad['traduction']."' class='champ_text_transparent' onkeyup='updateTraduction(\"".$resultatTrad['codeLangue']."-".$resultatTrad['codeIdentifiant']."\")' /></td>";
+                        echo '<td><input type="text" name="'.$resultatTrad['codeLangue'].'-'.$resultatTrad['codeIdentifiant'].'" value="'.htmlspecialchars(utf8_encode($resultatTrad['traduction'])).'" class="champ_text_transparent" onkeyup="updateTraduction(\''.$resultatTrad['codeLangue'].'-'.$resultatTrad['codeIdentifiant'].'\')" /></td>';
                     }
                 }
-                echo "</tr>";
+                echo '</tr>';
                 $i = $i+1;
             }
         ?>
@@ -195,13 +195,11 @@ include('includes/en-tete.php');
     function updateTraduction(ID_element)
     {
         var value = document.getElementsByName(ID_element).item(0).value;
-
         console.log('http://'+window.location.host+'/Emolyse/includes/modifTraduction.php?ID_element='+escape(ID_element)
             +'&value='+escape(value));
 
         texte = file('http://'+window.location.host+'/Emolyse/includes/modifTraduction.php?ID_element='+escape(ID_element)
-            +'&value='+escape(value)
-        )
+            +'&value='+escape(value));
     }
 </script>
 </body>

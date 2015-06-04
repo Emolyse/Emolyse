@@ -137,10 +137,10 @@ if(isset($_GET['updateExperience'])){
     $value = $_GET['value'];
     $id = $_GET['id'];
 
-    $requete = "UPDATE experience SET ".$element."='".$value."' WHERE idExperience=".$id."";
+    $requete = "UPDATE experience SET ".$element."='".addslashes($value)."' WHERE idExperience=".$id."";
     $base->query($requete);
 
-    $base->close();;
+    $base->close();
 
     unset($element);
     unset($value);
@@ -297,14 +297,17 @@ if(isset($_GET['downloadCsv'])){
 }
 
 function downloadCsv($idExperience, $nbProduit, $nomExperience, $base){
-    $entete = ['ID_PARTICIPANT', 'NOM PARTICIPANT', 'PRENOM PARTICIPANT', 'DATE NAISSANCE', 'GENRE AVATAR'];
+    $entete = array("ID_PARTICIPANT", "NOM PARTICIPANT", "PRENOM PARTICIPANT", "DATE NAISSANCE", "GENRE AVATAR");
     for($i=1; $i < $nbProduit+1 ; $i++){
         array_push($entete, 'ID_PRODUIT_'.$i, 'NOM_PRODUIT_'.$i, 'NOM_PRODUIT_'.$i, 'ANGLE_BGX_'.$i, 'ANGLE_BGZ_'.$i, 'ANGLE_BDX_'.$i, 'ANGLE_BDZ_'.$i, 'ANGLE_BUSTE_'.$i, 'DISTANCE_'.$i, 'ANGLE_BDX_'.$i);
     }
 
 //    echo $nomExperience;
-    $file = fopen('../CSVFiles/'.$idExperience.'-'.$nomExperience.'.csv','w+');
-
+    if(isset($_GET['downloadCsv'])){
+        $file = fopen('../CSVFiles/'.$idExperience.'-'.utf8_decode($nomExperience).'.csv','w+');
+    } else {
+        $file = fopen('../CSVFiles/'.$idExperience.'-'.$nomExperience.'.csv','w+');
+    }
     fputcsv($file, $entete); // Ligne de titres
     unset($entete);
     $reqParticipants = "SELECT p.idParticipant, p.nom, p.naissance, p.sexe, r.genreAvatar, r.date  FROM participant p, resultat r WHERE p.idParticipant = r.idParticipant AND idExperience=".$idExperience." GROUP BY p.idParticipant";
@@ -322,7 +325,7 @@ function downloadCsv($idExperience, $nbProduit, $nomExperience, $base){
         unset($ligne);
     }
     if(isset($_GET['downloadCsv'])){
-        echo "CSVFiles/".$idExperience."-".utf8_encode($nomExperience).".csv";
+        echo "CSVFiles/".$idExperience."-".$nomExperience.".csv";
     }
 
     fclose($file);
@@ -336,11 +339,13 @@ function downloadZip($base){
     $requete = "SELECT * FROM experience";
     $resultats = $base->query($requete);
     $zip = new ZipArchive();
+
     while(($resultat = $resultats->fetch_array())){
-        $entete = ['ID_PARTICIPANT', 'NOM PARTICIPANT', 'PRENOM PARTICIPANT', 'DATE NAISSANCE', 'GENRE AVATAR'];
+        $entete = array("ID_PARTICIPANT", "NOM PARTICIPANT", "PRENOM PARTICIPANT", "DATE NAISSANCE", "GENRE AVATAR");
         $idExperience = $resultat['idExperience'];
         $nomExperience = $resultat['nom'];
         $nbProduit = $resultat['nbProduit'];
+
         downloadCsv($idExperience, $nbProduit, $nomExperience, $base);
 
         if($zip->open('../CSVFiles/Emolyse_experiences_'.date('d-m-Y').'.zip', ZipArchive::CREATE) === true) {
@@ -357,6 +362,9 @@ if(isset($_GET['suppressionFichier'])){
 
 function suppressionFichier()
 {
+    if (!file_exists('../CSVFiles')) {
+        mkdir('../CSVFiles', 0777, true);
+    }
     $repertoire = opendir('../CSVFiles');
     echo $repertoire;
     while(false !== ($fichier = readdir($repertoire)))

@@ -7,6 +7,7 @@
 <html>
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=8" />
+    <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <meta name="author" content="Alizee ARNAUD, Jordan DAITA, Rémy DROUET" />
 
