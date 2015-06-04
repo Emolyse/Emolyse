@@ -284,7 +284,7 @@ include("includes/lang.php");
             $consigne = $rowExp['consigne'];
             if($consigne == ''){
                 if($rowExp['codeLangue'] == $_SESSION['lang']){
-                    $consigne = $_SESSION['TEXT_CONSIGNE'];
+                    $consigne = TEXT_CONSIGNE;
                 } else {
                     $reqConsigne = "SELECT traduction from traduction when codeLangue=".$rowExp['codeLangue']." and codeIdentifiant=TEXT_CONSIGNE";
                 }
@@ -950,7 +950,7 @@ include("includes/lang.php");
     }
 
     function tutorial(){
-        var slow = 6000, quick = 4000;
+        var slow = 6, quick = 4;
         var pos;
         switch (iTuto){
             case 0 :
