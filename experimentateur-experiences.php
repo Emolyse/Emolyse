@@ -29,10 +29,10 @@ include('includes/en-tete.php');
         while(($resultat = $resultats->fetch_array())){
             $idExperience = $resultat['idExperience'];
 //            $nomExperience = utf8_encode($resultat['nom']);
-            $nomExperience = $resultat['nom'];
+            $nomExperience = htmlspecialchars(utf8_encode($resultat['nom']));
             $nbProduit = $resultat['nbProduit'];
             if($nomExperience == '' && $resultat['nbProduit'] == 0){
-                $requeteDelete = "DELETE FROM experience WHERE idExperience=".$idExperience."";
+                $requeteDelete = "DELETE FROM experience WHERE idExperience=".$idExperience;
                 $base->query($requeteDelete);
             }
             echo "<tr>";
@@ -62,19 +62,18 @@ include('includes/en-tete.php');
         });
     });
     function downloadCsv(idExperience, nbProduit, nomExperience){
-        //alert(nomExperience);
         texte = file('http://'+window.location.host+'/Emolyse/includes/traitement.php?idExperience='+escape(idExperience)
             +'&nbProduit='+nbProduit
             +'&nomExperience='+nomExperience
             +'&downloadCsv="downloadCsv"'
-        )
+        );
         var lien = texte;
         $('.downloadCsv').attr('href', lien);
     }
     function downloadZip(){
         texte = file('http://'+window.location.host+'/Emolyse/includes/traitement.php?downloadZip="downloadZip"')
         var lien = texte;
-        $('.downloadCsv').attr('href', lien);
+        $('.downloadCsv').attr('href',lien);
     }
 
     $( window ).unload(function() {

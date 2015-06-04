@@ -313,10 +313,10 @@ include("includes/lang.php");
 
 <div id="overlay-instruction">
     <div id="overlay-content">
-        <h1>Consigne</h1>
+        <h1><?php echo CONSIGNE;?></h1>
         <p><?php echo $consigne;?></p>
-        <div id="btn-tuto" class="btn-overlay">Tutoriel</div>
-        <div id="btn-start" class="btn-overlay">Démarrer</div>
+        <div id="btn-tuto" class="btn-overlay"><?php echo TUTORIEL;?></div>
+        <div id="btn-start" class="btn-overlay"><?php echo DEMARRER;?></div>
     </div>
 </div>
 
@@ -329,8 +329,8 @@ include("includes/lang.php");
 
 <div id="finalizer">
     <div>
-        <p>Félicitation !</p>
-        <span> Vous allez maintenant compléter votre profil afin de finaliser votre participation</span>
+        <p><?php echo FINALISATION;?> !</p>
+        <span><?php echo  PHRASE_FIN;?></span>
         <i class="fa fa-arrow-circle-o-right"></i>
     </div>
 </div>
@@ -955,11 +955,11 @@ include("includes/lang.php");
         switch (iTuto){
             case 0 :
                 //rotationX des bras
-                msgTuto("How to rotate arms ?",slow, function () {
-                    msgTuto("There are 2 different rotations",quick, function () {
-                        msgTuto("First : Like swimmng crawl",quick, function () {
-                            msgTuto("Keep your avatar profile...",quick, function () {
-                                msgTuto("... and move his hands to rotate his arms",quick, function () {
+                msgTuto("<?php echo TUTO_0;?>",slow, function () {
+                    msgTuto("<?php echo TUTO_1;?>",quick, function () {
+                        msgTuto("<?php echo TUTO_2;?>",quick, function () {
+                            msgTuto("<?php echo TUTO_3;?>",quick, function () {
+                                msgTuto("<?php echo TUTO_4;?>",quick, function () {
                                     avatar.skeleton.bones[17].updateMatrixWorld(true);
                                     pos = worldToScreen(avatar.skeleton.bones[17].getWorldPosition());
                                     $('#arrow-right').css({
@@ -990,9 +990,9 @@ include("includes/lang.php");
                 });
                 break;
             case 1 :
-                msgTuto("Well Done ! Now the second rotation",slow, function () {
+                msgTuto("<?php echo TUTO_5;?>",slow, function () {
                     resetBones();
-                    msgTuto('To Part arms, put him back or face',slow, function () {
+                    msgTuto("<?php echo TUTO_6;?>",slow, function () {
                         avatar.rotateY(-Math.PI/2);
                         avatarRotation -= Math.PI/2;
                         updateTargets();
@@ -1032,9 +1032,9 @@ include("includes/lang.php");
                 });
                 break;
             case 2 :
-                msgTuto("Well Done ! You can also rotate the body",slow, function () {
+                msgTuto("<?php echo TUTO_7;?>",slow, function () {
                     resetBones();
-                    msgTuto("To do that, grab the head and move it", slow, function () {
+                    msgTuto("<?php echo TUTO_8;?>", slow, function () {
                         avatar.skeleton.bones[14].updateMatrixWorld(true);
                         pos = worldToScreen(avatar.skeleton.bones[14].getWorldPosition());
                         $('#arrow-right').css({
@@ -1062,9 +1062,9 @@ include("includes/lang.php");
                 });
                 break;
             case 3 :
-                msgTuto("Well Done ! Let's see how to rotate the entire avatar",slow, function () {
+                msgTuto("<?php echo TUTO_9;?>",slow, function () {
                     resetBones();
-                    msgTuto("Move the sphere on his feet across the width", slow, function () {
+                    msgTuto("<?php echo TUTO_10;?>", slow, function () {
                         pos = worldToScreen(new THREE.Vector3(0,-80,0));
                         $('#double-arrow').css({
                             left : pos.x - $('#double-arrow').width()/2,
@@ -1087,9 +1087,9 @@ include("includes/lang.php");
                 });
                 break;
             case 4 :
-                msgTuto("Well Done ! Finally you can move the avatar across the width",slow, function () {
+                msgTuto("<?php echo TUTO_11;?>",slow, function () {
                     resetBones();
-                    msgTuto("To do it draw a horizontal line with your finger", slow, function () {
+                    msgTuto("<?php echo TUTO_12;?>", slow, function () {
                         pos = worldToScreen(new THREE.Vector3(0,0,0));
                         $('#move-arrow').css({
                             left : pos.x + 0.05*$('canvas').width(),
@@ -1110,13 +1110,13 @@ include("includes/lang.php");
                 });
                 break;
             case 5 :
-                msgTuto("Congratulations ! Now you know how to manipulate the avatar", slow, function () {
+                msgTuto("<?php echo TUTO_13;?>", slow, function () {
                     resetBones();
-                    msgTuto("Tips : At any moment you can reset the avatar position", slow, function(){
-                        msgTuto("Click the reset button on the left bottom corner of the screen", slow, function () {
-                            msgTuto("Free Mode : You are free to manipulate the avatar", slow, function () {
-                                msgTuto("When you are down start the experience by clicking on the right bottom button", slow, function () {
-                                    msgTuto("Good Luck !", quick, function () {
+                    msgTuto("<?php echo TUTO_14;?>", slow, function(){
+                        msgTuto("<?php echo TUTO_15;?>", slow, function () {
+                            msgTuto("<?php echo TUTO_16;?>", slow, function () {
+                                msgTuto("<?php echo TUTO_17;?>", slow, function () {
+                                    msgTuto("<?php echo TUTO_18;?>", quick, function () {
                                         manipulable = true;
                                         $('#icon_confirm').on('touchstart', function () {
                                             $('.fa-times-circle').addClass('fa-chevron-circle-right').removeClass('fa-times-circle').css('color', '#ffffff');
@@ -1186,8 +1186,10 @@ include("includes/lang.php");
                 $('#overlay-instruction').hide();
 
                 tutoTargets = getTargetList(8,true);
-                msgTuto("Welcome to the tutorial",6000,function(){
-                    tutorial();
+                msgTuto("<?php echo TUTO_19;?>",6000,function(){
+                    msgTuto("<?php echo TUTO_20;?>",6000,function(){
+                        tutorial();
+                    })
                 });
             })
         })
