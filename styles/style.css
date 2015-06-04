@@ -636,7 +636,7 @@ span.instruction {
     height: 100%;
 }
 
-.choixAvatar{
+.choixAvatar, .avatarFinal {
     text-align: center;
 }
 
