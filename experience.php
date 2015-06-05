@@ -5,11 +5,16 @@ include("includes/connexion.php");
 include("includes/lang.php");
 ?>
 <!--<!DOCTYPE html>-->
-<html lang="en">
+<html lang="fr">
 <head>
-    <title>three.js webgl - collada - skinning</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=8" />
     <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <meta name="author" content="Alizee ARNAUD, Jordan DAITA, Rémy DROUET" />
+
+    <title>Emolyse</title>
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" href="images/logo.ico">
     <link rel="stylesheet" href="styles/font-awesome.min.css">
     <style>
         body {

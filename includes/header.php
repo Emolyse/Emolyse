@@ -13,6 +13,7 @@
 
     <title>Emolyse</title>
 
+    <link rel="shortcut icon" type="image/x-icon" href="../Emolyse/images/logo.ico">
     <link rel="stylesheet" href="../Emolyse/styles/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="../Emolyse/styles/jquery-ui.css"/>
     <link rel="stylesheet" type="text/css" href="../Emolyse/styles/style.css"/>
