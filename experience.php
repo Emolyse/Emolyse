@@ -88,6 +88,7 @@ include("includes/lang.php");
 
         /* LOADER */
         .fullLoader {
+
             position: absolute;
             height: 100%;
             width: 100%;
@@ -284,7 +285,7 @@ include("includes/lang.php");
             $consigne = $rowExp['consigne'];
             if($consigne == ''){
                 if($rowExp['codeLangue'] == $_SESSION['lang']){
-                    $consigne = $_SESSION['TEXT_CONSIGNE'];
+                    $consigne = TEXT_CONSIGNE;
                 } else {
                     $reqConsigne = "SELECT traduction from traduction when codeLangue=".$rowExp['codeLangue']." and codeIdentifiant=TEXT_CONSIGNE";
                 }

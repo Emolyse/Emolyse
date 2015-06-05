@@ -9,6 +9,7 @@ if(isset($_POST['data'])) {
 }
 else{
     $data = '';
+    $sexeAvatar = 'F';
 }
 ?>
 <section class="breadcrumb">
