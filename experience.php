@@ -335,7 +335,7 @@ include("includes/lang.php");
 
 <div id="icon-env">
     <i id="icon_confirm" class="fa fa-check-circle"></i>
-    <i class="fa fa-chevron-circle-right icon_env"></i>
+    <i id="icon-next" class="fa fa-chevron-circle-right icon_env"></i>
 </div>
 
 <div id="container"></div>
@@ -469,7 +469,9 @@ include("includes/lang.php");
             avatar.updateMatrixWorld(true);
             targetList = getTargetList(15,false);
             $(document).on('touchstart mousedown', onDocumentMouseDown);
-            $("#resetButton").on('touchstart click', function () {
+            $("#resetButton").on('touchstart click', function (e) {
+                e.preventDefault();
+                console.log(e.type);
                 if(!lockMove && !lockRotation && manipulable) {
                     $(this).toggleClass("rotate360");
                     resetBones();
@@ -651,6 +653,7 @@ include("includes/lang.php");
 
     function onDocumentMouseDown(evt) {
         if(manipulable) {
+            console.log(evt.type);
             if(evt.type == "touchstart") {
                 evt.preventDefault();
                 evt = evt.originalEvent.changedTouches[0];
@@ -672,7 +675,7 @@ include("includes/lang.php");
     }
 
     function onDocumentMouseUp(evt) {
-
+        console.log(evt.type);
         if(evt.type == "touchend") {
             evt.preventDefault();
             evt = evt.originalEvent.changedTouches[0];
@@ -1140,7 +1143,9 @@ include("includes/lang.php");
                                 msgTuto("<?php echo TUTO_17;?>", slow, function () {
                                     msgTuto("<?php echo TUTO_18;?>", quick, function () {
                                         manipulable = true;
-                                        $('#icon_confirm').on('touchstart click', function () {
+                                        $('#icon_confirm').on('click', function (e) {
+                                            e.preventDefault();
+                                            console.log(e.type);
                                             $('.fa-times-circle').addClass('fa-chevron-circle-right').removeClass('fa-times-circle').css('color', '#ffffff');
                                             $(this).slideToggle();
                                             $(this).off();
@@ -1151,7 +1156,9 @@ include("includes/lang.php");
                                             tutoTargets = [];
                                             startExperience();
                                         });
-                                        $('.fa-chevron-circle-right').on('touchstart click', function () {
+                                        $('#icon-next').on('click touchstart', function (e) {
+                                            e.preventDefault();
+                                            console.log(e.type);
                                             $("#icon_confirm").slideToggle(200);
                                             if($(this).hasClass('fa-times-circle')) {
                                                 $(this).addClass('fa-chevron-circle-right').removeClass('fa-times-circle').css('color', '#ffffff');
@@ -1194,13 +1201,17 @@ include("includes/lang.php");
     };
 
     $(document).ready(function () {
-        $("#btn-start").on('touchstart click', function () {
+        $("#btn-start").on('click', function (e) {
+            e.preventDefault();
+            console.log(e.type);
             $('#overlay-instruction').fadeOut(400, function () {
                 $('#overlay-instruction').hide();
                 startExperience();
             })
         });
-        $("#btn-tuto").on('touchstart click', function () {
+        $("#btn-tuto").on('click', function (e) {
+            e.preventDefault();
+            console.log(e.type);
             $('#overlay-instruction').fadeOut(400, function () {
                 $('#overlay-instruction').hide();
 
@@ -1221,7 +1232,9 @@ include("includes/lang.php");
         //Affichage des objets
         $('.objet:first').addClass('display');
 
-        $('#icon_confirm').on('touchstart click', function () {
+        $('#icon_confirm').on('click', function (e) {
+            e.preventDefault();
+            console.log(e.type);
             $('.fa-times-circle').addClass('fa-chevron-circle-right').removeClass('fa-times-circle').css('color', '#ffffff');
             $(this).slideToggle();
             data[posObject] = extractData();
@@ -1246,12 +1259,16 @@ include("includes/lang.php");
                         opacity : 1
                     },500);
                 });
-                $('#finalizer div i').on('touchstart click', function () {
+                $('#finalizer div i').on('click', function (e) {
+                    e.preventDefault();
+                    console.log(e.type);
                     myRedirect(redirect, "data", JSON.stringify(data));
                 });
             }
         });
-        $(".fa-chevron-circle-right").on('touchstart click', function(){
+        $("#icon-next").on('click touchstart', function(e){
+            e.preventDefault();
+            console.log(e.type);
             $("#icon_confirm").slideToggle(200);
             if($(this).hasClass('fa-times-circle')) {
                 $(this).addClass('fa-chevron-circle-right').removeClass('fa-times-circle').css('color', '#ffffff');
