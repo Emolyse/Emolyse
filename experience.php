@@ -241,17 +241,30 @@ include("includes/lang.php");
             color: #ffffff;
             text-shadow: 4px 4px #333333;
             font-size: 4em;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            -o-user-select: none;
+            user-select: none;
+            pointer-events: none;
         }
         #arrow-right, #arrow-left, #move-arrow{
             position: fixed;
             display: none;
             width: 15%;
+            pointer-events: none;
         }
 
         #double-arrow{
             position: fixed;
             display: none;
             width: 30%;
+            pointer-events:none;
+        }
+
+        canvas{
+            cursor: pointer;
+            pointer-events: none;
         }
     </style>
 </head>
@@ -456,8 +469,8 @@ include("includes/lang.php");
         loadAvatar(urlAvatar, function () {
             avatar.updateMatrixWorld(true);
             targetList = getTargetList(15,false);
-            $(document).on('touchstart', onCanvasMouseDown);
-            $("#resetButton").on('touchstart', function () {
+            $(document).on('touchstart mousedown', onDocumentMouseDown);
+            $("#resetButton").on('touchstart click', function () {
                 if(!lockMove && !lockRotation && manipulable) {
                     $(this).toggleClass("rotate360");
                     resetBones();
@@ -637,10 +650,12 @@ include("includes/lang.php");
             tutoTargets[tutoTargets.length - 1].position.setX(avatar.position.x);
     }
 
-    function onCanvasMouseDown(evt) {
+    function onDocumentMouseDown(evt) {
         if(manipulable) {
-            evt.preventDefault();
-            evt = evt.originalEvent.changedTouches[0];
+            if(evt.type == "touchstart") {
+                evt.preventDefault();
+                evt = evt.originalEvent.changedTouches[0];
+            }
             var vector = mouseToWorld(evt);
 
             mousePosDown = vector.clone();
@@ -650,18 +665,21 @@ include("includes/lang.php");
 
             intersects = raycaster.intersectObjects(targetList);
 
-            $(document).on('touchend', onDocumentMouseUp);
+            $(document).on('touchend mouseup', onDocumentMouseUp);
             if (intersects.length > 0) {
-                $(document).on('touchmove', onContainerMouseMove);
+                $(document).on('touchmove mousemove', onContainerMouseMove);
             }
         }
     }
 
     function onDocumentMouseUp(evt) {
-        evt.preventDefault();
-        evt = evt.originalEvent.changedTouches[0];
-        $(document).off('touchend');
-        $(document).off('touchmove');
+
+        if(evt.type == "touchstart") {
+            evt.preventDefault();
+            evt = evt.originalEvent.changedTouches[0];
+        }
+        $(document).off('touchend mouseup');
+        $(document).off('touchmove mousemove');
         if (intersects.length > 0) {
         } else {
             var mousePosUp = mouseToWorld(evt);
@@ -684,8 +702,11 @@ include("includes/lang.php");
     }
 
     function onContainerMouseMove(evt) {
-        evt.preventDefault();
-        evt = evt.originalEvent.changedTouches[0];
+
+        if(evt.type == "touchstart") {
+            evt.preventDefault();
+            evt = evt.originalEvent.changedTouches[0];
+        }
 
         var name = intersects[0].object.name;
         //si on synchronise et qu'on a ciblé un bras
@@ -851,8 +872,9 @@ include("includes/lang.php");
         var p = pos.clone();
         var vector = p.project(camera);
 
-        vector.x = (vector.x + 1) / 2 * (window.innerWidth-offsetWidth)+offsetWidth;
-        vector.y = -(vector.y - 1) / 2 * (window.innerHeight-offsetHeight)+offsetHeight;
+        vector.x = (vector.x + 1) / 2 * (window.innerWidth-offsetWidth)+offsetWidth/2;
+        vector.y = -(vector.y - 1) / 2 * (window.innerHeight-offsetHeight)+offsetHeight/2;
+        console.log(offsetWidth+' - '+offsetHeight);
 
         return vector;
     }
@@ -951,7 +973,7 @@ include("includes/lang.php");
     }
 
     function tutorial(){
-        var slow = 6000, quick = 4000;
+        var slow = 6, quick = 4;
         var pos;
         switch (iTuto){
             case 0 :
@@ -1119,7 +1141,7 @@ include("includes/lang.php");
                                 msgTuto("<?php echo TUTO_17;?>", slow, function () {
                                     msgTuto("<?php echo TUTO_18;?>", quick, function () {
                                         manipulable = true;
-                                        $('#icon_confirm').on('touchstart', function () {
+                                        $('#icon_confirm').on('touchstart click', function () {
                                             $('.fa-times-circle').addClass('fa-chevron-circle-right').removeClass('fa-times-circle').css('color', '#ffffff');
                                             $(this).slideToggle();
                                             $(this).off();
@@ -1130,8 +1152,7 @@ include("includes/lang.php");
                                             tutoTargets = [];
                                             startExperience();
                                         });
-                                        $('.fa-chevron-circle-right').on('touchstart', function (e) {
-                                            e.preventDefault();
+                                        $('.fa-chevron-circle-right').on('touchstart click', function () {
                                             $("#icon_confirm").slideToggle(200);
                                             if($(this).hasClass('fa-times-circle')) {
                                                 $(this).addClass('fa-chevron-circle-right').removeClass('fa-times-circle').css('color', '#ffffff');
@@ -1174,21 +1195,19 @@ include("includes/lang.php");
     };
 
     $(document).ready(function () {
-        $("#btn-start").on('touchstart', function (e) {
-            e.preventDefault();
+        $("#btn-start").on('touchstart click', function () {
             $('#overlay-instruction').fadeOut(400, function () {
                 $('#overlay-instruction').hide();
                 startExperience();
             })
         });
-        $("#btn-tuto").on('touchstart', function (e) {
-            e.preventDefault();
+        $("#btn-tuto").on('touchstart click', function () {
             $('#overlay-instruction').fadeOut(400, function () {
                 $('#overlay-instruction').hide();
 
                 tutoTargets = getTargetList(8,true);
-                msgTuto("<?php echo TUTO_19;?>",6000,function(){
-                    msgTuto("<?php echo TUTO_20;?>",6000,function(){
+                msgTuto("<?php echo TUTO_19;?>",6,function(){
+                    msgTuto("<?php echo TUTO_20;?>",6,function(){
                         tutorial();
                     })
                 });
@@ -1203,8 +1222,7 @@ include("includes/lang.php");
         //Affichage des objets
         $('.objet:first').addClass('display');
 
-        $('#icon_confirm').on('touchstart', function (e) {
-            e.preventDefault();
+        $('#icon_confirm').on('touchstart click', function () {
             $('.fa-times-circle').addClass('fa-chevron-circle-right').removeClass('fa-times-circle').css('color', '#ffffff');
             $(this).slideToggle();
             data[posObject] = extractData();
@@ -1229,13 +1247,12 @@ include("includes/lang.php");
                         opacity : 1
                     },500);
                 });
-                $('#finalizer div i').on('touchstart', function () {
+                $('#finalizer div i').on('touchstart click', function () {
                     myRedirect(redirect, "data", JSON.stringify(data));
                 });
             }
         });
-        $(".fa-chevron-circle-right").on('touchstart', function(e){
-            e.preventDefault();
+        $(".fa-chevron-circle-right").on('touchstart click', function(){
             $("#icon_confirm").slideToggle(200);
             if($(this).hasClass('fa-times-circle')) {
                 $(this).addClass('fa-chevron-circle-right').removeClass('fa-times-circle').css('color', '#ffffff');
