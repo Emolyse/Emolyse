@@ -64,7 +64,7 @@ if(isset($_POST['modifierConsigne'])){
     $codeLangue = $_POST['codeLangue'];
     $codeIdentifiant = $_POST['codeIdentifiant'];
 
-    $requete = "UPDATE traduction SET traduction='".$consigne."' WHERE codeLangue='".$codeLangue."' AND codeIdentifiant='".$codeIdentifiant."'";
+    $requete = "UPDATE traduction SET traduction='".addslashes($consigne)."' WHERE codeLangue='".$codeLangue."' AND codeIdentifiant='".$codeIdentifiant."'";
     $base->query($requete);
 
     $base->close();
@@ -152,7 +152,7 @@ if(isset($_POST['modifierConsigneExperience'])){
     $consigne = $_POST['consigne'];
     $idExperience = $_POST['idExperience'];
 
-    $requete = "UPDATE experience SET consigne='".$consigne."' WHERE idExperience=".$idExperience."";
+    $requete = "UPDATE experience SET consigne='".addslashes($consigne)."' WHERE idExperience=".$idExperience."";
     $base->query($requete);
 
     $base->close();

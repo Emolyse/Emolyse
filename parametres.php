@@ -107,7 +107,7 @@ include('includes/en-tete.php');
                         $requete = "SELECT traduction FROM traduction WHERE codeLangue='".$resultatLang['codeLangue']."' AND codeIdentifiant='TEXT_CONSIGNE'";
                         $resultats = $base->query($requete);
                         while($resultat = $resultats->fetch_array()){
-                            echo utf8_decode($resultat['traduction']);
+                            echo $resultat['traduction'];
                         }
                     echo "</textarea>";
                     echo "<input type='hidden' name='codeLangue' value='".$resultatLang['codeLangue']."' />";
