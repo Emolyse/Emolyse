@@ -673,7 +673,7 @@ include("includes/lang.php");
 
     function onDocumentMouseUp(evt) {
 
-        if(evt.type == "touchstart") {
+        if(evt.type == "touchend") {
             evt.preventDefault();
             evt = evt.originalEvent.changedTouches[0];
         }
@@ -702,7 +702,7 @@ include("includes/lang.php");
 
     function onContainerMouseMove(evt) {
 
-        if(evt.type == "touchstart") {
+        if(evt.type == "touchmove") {
             evt.preventDefault();
             evt = evt.originalEvent.changedTouches[0];
         }
