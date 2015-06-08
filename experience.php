@@ -465,7 +465,7 @@ include("includes/lang.php");
         //Url de l'avatar
         if(choixAvatar == 'man'){
             urlAvatar = 'Homme/avatar_man.dae';
-            sexeAvatar = 'M';
+            sexeAvatar = 'H';
         }
         else{
             urlAvatar = 'Femme/avatar_woman.dae'
@@ -976,7 +976,7 @@ include("includes/lang.php");
     }
 
     function extractData(){
-        var res = {objPos:posObject,idObj:idObj[posObject],idExperience:idExperience,avatarRot:THREE.Math.radToDeg(avatarRotation),rArmRotX:THREE.Math.radToDeg(rArmRotX),rArmRotZ:THREE.Math.radToDeg(rArmRotZ),lArmRotX:THREE.Math.radToDeg(lArmRotX),lArmRotZ:THREE.Math.radToDeg(lArmRotZ),bodyRot:THREE.Math.radToDeg(bodyRot),distance:posScreen.x-avatar.position.x,sexeAvatar:sexeAvatar};
+        var res = {objPos:posObject,idObj:idObj[posObject],idExperience:idExperience,avatarRot:THREE.Math.radToDeg(avatarRotation),rArmRotX:THREE.Math.radToDeg(rArmRotX),rArmRotZ:THREE.Math.radToDeg(rArmRotZ),lArmRotX:THREE.Math.radToDeg(lArmRotX),lArmRotZ:THREE.Math.radToDeg(lArmRotZ),bodyRot:THREE.Math.radToDeg(bodyRot),distance:avatar.position.x,sexeAvatar:sexeAvatar};
         return res;
     }
 
