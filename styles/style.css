@@ -291,8 +291,11 @@ i.fa.fa-download.telecharger-tout {
     display: inline-block;
     padding: 0 10px;
 }
-i.fa.fa-download, i.fa.fa-minus{
+i.fa.fa-download, i.fa.fa-times{
     font-size: 26px;
+}
+i.fa.fa-times{
+    color: red;
 }
 .lienExperience{
     display: block;

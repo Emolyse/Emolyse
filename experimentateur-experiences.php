@@ -38,7 +38,7 @@ include('includes/en-tete.php');
             echo "<tr>";
             echo "<td width=80% onclick='document.location = \"gerer-experience.php?id=$idExperience\"' class='ligneClic'>".$nomExperience."</td>";
             echo "<td width=10%><a href=''"."class='downloadCsv' onclick='downloadCsv(".$idExperience.", ".$nbProduit.", \"".$nomExperience."\")'"." ><i class='fa fa-download'></i></a></td>";
-            echo "<td width=10%><a href='#' class='supExperience' id='$idExperience'><i class='fa fa-minus'></i></a></td>";
+            echo "<td width=10%><a href='#' class='supExperience' id='$idExperience'><i class='fa fa-times'></i></a></td>";
             echo "</tr>";
         }
         ?>
