@@ -297,9 +297,9 @@ if(isset($_GET['downloadCsv'])){
 }
 
 function downloadCsv($idExperience, $nbProduit, $nomExperience, $base){
-    $entete = array("ID_PARTICIPANT", "NOM PARTICIPANT", "PRENOM PARTICIPANT", "DATE NAISSANCE", "GENRE AVATAR");
+    $entete = array("ID_PARTICIPANT", "NOM_PARTICIPANT", "PRENOM_PARTICIPANT", "DATE_NAISSANCE", "GENRE_PARTICIPANT", "GENRE_AVATAR", "DATE_PARTICIPATION");
     for($i=1; $i < $nbProduit+1 ; $i++){
-        array_push($entete, 'ID_PRODUIT_'.$i, 'NOM_PRODUIT_'.$i, 'NOM_PRODUIT_'.$i, 'ANGLE_BGX_'.$i, 'ANGLE_BGZ_'.$i, 'ANGLE_BDX_'.$i, 'ANGLE_BDZ_'.$i, 'ANGLE_BUSTE_'.$i, 'DISTANCE_'.$i, 'ANGLE_BDX_'.$i);
+        array_push($entete, 'ID_PRODUIT_'.$i, 'NOM_PRODUIT_'.$i, 'ANGLE_AVATAR_'.$i, 'ANGLE_BRAS_GAUCHE_AXE_X_'.$i, 'ANGLE_BRAS_GAUCHE_AXE_Z_'.$i, 'ANGLE_BRAS_DROIT_AXE_X_'.$i, 'ANGLE_BRAS_DROIT_AXE_Z_'.$i, 'ANGLE_BUSTE_AVATAR_'.$i, 'DISTANCE_'.$i);
     }
 
 //    echo $nomExperience;
@@ -310,16 +310,16 @@ function downloadCsv($idExperience, $nbProduit, $nomExperience, $base){
     }
     fputcsv($file, $entete); // Ligne de titres
     unset($entete);
-    $reqParticipants = "SELECT p.idParticipant, p.nom, p.naissance, p.sexe, r.genreAvatar, r.date  FROM participant p, resultat r WHERE p.idParticipant = r.idParticipant AND idExperience=".$idExperience." GROUP BY p.idParticipant";
+    $reqParticipants = "SELECT p.idParticipant, p.nom, p.prenom, p.naissance, p.sexe, r.genreAvatar, r.date  FROM participant p, resultat r WHERE p.idParticipant = r.idParticipant AND idExperience=".$idExperience." GROUP BY p.idParticipant";
     $resParticipants = $base->query($reqParticipants);
 
     while(($resParticipant = $resParticipants->fetch_array())) {
         $reqProduit = "SELECT p.idProduit, p.nom, r.angleAvatar, r.angleBGx, r.angleBGz, r.angleBDx, r.angleBDz, r.angleBuste, r.distance FROM produit p, resultat r WHERE p.idProduit = r.idProduit AND idParticipant=".$resParticipant['idParticipant']."";
         $resProduits = $base->query($reqProduit);
         $ligne = array();
-        array_push($ligne, $resParticipant[0],$resParticipant[1],$resParticipant[2],$resParticipant[3], $resParticipant[4],$resParticipant[5]);
+        array_push($ligne, $resParticipant[0],$resParticipant[1],$resParticipant[2],$resParticipant[3], $resParticipant[4],$resParticipant[5], $resParticipant[6]);
         while(($resProduit = $resProduits->fetch_array())) {
-            array_push($ligne, $resProduit[0],$resProduit[1],$resProduit[2],$resProduit[3],$resProduit[4],$resProduit[5],$resProduit[6],$resProduit[7]);
+            array_push($ligne, $resProduit[0],$resProduit[1],$resProduit[2],$resProduit[3],$resProduit[4],$resProduit[5],$resProduit[6],$resProduit[7],$resProduit[8]);
         }
         fputcsv($file, $ligne);
         unset($ligne);
