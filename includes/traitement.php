@@ -163,7 +163,7 @@ if(isset($_POST['modifierConsigneExperience'])){
     unset($idExperience);
 }
 
-// Suppression d'une expérience avec tous les produits correspondants
+// Suppression d'une expérience avec tous les produits correspondants, les résultats et les participants
 if(isset($_GET['deleteExp'])){
     $idExperience = $_GET['id'];
 
@@ -174,13 +174,21 @@ if(isset($_GET['deleteExp'])){
         unlink("../".$resultat['lienPhoto']);
     }
 
-    $requeteSupData = "DELETE FROM resultat WHERE idExperience=".$idExperience."";
+    $requeteParticipant = "SELECT idParticipant FROM resultat WHERE idExperience=".$idExperience;
+    $resultatsParticipant = $base->query($requeteParticipant);
+
+    $requeteSupData = "DELETE FROM resultat WHERE idExperience=".$idExperience;
     $base->query($requeteSupData);
 
-    $requeteProduit = "DELETE FROM produit WHERE idExperience=".$idExperience."";
+    while($resultatParticipant = $resultatsParticipant->fetch_array()) {
+        $deleteParticipant = "DELETE FROM participant WHERE idParticipant=".$resultatParticipant['idParticipant'];
+        $base->query($deleteParticipant);
+    }
+
+    $requeteProduit = "DELETE FROM produit WHERE idExperience=".$idExperience;
     $base->query($requeteProduit);
 
-    $requete = "DELETE FROM experience WHERE idExperience=".$idExperience."";
+    $requete = "DELETE FROM experience WHERE idExperience=".$idExperience;
     $base->query($requete);
 
     $base->close();
@@ -250,8 +258,14 @@ if(isset($_POST['finaliser-experience'])){
 
 if(isset($_POST['start-experience'])){
     $avatarSelection = $_POST['choixAvatar'];
-    $id = $_POST['experience'];
-    header("Location: ../experience.php?experience=".$id."&avatarselect=".$avatarSelection);
+    if(isset($_POST['experience'])) {
+        $id = $_POST['experience'];
+        header("Location: ../experience.php?experience=".$id."&avatarselect=".$avatarSelection);
+    }
+    else{
+        header("Location: ../participant-accueil.php");
+    }
+
 }
 
 if(isset($_GET['deleteProduitListe'])){

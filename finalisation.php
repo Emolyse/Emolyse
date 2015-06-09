@@ -8,8 +8,7 @@ if(isset($_POST['data'])) {
     $sexeAvatar = $decodeData[0]->sexeAvatar;
 }
 else{
-    $data = '';
-    $sexeAvatar = 'F';
+    header("Location: ./participant-accueil.php");
 }
 ?>
 <section class="breadcrumb">

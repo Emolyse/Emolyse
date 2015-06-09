@@ -20,6 +20,13 @@ include('includes/en-tete.php');
                 // on veut afficher uniquement les expériences avec au moins un produit
                 $requete = "SELECT * FROM experience WHERE nbProduit > 0";
                 $resultats = $base->query($requete);
+                $rows=mysqli_num_rows($resultats);
+                if($rows > 0){
+                    $disable = '';
+                }
+                else {
+                    $disable = 'disabled';
+                }
                 while(($resultat = $resultats->fetch_array())){
                     $idExperience = $resultat['idExperience'];
                     echo "<option value='".$idExperience."'>".$resultat['nom']."</option>";
@@ -27,7 +34,7 @@ include('includes/en-tete.php');
                 ?>
             </select>
             <input type="hidden" id="choixAvatarInput" name="choixAvatar" value=""/>
-            <input type="submit" id="btn-start-experience" name="start-experience" value="<?php echo DEMARRER; ?>"/>
+            <input type="submit" <?php echo $disable ?> id="btn-start-experience" name="start-experience" value="<?php echo DEMARRER; ?>"/>
         </form>
     </div>
     <div class="choixAvatar" onclick="avatarSelected('man');"><img src="images/imgAvatar/avatar_man.png" alt="Choix de l'avatar femme" id="avatarM"/></div>

@@ -2,6 +2,9 @@
 session_start();
 include("includes/init.php");
 include("includes/connexion.php");
+if(!isset($_GET['experience'])) {
+    header("Location: ./participant-accueil.php");
+}
 ?>
 <!--<!DOCTYPE html>-->
 <html lang="fr">
@@ -294,13 +297,13 @@ include("includes/connexion.php");
             }
 
             //La traduction
-            $consigne = $rowExp['consigne'];
+            $consigne = nl2br($rowExp['consigne']);
+            $tmpSession = $_SESSION['lang'];
+            $_SESSION['lang'] = $rowExp['codeLangue'];
+            include("includes/lang.php");
+            $_SESSION['lang'] = $tmpSession;
             if($consigne == ''){
-                $tmpSession = $_SESSION['lang'];
-                $_SESSION['lang'] = $rowExp['codeLangue'];
-                include("includes/lang.php");
                 $consigne = nl2br(TEXT_CONSIGNE);
-                $_SESSION['lang'] = $tmpSession;
             }
             //Puis les Objets
             if($rowExp['random'] == 0){
@@ -980,7 +983,7 @@ include("includes/connexion.php");
     }
 
     function tutorial(){
-        var slow = 6, quick = 4;
+        var slow = 6000, quick = 4000;
         var pos;
         switch (iTuto){
             case 0 :
@@ -1221,8 +1224,8 @@ include("includes/connexion.php");
                 $('#overlay-instruction').hide();
 
                 tutoTargets = getTargetList(8,true);
-                msgTuto("<?php echo addslashes(TUTO_19);?>",6,function(){
-                    msgTuto("<?php echo addslashes(TUTO_20);?>",6,function(){
+                msgTuto("<?php echo addslashes(TUTO_19);?>",6000,function(){
+                    msgTuto("<?php echo addslashes(TUTO_20);?>",6000,function(){
                         tutorial();
                     })
                 });
