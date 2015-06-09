@@ -29,7 +29,7 @@ include('includes/en-tete.php');
         while(($resultat = $resultats->fetch_array())){
             $idExperience = $resultat['idExperience'];
 //            $nomExperience = utf8_encode($resultat['nom']);
-            $nomExperience = htmlspecialchars(utf8_encode($resultat['nom']));
+            $nomExperience = $resultat['nom'];
             $nbProduit = $resultat['nbProduit'];
             if($nomExperience == '' && $resultat['nbProduit'] == 0){
                 $requeteDelete = "DELETE FROM experience WHERE idExperience=".$idExperience;

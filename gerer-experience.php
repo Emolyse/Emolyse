@@ -29,7 +29,7 @@ $idExperience = $_GET['id'];
 ?>
     <section class="ajout-experience">
         <div class="params1">
-            <input type="text" name="nom" id="champs-nom-experience" onkeyup="updateExperience('nom')" value="<?php echo htmlspecialchars(utf8_encode($resultatExperience['nom'])); ?>"/>
+            <input type="text" name="nom" id="champs-nom-experience" onkeyup="updateExperience('nom')" value="<?php echo $resultatExperience['nom']; ?>"/>
             <div id="btn-update-lang">
                 <?php
                     $requeteFlag = "SELECT lienDrapeau FROM langue WHERE codeLangue='".$resultatExperience['codeLangue']."'";

@@ -53,7 +53,7 @@ include('includes/en-tete.php');
                     $j = 1;
                     while(($resultatTrad = $resultatsTraductions->fetch_array()))
                     {
-                        echo '<td><input type="text" name="'.$resultatTrad['codeLangue'].'-'.$resultatTrad['codeIdentifiant'].'" value="'.htmlspecialchars(utf8_encode($resultatTrad['traduction'])).'" class="champ_text_transparent" onkeyup="updateTraduction(\''.$resultatTrad['codeLangue'].'-'.$resultatTrad['codeIdentifiant'].'\')" /></td>';
+                        echo '<td><input type="text" name="'.$resultatTrad['codeLangue'].'-'.$resultatTrad['codeIdentifiant'].'" value="'.$resultatTrad['traduction'].'" class="champ_text_transparent" onkeyup="updateTraduction(\''.$resultatTrad['codeLangue'].'-'.$resultatTrad['codeIdentifiant'].'\')" /></td>';
                     }
                 }
                 echo '</tr>';

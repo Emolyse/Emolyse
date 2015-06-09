@@ -56,8 +56,8 @@
                         echo "<img src='images/profil_h.png' alt='Femme' class='pictoSexe' />";
                     }
                     echo "</td>";
-                    echo "<td>".utf8_encode($resultat['nom'])."</td>";
-                    echo "<td>".utf8_encode($resultat['prenom'])."</td>";
+                    echo "<td>".$resultat['nom']."</td>";
+                    echo "<td>".$resultat['prenom']."</td>";
                     // convertion de la date de naissance en age
                     $date = $resultat['naissance'];
                     $age = (time() - strtotime($date)) / 3600 / 24 / 365.242;
