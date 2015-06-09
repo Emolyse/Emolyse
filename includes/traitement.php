@@ -297,9 +297,9 @@ if(isset($_GET['downloadCsv'])){
 }
 
 function downloadCsv($idExperience, $nbProduit, $nomExperience, $base){
-    $entete = array("ID_PARTICIPANT", "NOM_PARTICIPANT", "PRENOM_PARTICIPANT", "DATE_NAISSANCE", "GENRE_PARTICIPANT", "GENRE_AVATAR", "DATE_PARTICIPATION");
+    $entete = array("PARTICIPANT_ID", "PARTICIPANT_SURNAME", "PARTICIPANT_NAME", "DATE_OF_BIRTH", "PARTICIPANT_GENDER", "AVATAR_GENDER", "DATE_OF_PARTICIPATION");
     for($i=1; $i < $nbProduit+1 ; $i++){
-        array_push($entete, 'ID_PRODUIT_'.$i, 'NOM_PRODUIT_'.$i, 'ANGLE_AVATAR_'.$i, 'ANGLE_BRAS_GAUCHE_AXE_X_'.$i, 'ANGLE_BRAS_GAUCHE_AXE_Z_'.$i, 'ANGLE_BRAS_DROIT_AXE_X_'.$i, 'ANGLE_BRAS_DROIT_AXE_Z_'.$i, 'ANGLE_BUSTE_AVATAR_'.$i, 'DISTANCE_'.$i);
+        array_push($entete, 'PRODUCT_ID_'.$i, 'PRODUCT_NAME'.$i, 'AVATAR_ANGLE'.$i, 'LEFT_ARM_ANGLE_X_AXIS_'.$i, 'LEFT_ARM_ANGLE_Z_AXIS_'.$i, 'RIGHT_ARM_ANGLE_X_AXIS_'.$i, 'RIGHT_ARM_ANGLE_Z_AXIS_'.$i, 'BUST_ANGLE_'.$i, 'DISTANCE_'.$i);
     }
 
 //    echo $nomExperience;
@@ -341,7 +341,6 @@ function downloadZip($base){
     $zip = new ZipArchive();
 
     while(($resultat = $resultats->fetch_array())){
-        $entete = array("ID_PARTICIPANT", "NOM PARTICIPANT", "PRENOM PARTICIPANT", "DATE NAISSANCE", "GENRE AVATAR");
         $idExperience = $resultat['idExperience'];
         $nomExperience = $resultat['nom'];
         $nbProduit = $resultat['nbProduit'];

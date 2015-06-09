@@ -465,7 +465,7 @@ include("includes/lang.php");
         //Url de l'avatar
         if(choixAvatar == 'man'){
             urlAvatar = 'Homme/avatar_man.dae';
-            sexeAvatar = 'H';
+            sexeAvatar = 'M';
         }
         else{
             urlAvatar = 'Femme/avatar_woman.dae'

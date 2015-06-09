@@ -30,7 +30,7 @@ else{
                 <div class="sexeForm">
                     <label style="<?php if(isset($_GET['erreur']) == 'sexe'){echo "color: red;";}else{ echo "";}; ?>"><?php echo SEXE; ?>* : </label>
                     <input type="radio" name="sexe" value="F"> <?php echo FEMME; ?>
-                    <input type="radio" name="sexe" value="H"> <?php echo HOMME; ?>
+                    <input type="radio" name="sexe" value="M"> <?php echo HOMME; ?>
                 </div>
                 <div class="dateNaissForm">
                     <label style="<?php if(isset($_GET['erreur']) == 'naissance'){echo "color: red;";}else{ echo "";}; ?>"><?php echo NEE_LE; ?>* :</label>
