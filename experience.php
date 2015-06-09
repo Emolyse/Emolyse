@@ -2,7 +2,6 @@
 session_start();
 include("includes/init.php");
 include("includes/connexion.php");
-include("includes/lang.php");
 ?>
 <!--<!DOCTYPE html>-->
 <html lang="fr">
@@ -274,11 +273,6 @@ include("includes/lang.php");
     </style>
 </head>
 <body>
-<div class="fullLoader">
-    <div class="loader">Loading...</div>
-    <p class="txtLoading">Chargement de l'application</p>
-    <img src="images/logo.png" alt="" class="logoChargement "/>
-</div>
 <i class="fa fa-refresh icon-refresh" id="resetButton"></i>
 
 <div id="console"></div>
@@ -299,14 +293,14 @@ include("includes/lang.php");
                 $synchroneArm = true;
             }
 
-            //La consigne
+            //La traduction
             $consigne = $rowExp['consigne'];
             if($consigne == ''){
-                if($rowExp['codeLangue'] == $_SESSION['lang']){
-                    $consigne = TEXT_CONSIGNE;
-                } else {
-                    $reqConsigne = "SELECT traduction from traduction when codeLangue=".$rowExp['codeLangue']." and codeIdentifiant=TEXT_CONSIGNE";
-                }
+                $tmpSession = $_SESSION['lang'];
+                $_SESSION['lang'] = $rowExp['codeLangue'];
+                include("includes/lang.php");
+                $consigne = nl2br(utf8_decode(TEXT_CONSIGNE));
+                $_SESSION['lang'] = $tmpSession;
             }
             //Puis les Objets
             if($rowExp['random'] == 0){
@@ -330,6 +324,11 @@ include("includes/lang.php");
 
 </div>
 
+<div class="fullLoader">
+    <div class="loader">Loading...</div>
+    <p class="txtLoading"><?php echo CHARGEMENT_APPLI;?></p>
+    <img src="images/logo.png" alt="" class="logoChargement "/>
+</div>
 <div id="overlay-instruction">
     <div id="overlay-content">
         <h1><?php echo CONSIGNE;?></h1>

@@ -24,7 +24,7 @@ include('includes/en-tete.php');
                 $resultats = $base->query($requete);
                 while($resultat = $resultats->fetch_array())
                 {
-                    echo "<th>".$resultat['nom']."</th>";
+                    echo "<th>".htmlspecialchars(utf8_encode($resultat['nom']))."</th>";
                 }
                 $resultats->close();
             ?>
@@ -92,7 +92,7 @@ include('includes/en-tete.php');
                     $requete = "SELECT * FROM langue";
                     $resultats = $base->query($requete);
                     while(($resultat = $resultats->fetch_array())){
-                        echo "<li><a href='#' title='consigne-".$resultat['codeLangue']."' class='tab'>".$resultat['nom']."</a></li>";
+                        echo "<li><a href='#' title='consigne-".$resultat['codeLangue']."' class='tab'>".htmlspecialchars(utf8_encode($resultat['nom']))."</a></li>";
                     }
                 ?>
             </ul>
