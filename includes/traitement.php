@@ -325,7 +325,7 @@ function downloadCsv($idExperience, $nbProduit, $nomExperience, $base){
         unset($ligne);
     }
     if(isset($_GET['downloadCsv'])){
-        echo "CSVFiles/".$idExperience."-".$nomExperience.".csv";
+        echo 'CSVFiles/'.$idExperience.'-'.$nomExperience.'.csv';
     }
 
     fclose($file);
@@ -348,7 +348,8 @@ function downloadZip($base){
         downloadCsv($idExperience, $nbProduit, $nomExperience, $base);
 
         if($zip->open('../CSVFiles/Emolyse_experiences_'.date('d-m-Y').'.zip', ZipArchive::CREATE) === true) {
-            $zip->addFile('../CSVFiles/'.$idExperience.'-'.$nomExperience.'.csv');
+            $name = $idExperience.'-'.$nomExperience.'.csv';
+            $zip->addFile('../CSVFiles/'.$name ,iconv("CP1252","CP850", $name));
         }
     }
     echo 'CSVFiles/Emolyse_experiences_'.date('d-m-Y').'.zip';
