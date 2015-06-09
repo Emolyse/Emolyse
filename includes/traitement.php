@@ -302,12 +302,7 @@ function downloadCsv($idExperience, $nbProduit, $nomExperience, $base){
         array_push($entete, 'PRODUCT_ID_'.$i, 'PRODUCT_NAME_'.$i, 'AVATAR_ANGLE_'.$i, 'LEFT_ARM_ANGLE_X_AXIS_'.$i, 'LEFT_ARM_ANGLE_Z_AXIS_'.$i, 'RIGHT_ARM_ANGLE_X_AXIS_'.$i, 'RIGHT_ARM_ANGLE_Z_AXIS_'.$i, 'BUST_ANGLE_'.$i, 'DISTANCE_'.$i);
     }
 
-//    echo $nomExperience;
-    if(isset($_GET['downloadCsv'])){
-        $file = fopen('../CSVFiles/'.$idExperience.'-'.utf8_decode($nomExperience).'.csv','w+');
-    } else {
-        $file = fopen('../CSVFiles/'.$idExperience.'-'.$nomExperience.'.csv','w+');
-    }
+    $file = fopen('../CSVFiles/'.$idExperience.'-'.$nomExperience.'.csv','w+');
     fputcsv($file, $entete); // Ligne de titres
     unset($entete);
     $reqParticipants = "SELECT p.idParticipant, p.nom, p.prenom, p.naissance, p.sexe, r.genreAvatar, r.date  FROM participant p, resultat r WHERE p.idParticipant = r.idParticipant AND idExperience=".$idExperience." GROUP BY p.idParticipant";
@@ -325,7 +320,7 @@ function downloadCsv($idExperience, $nbProduit, $nomExperience, $base){
         unset($ligne);
     }
     if(isset($_GET['downloadCsv'])){
-        echo "CSVFiles/".$idExperience."-".$nomExperience.".csv";
+        echo "CSVFiles/".$idExperience."-".utf8_encode($nomExperience).".csv";
     }
 
     fclose($file);

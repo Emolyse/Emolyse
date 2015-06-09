@@ -24,7 +24,7 @@ include('includes/en-tete.php');
                 $resultats = $base->query($requete);
                 while($resultat = $resultats->fetch_array())
                 {
-                    echo "<th>".htmlspecialchars(utf8_encode($resultat['nom']))."</th>";
+                    echo "<th>".$resultat['nom']."</th>";
                 }
                 $resultats->close();
             ?>
@@ -53,7 +53,7 @@ include('includes/en-tete.php');
                     $j = 1;
                     while(($resultatTrad = $resultatsTraductions->fetch_array()))
                     {
-                        echo '<td><input type="text" name="'.$resultatTrad['codeLangue'].'-'.$resultatTrad['codeIdentifiant'].'" value="'.htmlspecialchars(utf8_encode($resultatTrad['traduction'])).'" class="champ_text_transparent" onkeyup="updateTraduction(\''.$resultatTrad['codeLangue'].'-'.$resultatTrad['codeIdentifiant'].'\')" /></td>';
+                        echo '<td><input type="text" name="'.$resultatTrad['codeLangue'].'-'.$resultatTrad['codeIdentifiant'].'" value="'.$resultatTrad['traduction'].'" class="champ_text_transparent" onkeyup="updateTraduction(\''.$resultatTrad['codeLangue'].'-'.$resultatTrad['codeIdentifiant'].'\')" /></td>';
                     }
                 }
                 echo '</tr>';
@@ -92,7 +92,7 @@ include('includes/en-tete.php');
                     $requete = "SELECT * FROM langue";
                     $resultats = $base->query($requete);
                     while(($resultat = $resultats->fetch_array())){
-                        echo "<li><a href='#' title='consigne-".$resultat['codeLangue']."' class='tab'>".htmlspecialchars(utf8_encode($resultat['nom']))."</a></li>";
+                        echo "<li><a href='#' title='consigne-".$resultat['codeLangue']."' class='tab'>".$resultat['nom']."</a></li>";
                     }
                 ?>
             </ul>

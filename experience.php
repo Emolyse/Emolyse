@@ -7,7 +7,7 @@ include("includes/connexion.php");
 <html lang="fr">
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=8" />
-    <meta charset="utf-8">
+<!--    <meta charset="utf-8">-->
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <meta name="author" content="Alizee ARNAUD, Jordan DAITA, Rémy DROUET" />
 
@@ -299,7 +299,7 @@ include("includes/connexion.php");
                 $tmpSession = $_SESSION['lang'];
                 $_SESSION['lang'] = $rowExp['codeLangue'];
                 include("includes/lang.php");
-                $consigne = nl2br(utf8_decode(TEXT_CONSIGNE));
+                $consigne = nl2br(TEXT_CONSIGNE);
                 $_SESSION['lang'] = $tmpSession;
             }
             //Puis les Objets
@@ -985,11 +985,11 @@ include("includes/connexion.php");
         switch (iTuto){
             case 0 :
                 //rotationX des bras
-                msgTuto("<?php echo TUTO_0;?>",slow, function () {
-                    msgTuto("<?php echo TUTO_1;?>",quick, function () {
-                        msgTuto("<?php echo TUTO_2;?>",quick, function () {
-                            msgTuto("<?php echo TUTO_3;?>",quick, function () {
-                                msgTuto("<?php echo TUTO_4;?>",quick, function () {
+                msgTuto("<?php echo addslashes(TUTO_0);?>",slow, function () {
+                    msgTuto("<?php echo addslashes(TUTO_1);?>",quick, function () {
+                        msgTuto("<?php echo addslashes(TUTO_2);?>",quick, function () {
+                            msgTuto("<?php echo addslashes(TUTO_3);?>",quick, function () {
+                                msgTuto("<?php echo addslashes(TUTO_4);?>",quick, function () {
                                     avatar.skeleton.bones[17].updateMatrixWorld(true);
                                     pos = worldToScreen(avatar.skeleton.bones[17].getWorldPosition());
                                     $('#arrow-right').css({
@@ -1020,9 +1020,9 @@ include("includes/connexion.php");
                 });
                 break;
             case 1 :
-                msgTuto("<?php echo TUTO_5;?>",slow, function () {
+                msgTuto("<?php echo addslashes(TUTO_5);?>",slow, function () {
                     resetBones();
-                    msgTuto("<?php echo TUTO_6;?>",slow, function () {
+                    msgTuto("<?php echo addslashes(TUTO_6);?>",slow, function () {
                         avatar.rotateY(-Math.PI/2);
                         avatarRotation -= Math.PI/2;
                         updateTargets();
@@ -1062,9 +1062,9 @@ include("includes/connexion.php");
                 });
                 break;
             case 2 :
-                msgTuto("<?php echo TUTO_7;?>",slow, function () {
+                msgTuto("<?php echo addslashes(TUTO_7);?>",slow, function () {
                     resetBones();
-                    msgTuto("<?php echo TUTO_8;?>", slow, function () {
+                    msgTuto("<?php echo addslashes(TUTO_8);?>", slow, function () {
                         avatar.skeleton.bones[14].updateMatrixWorld(true);
                         pos = worldToScreen(avatar.skeleton.bones[14].getWorldPosition());
                         $('#arrow-right').css({
@@ -1092,9 +1092,9 @@ include("includes/connexion.php");
                 });
                 break;
             case 3 :
-                msgTuto("<?php echo TUTO_9;?>",slow, function () {
+                msgTuto("<?php echo addslashes(TUTO_9);?>",slow, function () {
                     resetBones();
-                    msgTuto("<?php echo TUTO_10;?>", slow, function () {
+                    msgTuto("<?php echo addslashes(TUTO_10);?>", slow, function () {
                         pos = worldToScreen(new THREE.Vector3(0,-80,0));
                         $('#double-arrow').css({
                             left : pos.x - $('#double-arrow').width()/2,
@@ -1117,9 +1117,9 @@ include("includes/connexion.php");
                 });
                 break;
             case 4 :
-                msgTuto("<?php echo TUTO_11;?>",slow, function () {
+                msgTuto("<?php echo addslashes(TUTO_11);?>",slow, function () {
                     resetBones();
-                    msgTuto("<?php echo TUTO_12;?>", slow, function () {
+                    msgTuto("<?php echo addslashes(TUTO_12);?>", slow, function () {
                         pos = worldToScreen(new THREE.Vector3(0,0,0));
                         $('#move-arrow').css({
                             left : pos.x + 0.05*$('canvas').width(),
@@ -1140,13 +1140,13 @@ include("includes/connexion.php");
                 });
                 break;
             case 5 :
-                msgTuto("<?php echo TUTO_13;?>", slow, function () {
+                msgTuto("<?php echo addslashes(TUTO_13);?>", slow, function () {
                     resetBones();
-                    msgTuto("<?php echo TUTO_14;?>", slow, function(){
-                        msgTuto("<?php echo TUTO_15;?>", slow, function () {
-                            msgTuto("<?php echo TUTO_16;?>", slow, function () {
-                                msgTuto("<?php echo TUTO_17;?>", slow, function () {
-                                    msgTuto("<?php echo TUTO_18;?>", quick, function () {
+                    msgTuto("<?php echo addslashes(TUTO_14);?>", slow, function(){
+                        msgTuto("<?php echo addslashes(TUTO_15);?>", slow, function () {
+                            msgTuto("<?php echo addslashes(TUTO_16);?>", slow, function () {
+                                msgTuto("<?php echo addslashes(TUTO_17);?>", slow, function () {
+                                    msgTuto("<?php echo addslashes(TUTO_18);?>", quick, function () {
                                         manipulable = true;
                                         $('#icon_confirm').on('click', function (e) {
                                             e.preventDefault();
@@ -1221,8 +1221,8 @@ include("includes/connexion.php");
                 $('#overlay-instruction').hide();
 
                 tutoTargets = getTargetList(8,true);
-                msgTuto("<?php echo TUTO_19;?>",6,function(){
-                    msgTuto("<?php echo TUTO_20;?>",6,function(){
+                msgTuto("<?php echo addslashes(TUTO_19);?>",6,function(){
+                    msgTuto("<?php echo addslashes(TUTO_20);?>",6,function(){
                         tutorial();
                     })
                 });

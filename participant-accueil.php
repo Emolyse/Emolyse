@@ -22,7 +22,7 @@ include('includes/en-tete.php');
                 $resultats = $base->query($requete);
                 while(($resultat = $resultats->fetch_array())){
                     $idExperience = $resultat['idExperience'];
-                    echo "<option value='".$idExperience."'>".htmlspecialchars(utf8_encode($resultat['nom']))."</option>";
+                    echo "<option value='".$idExperience."'>".$resultat['nom']."</option>";
                 }
                 ?>
             </select>

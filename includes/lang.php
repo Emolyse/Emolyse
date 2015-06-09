@@ -7,7 +7,7 @@ if(!isset($_SESSION['lang'])){
     $resultats = $base->query($requete);
     while($resultat = $resultats->fetch_array())
     {
-        define($resultat['codeIdentifiant'], htmlspecialchars(utf8_encode($resultat['traduction'])));
+        define($resultat['codeIdentifiant'], $resultat['traduction']);
     }
     $resultats->close();
 }else{
@@ -24,14 +24,14 @@ if(!isset($_SESSION['lang'])){
         while($resultat = $resultats->fetch_array())
         {
 //            echo '<script>console.log("'.utf8_encode($resultat['traduction']).'");</script>';
-            define($resultat['codeIdentifiant'], htmlspecialchars(utf8_encode($resultat['traduction'])));
+            define($resultat['codeIdentifiant'], $resultat['traduction']);
         }
     }else{
         $requete = "SELECT codeIdentifiant, traduction FROM traduction WHERE codeLangue='EN'";
         $resultats = $base->query($requete);
         while($resultat = $resultats->fetch_array())
         {
-            define($resultat['codeIdentifiant'], htmlspecialchars(utf8_encode($resultat['traduction'])));
+            define($resultat['codeIdentifiant'], $resultat['traduction']);
         }
         $resultats->close();
     }
