@@ -14,8 +14,8 @@ if(!isset($_GET['experience'])) {
     <title>Emolyse</title>
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <link rel="shortcut icon" type="image/x-icon" href="images/logo.ico">
-    <link rel="stylesheet" href="styles/style-experience.css">
     <link rel="stylesheet" href="styles/font-awesome.min.css">
+    <link rel="stylesheet" href="styles/style-experience.css">
 </head>
 <body>
 
@@ -1001,9 +1001,9 @@ if(!isset($_GET['experience'])) {
                 $('#icon-env').slideToggle(200);
                 $('#finalizer').show().animate({
                     opacity : 0.9,
-                    height : '30%',
-                    width : '50%',
-                    left : '25%',
+                    height : '250px',
+                    width : '40%',
+                    left : '30%',
                     top : '35%'
                 },800, function () {
                     $("#finalizer div").animate({
