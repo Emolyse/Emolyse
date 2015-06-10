@@ -313,7 +313,7 @@ if(isset($_GET['downloadCsv'])){
 function downloadCsv($idExperience, $nbProduit, $nomExperience, $base){
     $entete = array("PARTICIPANT_ID", "PARTICIPANT_SURNAME", "PARTICIPANT_NAME", "DATE_OF_BIRTH", "PARTICIPANT_GENDER", "AVATAR_GENDER", "DATE_OF_PARTICIPATION");
     for($i=1; $i < $nbProduit+1 ; $i++){
-        array_push($entete, 'PRODUCT_ID_'.$i, 'PRODUCT_NAME_'.$i, 'AVATAR_ANGLE_'.$i, 'LEFT_ARM_ANGLE_X_AXIS_'.$i, 'LEFT_ARM_ANGLE_Z_AXIS_'.$i, 'RIGHT_ARM_ANGLE_X_AXIS_'.$i, 'RIGHT_ARM_ANGLE_Z_AXIS_'.$i, 'BUST_ANGLE_'.$i, 'DISTANCE_'.$i);
+        array_push($entete, 'PRODUCT_ID_'.$i, 'PRODUCT_NAME_'.$i, 'AVATAR_ROTATION_'.$i, 'LEFT_ARM_ANGLE_X_AXIS_'.$i, 'LEFT_ARM_ANGLE_Z_AXIS_'.$i, 'RIGHT_ARM_ANGLE_X_AXIS_'.$i, 'RIGHT_ARM_ANGLE_Z_AXIS_'.$i, 'BODY_ANGLE_'.$i, 'DISTANCE_'.$i);
     }
 
     $file = fopen('../CSVFiles/'.$idExperience.'-'.$nomExperience.'.csv','w+');
