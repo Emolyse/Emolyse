@@ -2,10 +2,10 @@
 -- version 4.1.14
 -- http://www.phpmyadmin.net
 --
--- Client :  127.0.0.1
--- Généré le :  Jeu 04 Juin 2015 à 11:43
--- Version du serveur :  5.6.17
--- Version de PHP :  5.5.12
+-- Host: 127.0.0.1
+-- Generation Time: Jun 10, 2015 at 08:37 AM
+-- Server version: 5.6.17
+-- PHP Version: 5.5.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,13 +17,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Base de données :  `emolyse`
+-- Database: `emolyse`
 --
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `environnement`
+-- Table structure for table `environnement`
 --
 
 CREATE TABLE IF NOT EXISTS `environnement` (
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `environnement` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
 
 --
--- Contenu de la table `environnement`
+-- Dumping data for table `environnement`
 --
 
 INSERT INTO `environnement` (`idEnvironnement`, `nom`, `lienEnvironnement`) VALUES
@@ -44,7 +44,7 @@ INSERT INTO `environnement` (`idEnvironnement`, `nom`, `lienEnvironnement`) VALU
 -- --------------------------------------------------------
 
 --
--- Structure de la table `experience`
+-- Table structure for table `experience`
 --
 
 CREATE TABLE IF NOT EXISTS `experience` (
@@ -59,20 +59,12 @@ CREATE TABLE IF NOT EXISTS `experience` (
   PRIMARY KEY (`idExperience`),
   KEY `idEnvironnement` (`idEnvironnement`),
   KEY `codeLangue` (`codeLangue`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=20 ;
-
---
--- Contenu de la table `experience`
---
-
-INSERT INTO `experience` (`idExperience`, `idEnvironnement`, `nom`, `consigne`, `nbProduit`, `codeLangue`, `syncroBras`, `random`) VALUES
-(16, 2, 'Expérience en italien', 'changement de la consigne pour exp 16 !!', 1, 'EN', 0, 1),
-(19, 1, 'Bla', '', 3, 'FR', 1, 0);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `identifiant`
+-- Table structure for table `identifiant`
 --
 
 CREATE TABLE IF NOT EXISTS `identifiant` (
@@ -83,7 +75,7 @@ CREATE TABLE IF NOT EXISTS `identifiant` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Contenu de la table `identifiant`
+-- Dumping data for table `identifiant`
 --
 
 INSERT INTO `identifiant` (`codeIdentifiant`, `description`) VALUES
@@ -105,6 +97,7 @@ INSERT INTO `identifiant` (`codeIdentifiant`, `description`) VALUES
 ('CHARGEMENT_APPLI', ''),
 ('CHOISIR_LA_LANGUE', ''),
 ('CODE_LANGUE', ''),
+('CONFIRMATION_SUPP', ''),
 ('CONSIGNE', ''),
 ('DECEMBRE', ''),
 ('DEMARRER', ''),
@@ -167,7 +160,7 @@ INSERT INTO `identifiant` (`codeIdentifiant`, `description`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `langue`
+-- Table structure for table `langue`
 --
 
 CREATE TABLE IF NOT EXISTS `langue` (
@@ -178,17 +171,17 @@ CREATE TABLE IF NOT EXISTS `langue` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Contenu de la table `langue`
+-- Dumping data for table `langue`
 --
 
 INSERT INTO `langue` (`codeLangue`, `nom`, `lienDrapeau`) VALUES
-('EN', 'Anglais', 'images/drapeau-anglais.png'),
-('FR', 'Francais', 'images/drapeau-francais.png');
+('EN', 'English', 'images/drapeau-anglais.png'),
+('FR', 'Français', 'images/drapeau-francais.png');
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `participant`
+-- Table structure for table `participant`
 --
 
 CREATE TABLE IF NOT EXISTS `participant` (
@@ -199,26 +192,12 @@ CREATE TABLE IF NOT EXISTS `participant` (
   `sexe` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
   `lienPhoto` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`idParticipant`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=18 ;
-
---
--- Contenu de la table `participant`
---
-
-INSERT INTO `participant` (`idParticipant`, `nom`, `prenom`, `naissance`, `sexe`, `lienPhoto`) VALUES
-(1, 'ARNAUD', 'Alizee', '1992-08-31', 'F', ''),
-(2, 'DROUET', 'Rémy', '1992-01-12', 'H', ''),
-(3, 'DAITA', 'Jordan', '1993-02-15', 'H', ''),
-(6, 'sujet-6', '', '1947-06-03', 'F', ''),
-(14, 'Julie', 'routaud', '1991-03-04', 'F', ''),
-(15, 'ARNAUD', 'Alizée', '1992-08-31', 'F', 'images/imgUsers/10913092_10205979193705612_1900876804_n.jpg'),
-(16, 'toto', 'toto', '1999-11-14', 'F', ''),
-(17, 'sujet-17', '', '2013-03-03', 'H', '');
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `produit`
+-- Table structure for table `produit`
 --
 
 CREATE TABLE IF NOT EXISTS `produit` (
@@ -229,22 +208,12 @@ CREATE TABLE IF NOT EXISTS `produit` (
   `lienPhoto` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`idProduit`),
   KEY `idExperience` (`idExperience`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=218 ;
-
---
--- Contenu de la table `produit`
---
-
-INSERT INTO `produit` (`idProduit`, `idExperience`, `position`, `nom`, `lienPhoto`) VALUES
-(213, 19, 1, '20-objet-publicitaire-stylo-bleu_icy', 'images/imgExperience/19-20-objet-publicitaire-stylo-bleu_icy.jpg'),
-(214, 19, 2, '22-votre-objet-publicitaire-parapluie-bordeau', 'images/imgExperience/19-22-votre-objet-publicitaire-parapluie-bordeaux.jpg'),
-(216, 19, 3, 'pad-ps3-rendu', 'images/imgExperience/19-pad-ps3-rendu.jpg'),
-(217, 16, 1, 'pad-ps3-rendu', 'images/imgExperience/16-pad-ps3-rendu.jpg');
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `resultat`
+-- Table structure for table `resultat`
 --
 
 CREATE TABLE IF NOT EXISTS `resultat` (
@@ -266,17 +235,10 @@ CREATE TABLE IF NOT EXISTS `resultat` (
   KEY `idProduit` (`idProduit`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Contenu de la table `resultat`
---
-
-INSERT INTO `resultat` (`idProduit`, `idParticipant`, `idExperience`, `genreAvatar`, `angleAvatar`, `angleBGx`, `angleBGz`, `angleBDx`, `angleBDz`, `angleBuste`, `distance`, `date`) VALUES
-(217, 17, 16, 'F', 0, 0, 0, 0, 0, 0, 170, '2015-06-04');
-
 -- --------------------------------------------------------
 
 --
--- Structure de la table `traduction`
+-- Table structure for table `traduction`
 --
 
 CREATE TABLE IF NOT EXISTS `traduction` (
@@ -288,7 +250,7 @@ CREATE TABLE IF NOT EXISTS `traduction` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Contenu de la table `traduction`
+-- Dumping data for table `traduction`
 --
 
 INSERT INTO `traduction` (`codeLangue`, `codeIdentifiant`, `traduction`) VALUES
@@ -310,6 +272,7 @@ INSERT INTO `traduction` (`codeLangue`, `codeIdentifiant`, `traduction`) VALUES
 ('EN', 'CHARGEMENT_APPLI', 'Loading the app'),
 ('EN', 'CHOISIR_LA_LANGUE', 'Select language'),
 ('EN', 'CODE_LANGUE', 'Language code'),
+('EN', 'CONFIRMATION_SUPP', 'Do you really want to delete this experience ?'),
 ('EN', 'CONSIGNE', 'Instruction'),
 ('EN', 'DECEMBRE', 'December'),
 ('EN', 'DEMARRER', 'Start'),
@@ -345,7 +308,7 @@ INSERT INTO `traduction` (`codeLangue`, `codeIdentifiant`, `traduction`) VALUES
 ('EN', 'PRENOM', 'Firstname'),
 ('EN', 'SEPTEMBRE', 'September'),
 ('EN', 'SEXE', 'Sex'),
-('EN', 'TEXT_CONSIGNE', 'Une consigne en anglais'),
+('EN', 'TEXT_CONSIGNE', 'Hello,\r\n\r\nYou are about to start an experience on Emolyse App\r\nWe suggest you to do the tutorial where you will learn how handle the avatar : push "Tutorial" button.\r\nIf you already now how to manipulate him you can start the experience by pushing the "Start" button.\r\n\r\nThank you for the participation. Good Luck !'),
 ('EN', 'TUTO_0', 'Let''s see how to rotate arms'),
 ('EN', 'TUTO_1', 'There are 2 different ways to rotate them'),
 ('EN', 'TUTO_10', 'Move the sphere on his feet across the width'),
@@ -386,6 +349,7 @@ INSERT INTO `traduction` (`codeLangue`, `codeIdentifiant`, `traduction`) VALUES
 ('FR', 'CHARGEMENT_APPLI', 'Chargement de l''application'),
 ('FR', 'CHOISIR_LA_LANGUE', 'Choisir la langue'),
 ('FR', 'CODE_LANGUE', 'Code langue'),
+('FR', 'CONFIRMATION_SUPP', 'Etes vous sûr de vouloir supprimer cette expérience ?'),
 ('FR', 'CONSIGNE', 'Consigne'),
 ('FR', 'DECEMBRE', 'Décembre'),
 ('FR', 'DEMARRER', 'Démarrer'),
@@ -421,7 +385,7 @@ INSERT INTO `traduction` (`codeLangue`, `codeIdentifiant`, `traduction`) VALUES
 ('FR', 'PRENOM', 'Prénom'),
 ('FR', 'SEPTEMBRE', 'Septembre'),
 ('FR', 'SEXE', 'Sexe'),
-('FR', 'TEXT_CONSIGNE', 'Consigne en francais pour test             '),
+('FR', 'TEXT_CONSIGNE', 'Bonjour,\r\n\r\nVous êtes sur le point de démarrer une expérience sur l''application Emolyse.\r\n\r\nNous vous conseillons de réaliser le tutoriel afin d''apprendre à  manipuler l''avatar : appuyez sur "Tutoriel".\r\nSi vous savez déjà  utiliser l''application vous pouvez directement débuter l''expérience en appuyant sur "Démarrer".\r\n\r\nMerci de votre participation. Bonne chance !'),
 ('FR', 'TUTO_0', 'Voyons comment faire pivoter les bras'),
 ('FR', 'TUTO_1', 'Il y a 2 rotations différentes possibles'),
 ('FR', 'TUTO_10', 'Déplacer dans la largeur la sphère située à ses pieds'),
@@ -446,23 +410,23 @@ INSERT INTO `traduction` (`codeLangue`, `codeIdentifiant`, `traduction`) VALUES
 ('FR', 'TUTORIEL', 'Tutoriel');
 
 --
--- Contraintes pour les tables exportées
+-- Constraints for dumped tables
 --
 
 --
--- Contraintes pour la table `experience`
+-- Constraints for table `experience`
 --
 ALTER TABLE `experience`
   ADD CONSTRAINT `fk_exp_env` FOREIGN KEY (`idEnvironnement`) REFERENCES `environnement` (`idEnvironnement`);
 
 --
--- Contraintes pour la table `produit`
+-- Constraints for table `produit`
 --
 ALTER TABLE `produit`
   ADD CONSTRAINT `fk_experience_prod` FOREIGN KEY (`idExperience`) REFERENCES `experience` (`idExperience`);
 
 --
--- Contraintes pour la table `resultat`
+-- Constraints for table `resultat`
 --
 ALTER TABLE `resultat`
   ADD CONSTRAINT `fk_experience` FOREIGN KEY (`idExperience`) REFERENCES `experience` (`idExperience`),
@@ -470,7 +434,7 @@ ALTER TABLE `resultat`
   ADD CONSTRAINT `fk_produit` FOREIGN KEY (`idProduit`) REFERENCES `produit` (`idProduit`);
 
 --
--- Contraintes pour la table `traduction`
+-- Constraints for table `traduction`
 --
 ALTER TABLE `traduction`
   ADD CONSTRAINT `fk_codeIdentifiant` FOREIGN KEY (`codeIdentifiant`) REFERENCES `identifiant` (`codeIdentifiant`),

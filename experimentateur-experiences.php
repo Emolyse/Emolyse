@@ -52,7 +52,7 @@ include('includes/en-tete.php');
         $( ".supExperience" ).click(function() {
             var idExperience = $(this).attr("id");
 
-            var r = confirm("Etes vous sûr de vouloir supprimer cette expérience ?");
+            var r = confirm("<?php echo CONFIRMATION_SUPP;?>");
             if (r == true) {
                 texte = file('http://'+window.location.host+'/Emolyse/includes/traitement.php?id='+escape(idExperience)
                     +'&deleteExp="deleteExp"'

@@ -1,7 +1,7 @@
 (function($){
     // upload Manuel d'un produit
     var o = {
-        message : 'Ajout manuel',
+        message : "Add",
         script : 'includes/upload.php'
     }
 
