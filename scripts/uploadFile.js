@@ -23,6 +23,7 @@
             var xhr = new XMLHttpRequest();
 
             xhr.addEventListener('load', function(e){
+                console.log(e);
                 var json = jQuery.parseJSON(e.target.responseText);
                 if(index < files.length-1){
                     upload(files, index+1);
