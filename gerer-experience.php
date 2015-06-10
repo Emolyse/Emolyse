@@ -33,16 +33,18 @@ $idExperience = $_GET['id'];
 ?>
     <section class="ajout-experience">
         <div class="params1">
-            <input type="text" name="nom" id="champs-nom-experience" onkeyup="updateExperience('nom')" value="<?php echo $resultatExperience['nom']; ?>"/>
+            <input type="text" name="nom" id="champs-nom-experience" placeholder="<?php echo NOM; ?>" onkeyup="updateExperience('nom')" value="<?php echo $resultatExperience['nom']; ?>"/>
             <div id="btn-update-lang">
                 <?php
-                    $requeteFlag = "SELECT lienDrapeau FROM langue WHERE codeLangue='".$resultatExperience['codeLangue']."'";
-                    $resultatsFlag = $base->query($requeteFlag);
-                    while($resultatFlag = $resultatsFlag->fetch_array()){
-                        echo "<img src='".$resultatFlag['lienDrapeau']."'  id='current_flag_img'/>";
-                    }
+                $requeteFlag = "SELECT lienDrapeau FROM langue WHERE codeLangue='".$resultatExperience['codeLangue']."'";
+                $resultatsFlag = $base->query($requeteFlag);
+                while($resultatFlag = $resultatsFlag->fetch_array()){
+                    echo "<img src='".$resultatFlag['lienDrapeau']."'  id='current_flag_img'/>";
+                }
                 ?>
             </div>
+            <input type="checkbox" name="syncroBras" onchange="updateExperience('syncroBras')" class="syncroBrasCheckbox" <?php if($resultatExperience['syncroBras'] == 1){echo "checked='checked'";}else{ echo('');}; ?>/> <?php echo AFFICHAGE_SYNCRO_BRAS; ?>
+
 
             <div id="langueAddExp">
             <i class="fa fa-times-circle-o closeAddExp"></i>
@@ -57,12 +59,12 @@ $idExperience = $_GET['id'];
                 }
              ?>
             </div>
-            <a href="#" id="edit-default-consigne"><i class="fa fa-pencil"></i> <?php echo EDITER_LA_CONSIGNE; ?></a>
+            <a href="#" id="edit-consigne"><i class="fa fa-pencil"></i> <?php echo EDITER_LA_CONSIGNE; ?></a>
 
         </div>
         <div class="objet">
             <h3><?php echo OBJETS; ?></h3><input type="checkbox" name="random" onchange="updateExperience('random')" class="randomCheckbox" <?php if($resultatExperience['random'] == 1){echo "checked='checked'";}else{ echo('');}; ?>/> <?php echo AFFICHAGE_ALEATOIRE_OBJETS; ?>
-            <input type="checkbox" name="syncroBras" onchange="updateExperience('syncroBras')" class="syncroBrasCheckbox" <?php if($resultatExperience['syncroBras'] == 1){echo "checked='checked'";}else{ echo('');}; ?>/> <?php echo AFFICHAGE_SYNCRO_BRAS; ?>
+
 
             <ul id="delete" class="sortable"></ul>
 
@@ -177,6 +179,18 @@ $idExperience = $_GET['id'];
             $('.pop-up').hide();
             $('.pop-up-consigne').hide();
             document.body.style.overflow = 'auto';
+        });
+        // pop-up de la langue qui disparait si on clique en dehors
+        $(document).mouseup(function (e){
+            var container = $("#langueAddExp");
+            if (container.has(e.target).length === 0)
+                container.hide();
+        });
+        // pop-up de la consigne qui disparait si on clique en dehors
+        $(document).mouseup(function (e){
+            var container = $(".pop-up-consigne");
+            if (container.has(e.target).length === 0)
+                container.hide();
         });
 
         // quand on click sur "éditer la consigne" une pop-up apparait

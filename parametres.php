@@ -141,6 +141,16 @@ include('includes/en-tete.php');
             document.body.style.overflow = 'hidden';
         });
 
+        $(document).mouseup(function (e){
+            var container = $(".pop-up-consigne");
+            if (container.has(e.target).length === 0)
+                container.hide();
+        });
+        $(document).mouseup(function (e){
+            var container = $(".pop-up");
+            if (container.has(e.target).length === 0)
+                container.hide();
+        });
         // tabs dans la pop-up de la consigne pour les différantes langues
         $("a[title*='consigne-FR']").addClass("active");
         $("a.tab").click(   function ()

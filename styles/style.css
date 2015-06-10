@@ -132,6 +132,7 @@ label.radioImage > input{
 label.radioImage > input + img{
     cursor:pointer;
     border:2px solid transparent;
+    margin: 4px;
 }
 label.radioImage > input:checked + img{
     border:2px solid #ffffff;
@@ -162,17 +163,28 @@ label.radioEnv > input:checked + img{
     padding: 20px;
     border: none;
     position: absolute;
-    left: 46%;
-    top: 188px;
+    left: 300px;
+    top: -74px;
     z-index: 999;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
 }
 #btn-update-lang{
-    display: inline-block;
+    position: absolute;
+    left: 256px;
+    top: -2px;
+    /* display: inline-block; */
     width: 50px;
     margin-top: 5px;
+}
+a#edit-consigne {
+    position: absolute;
+    top: 6px;
+    left: 316px;
+}
+a#edit-default-consigne {
+
 }
 /* END EN-TETE */
 
@@ -302,10 +314,14 @@ i.fa.fa-times{
 .ligneClic{
     cursor: pointer;
 }
+.objet {
+    position: relative;
+}
 .params1 {
     margin-left: 30px;
     margin-top: 20px;
-    text-align: center;
+    /*text-align: center;*/
+    position: relative;
 }
 .params1 label{
     font-size: 26px;
@@ -314,7 +330,8 @@ input#champs-nom-experience {
     padding: 5px 10px;
     font-size: 18px;
     display: block;
-    margin: 0 auto;
+    margin-bottom: 20px;
+    /*margin: 0 auto;*/
 }
 .drapeau-experience{
     vertical-align: -8px;
@@ -580,7 +597,7 @@ a.tab.active {
 }
 .block-objets{
     margin-left: 30px;
-    margin-right: 30px;
+    margin-right: 120px;
     margin-top: 15px;
 }
 .dropFile{
@@ -611,8 +628,8 @@ a.tab.active {
     height: 70px;
     width: 50px;
     position: absolute;
-    right: 12%;
-    top: 32%;
+    right: 3%;
+    top: 31%;
 }
 #delete li {
     height: 0;
