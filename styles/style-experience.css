@@ -1,0 +1,254 @@
+body {
+    color: #000;
+    font-family: Arial;
+    font-size: 13px;
+    text-align: center;
+
+    background-color: #000;
+    margin: 0;
+    overflow: hidden;
+}
+a {
+    color: #f00;
+}
+#console {
+    display: none;
+    position: fixed;
+    background-color: #ffffff;
+    color: #000000;
+    z-index: 1000;
+    width: 100%;
+    text-align: center;
+    height: 45px;
+    padding-top: 5px;
+    font-size: 30px;
+    opacity: 0.8;
+}
+#containerObjet {
+    position: absolute;
+    width: 15%;
+    top: 23%;
+    left: 76%;
+}
+.objet {
+    display: none;
+    width: 100%;
+    position: absolute;
+    color: red;
+}
+#resetButton {
+    z-index: 1000;
+    position: fixed;
+    bottom: 20px;
+    cursor: pointer;
+    color: #fff;
+    font-size: 66px;
+    padding: 15px;
+    left: 20px;
+    transition: all 500ms ease;
+}
+.rotate360{
+    -webkit-transform : rotate(360deg);
+    transform : rotate(360deg);
+}
+.icon_env{
+    display: block;
+    color: #fff;
+    font-size: 66px;
+    padding: 15px;
+}
+#icon_confirm{
+    display: none;
+    color: #289148;
+    font-size: 66px;
+}
+#icon-env{
+    position: fixed;
+    display: block;
+    bottom: 20px;
+    right: 20px;
+}
+.display{
+    display: block;
+}
+
+/* LOADER */
+.fullLoader {
+
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background: #262526;
+    z-index: 9999;
+}
+.loader {
+    font-size: 10px;
+    margin: 25em auto;
+    text-indent: -9999em;
+    width: 11em;
+    height: 11em;
+    border-radius: 50%;
+    background: #ffffff;
+    background: -moz-linear-gradient(left, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
+    background: -webkit-linear-gradient(left, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
+    background: -o-linear-gradient(left, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
+    background: -ms-linear-gradient(left, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
+    background: linear-gradient(to right, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
+    position: relative;
+    -webkit-animation: load3 1.4s infinite linear;
+    animation: load3 1.4s infinite linear;
+    -webkit-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    transform: translateZ(0);
+}
+.loader:before {
+    width: 50%;
+    height: 50%;
+    background: #FFF;
+    border-radius: 100% 0 0 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: '';
+}
+.loader:after {
+    background: #262526;
+    width: 75%;
+    height: 75%;
+    border-radius: 50%;
+    content: '';
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+@-webkit-keyframes load3 {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+@keyframes load3 {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+.txtLoading{
+    color: #fff;
+    font-size: 20px;
+    position: relative;
+    margin-top: -17%;
+}
+.logoChargement{
+    width: 250px;
+}
+
+/*OVERLAY INSTRUCTION*/
+#overlay-instruction{
+    position: fixed;
+    z-index: 9998;
+    width: 70%;
+    height: 70%;
+    opacity: 0.85;
+    background-color: #262526;
+    color: #FFFFFF;
+    padding: 15%;
+}
+#overlay-content{
+}
+#overlay-content h1{
+    font-size: 3em;
+    text-align: left;
+    border-bottom: solid 1px #FFFFFF;
+}
+#overlay-content p{
+    text-align: justify;
+    font-size: 1.4em;
+}
+.btn-overlay{
+    border : solid 1px #FFFFFF;
+    font-size: 2em;
+    display: inline-block;
+    margin : 10% 10% auto 10%;
+    padding : 10px;
+    cursor: pointer;
+}
+
+/*FINALIZER*/
+#finalizer{
+    display: none;
+    width: 0;
+    height: 0;
+    position: fixed;
+    z-index: 1000;
+    left:50%;
+    top: 50%;
+    padding: 20px;
+    background-color: #FFFFFF;
+    border : solid 3px #aaaaaa;
+    border-radius : 10px;
+    opacity: 0;
+    box-sizing: border-box;
+}
+#finalizer div{
+    opacity: 0;
+}
+#finalizer span {
+    font-size: 1.5em;
+    display: inline-block;
+    max-width: 90%;
+    text-align: left;
+}#finalizer p {
+     font-size: 2em;
+ }
+#finalizer i{
+    font-size: 4em;
+    display: inline-block;
+    color: #00B236;
+}
+#console-tuto{
+    display: none;
+    z-index: 1000;
+    width: 100%;
+    text-align: center;
+    position: fixed;
+    top : 50%;
+    color: #ffffff;
+    text-shadow: 4px 4px #333333;
+    font-size: 4em;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    pointer-events: none;
+}
+#arrow-right, #arrow-left, #move-arrow{
+    position: fixed;
+    display: none;
+    width: 15%;
+    pointer-events: none;
+}
+
+#double-arrow{
+    position: fixed;
+    display: none;
+    width: 30%;
+    pointer-events:none;
+}
+
+canvas{
+    cursor: pointer;
+    pointer-events: none;
+}
