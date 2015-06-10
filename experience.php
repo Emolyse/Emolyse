@@ -721,7 +721,7 @@ if(!isset($_GET['experience'])) {
     }
 
     function extractData(){
-        var res = {objPos:posObject,idObj:idObj[posObject],idExperience:idExperience,avatarRot:THREE.Math.radToDeg(avatarRotation),rArmRotX:THREE.Math.radToDeg(rArmRotX),rArmRotZ:THREE.Math.radToDeg(rArmRotZ),lArmRotX:THREE.Math.radToDeg(lArmRotX),lArmRotZ:THREE.Math.radToDeg(lArmRotZ),bodyRot:THREE.Math.radToDeg(bodyRot),distance:avatar.position.x,sexeAvatar:sexeAvatar};
+        var res = {objPos:posObject,idObj:idObj[posObject],idExperience:idExperience,avatarRot:THREE.Math.radToDeg(avatarRotation),rArmRotX:THREE.Math.radToDeg(rArmRotX),rArmRotZ:Math.abs(THREE.Math.radToDeg(rArmRotZ)),lArmRotX:THREE.Math.radToDeg(lArmRotX),lArmRotZ:Math.abs(THREE.Math.radToDeg(lArmRotZ)),bodyRot:THREE.Math.radToDeg(bodyRot),distance:avatar.position.x,sexeAvatar:sexeAvatar};
         return res;
     }
 
