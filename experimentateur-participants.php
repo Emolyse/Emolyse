@@ -51,9 +51,17 @@
                     echo "<tr>";
                     echo "<td>";
                     if($resultat['sexe'] == 'F'){
-                        echo "<img src='images/profil_f.png' alt='Femme' class='pictoSexe' />";
+                        if($resultat['lienPhoto'] != ''){
+                            echo "<img src='".$resultat['lienPhoto']."' alt='Femme' class='pictoSexe' style='border: 4px solid #a831ac; border-radius: 4px;' width='52px' />";
+                        }else{
+                            echo "<img src='images/profil_f.png' alt='Femme' class='pictoSexe' width='60px' />";
+                        }
                     }elseif($resultat['sexe'] == 'H'){
-                        echo "<img src='images/profil_h.png' alt='Femme' class='pictoSexe' />";
+                        if($resultat['lienPhoto'] != ''){
+                            echo "<img src='".$resultat['lienPhoto']."' alt='Homme' class='pictoSexe' style='border: 4px solid #158a9e; border-radius: 4px;' width='52px' />";
+                        }else{
+                            echo "<img src='images/profil_h.png' alt='Femme' class='pictoSexe' width='60px' />";
+                        }
                     }
                     echo "</td>";
                     echo "<td>".$resultat['nom']."</td>";

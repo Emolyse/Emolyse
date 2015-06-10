@@ -239,9 +239,6 @@ table.table-parametres tr td:last-child{
 table.table-parametres tr{
     height: 38px;
 }
-table.table-participants tr td img{
-    width: 50px;
-}
 table.table-participants tr td:first-child{
     width: 70px;
 }
