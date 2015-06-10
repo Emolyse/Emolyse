@@ -9,7 +9,11 @@ $idExperience = $_GET['id'];
     jQuery(function($){
         // détection des événements à l'ajout d'une image (en drag & drop ou manuellement)
        $('.dropfile').dropfile();
-       $('.dropfile').uploadFile();
+       $('.dropfile').uploadFile(
+           {
+               message: "<?php echo AJOUTER; ?>"
+           }
+       );
     });
 </script>
 <input type="hidden" id="idExperience" value="<?php echo $idExperience; ?>"/>
