@@ -194,7 +194,7 @@ $idExperience = $_GET['id'];
         });
 
         // quand on click sur "éditer la consigne" une pop-up apparait
-        $("#edit-default-consigne").click(function() {
+        $("#edit-consigne").click(function() {
             $('.pop-up-consigne').show();
             $(".content").show();
             document.body.style.overflow = 'hidden';
