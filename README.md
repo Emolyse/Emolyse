@@ -1,5 +1,5 @@
 ![](https://github.com/Emolyse/Emolyse/blob/master/images/logo_light.png)
-## Emolyse [EN]
+## Emolyse App [EN]
 An application to evaluate emotions about innovative products
 
 This application has been conceived and will be used by the [Laboratoire d'Informatique de Grenoble](https://www.liglab.fr/) in laboratory experiences.  
