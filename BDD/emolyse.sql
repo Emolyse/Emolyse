@@ -2,10 +2,10 @@
 -- version 4.1.14
 -- http://www.phpmyadmin.net
 --
--- Host: 127.0.0.1
--- Generation Time: Jun 10, 2015 at 08:37 AM
--- Server version: 5.6.17
--- PHP Version: 5.5.12
+-- Client :  127.0.0.1
+-- Généré le :  Jeu 11 Juin 2015 à 13:12
+-- Version du serveur :  5.6.17
+-- Version de PHP :  5.5.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,13 +17,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Database: `emolyse`
+-- Base de données :  `emolyse`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `environnement`
+-- Structure de la table `environnement`
 --
 
 CREATE TABLE IF NOT EXISTS `environnement` (
@@ -34,17 +34,17 @@ CREATE TABLE IF NOT EXISTS `environnement` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
 
 --
--- Dumping data for table `environnement`
+-- Contenu de la table `environnement`
 --
 
 INSERT INTO `environnement` (`idEnvironnement`, `nom`, `lienEnvironnement`) VALUES
-(1, 'salon', 'img/salon_2.jpg'),
-(2, 'Salle d''attente', 'img/salle_dattente.jpg');
+(1, 'salon', 'images/env/salon_2.jpg'),
+(2, 'Salle d''attente', 'images/env/salle_dattente.jpg');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `experience`
+-- Structure de la table `experience`
 --
 
 CREATE TABLE IF NOT EXISTS `experience` (
@@ -59,12 +59,12 @@ CREATE TABLE IF NOT EXISTS `experience` (
   PRIMARY KEY (`idExperience`),
   KEY `idEnvironnement` (`idEnvironnement`),
   KEY `codeLangue` (`codeLangue`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `identifiant`
+-- Structure de la table `identifiant`
 --
 
 CREATE TABLE IF NOT EXISTS `identifiant` (
@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS `identifiant` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `identifiant`
+-- Contenu de la table `identifiant`
 --
 
 INSERT INTO `identifiant` (`codeIdentifiant`, `description`) VALUES
@@ -160,7 +160,7 @@ INSERT INTO `identifiant` (`codeIdentifiant`, `description`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `langue`
+-- Structure de la table `langue`
 --
 
 CREATE TABLE IF NOT EXISTS `langue` (
@@ -171,7 +171,7 @@ CREATE TABLE IF NOT EXISTS `langue` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `langue`
+-- Contenu de la table `langue`
 --
 
 INSERT INTO `langue` (`codeLangue`, `nom`, `lienDrapeau`) VALUES
@@ -181,7 +181,7 @@ INSERT INTO `langue` (`codeLangue`, `nom`, `lienDrapeau`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `participant`
+-- Structure de la table `participant`
 --
 
 CREATE TABLE IF NOT EXISTS `participant` (
@@ -197,7 +197,7 @@ CREATE TABLE IF NOT EXISTS `participant` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `produit`
+-- Structure de la table `produit`
 --
 
 CREATE TABLE IF NOT EXISTS `produit` (
@@ -213,7 +213,7 @@ CREATE TABLE IF NOT EXISTS `produit` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `resultat`
+-- Structure de la table `resultat`
 --
 
 CREATE TABLE IF NOT EXISTS `resultat` (
@@ -238,7 +238,7 @@ CREATE TABLE IF NOT EXISTS `resultat` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `traduction`
+-- Structure de la table `traduction`
 --
 
 CREATE TABLE IF NOT EXISTS `traduction` (
@@ -250,7 +250,7 @@ CREATE TABLE IF NOT EXISTS `traduction` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `traduction`
+-- Contenu de la table `traduction`
 --
 
 INSERT INTO `traduction` (`codeLangue`, `codeIdentifiant`, `traduction`) VALUES
@@ -410,23 +410,23 @@ INSERT INTO `traduction` (`codeLangue`, `codeIdentifiant`, `traduction`) VALUES
 ('FR', 'TUTORIEL', 'Tutoriel');
 
 --
--- Constraints for dumped tables
+-- Contraintes pour les tables exportées
 --
 
 --
--- Constraints for table `experience`
+-- Contraintes pour la table `experience`
 --
 ALTER TABLE `experience`
   ADD CONSTRAINT `fk_exp_env` FOREIGN KEY (`idEnvironnement`) REFERENCES `environnement` (`idEnvironnement`);
 
 --
--- Constraints for table `produit`
+-- Contraintes pour la table `produit`
 --
 ALTER TABLE `produit`
   ADD CONSTRAINT `fk_experience_prod` FOREIGN KEY (`idExperience`) REFERENCES `experience` (`idExperience`);
 
 --
--- Constraints for table `resultat`
+-- Contraintes pour la table `resultat`
 --
 ALTER TABLE `resultat`
   ADD CONSTRAINT `fk_experience` FOREIGN KEY (`idExperience`) REFERENCES `experience` (`idExperience`),
@@ -434,7 +434,7 @@ ALTER TABLE `resultat`
   ADD CONSTRAINT `fk_produit` FOREIGN KEY (`idProduit`) REFERENCES `produit` (`idProduit`);
 
 --
--- Constraints for table `traduction`
+-- Contraintes pour la table `traduction`
 --
 ALTER TABLE `traduction`
   ADD CONSTRAINT `fk_codeIdentifiant` FOREIGN KEY (`codeIdentifiant`) REFERENCES `identifiant` (`codeIdentifiant`),
