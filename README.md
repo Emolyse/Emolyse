@@ -4,9 +4,9 @@ An application to evaluate emotions about innovative products
 
 ## L'application Emolyse [FR]
 
-Emolyse est une application tactile d'évaluation des émotions suscité par des produits innovants.
+Emolyse est une application tactile d'évaluation des émotions suscitées par des produits innovants.
 
-Elle a été imaginée et sera utilisée par le [Laboratoire d'Informatique de Grenoble](https://www.liglab.fr/) au sein d'expériences.   
+Elle a été imaginée et sera utilisée par le [Laboratoire d'Informatique de Grenoble](https://www.liglab.fr/) au travers expériences.   
 Nous sommes un groupe de trois étudiants en Master 1 [IC2A Web Informatique et Connaissances](http://imss-www.upmf-grenoble.fr/master-ic2a/wic) à l'UPMF de Grenoble.
 
 Ce projet web utilise la technologie WebLG avec la librairie ThreeJS.
