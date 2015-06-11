@@ -1,4 +1,4 @@
-# Emolyse
+![](https://github.com/Emolyse/Emolyse/blob/master/images/logo_light.png)
 ## Emolyse [EN]
 An application to evaluate emotions about innovative products
 
