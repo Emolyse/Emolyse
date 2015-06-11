@@ -14,3 +14,8 @@ Ce projet web utilise la technologie WebLG avec la librairie ThreeJS.
 Vous pouvez retrouver nos trois rapports de projet pour dans le dossier "Docs". 
 Vous y trouverez également le manuel utilisateur pour installer et utiliser l'application. 
 
+[*Alizée ARNAUD*](http://alizee-arnaud.com)  
+*Jordan DAITA*  
+*Rémy DROUET*
+
+
