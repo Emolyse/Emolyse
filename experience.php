@@ -106,11 +106,12 @@ if(!isset($_GET['experience'])) {
 <img id="double-arrow" src="images/double_arrow.png" alt="arrow-avatar-rotation"/>
 <img id="move-arrow" src="images/arrow-move.png" alt="arrow-avatar-move"/>
 
-<script src="js/three.min.js"></script>
-<script src="js/ColladaLoader.js"></script>
-<script src="js/Detector.js"></script>
-<script src="js/jquery.min.js"></script>
+<script src="scripts/three.min.js"></script>
+<script src="scripts/ColladaLoader.js"></script>
+<script src="scripts/Detector.js"></script>
+<script src="scripts/jquery-2.1.4.min.js"></script>
 <script src="scripts/file.js"></script>
+
 <script>
 
     if (!Detector.webgl) Detector.addGetWebGLMessage();
