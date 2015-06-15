@@ -87,6 +87,7 @@ if(!isset($_GET['experience'])) {
     </div>
 </div>
 
+<i id="fullscreen" class="fa fa-expand" onclick="fullScreenHandler()"></i>
 <div id="icon-env">
     <i id="icon_confirm" class="fa fa-check-circle"></i>
     <i id="icon-next" class="fa fa-chevron-circle-right icon_env"></i>
@@ -115,6 +116,7 @@ if(!isset($_GET['experience'])) {
 <script src="scripts/ColladaLoader.js"></script>
 <script src="scripts/Detector.js"></script>
 <script src="scripts/jquery-2.1.4.min.js"></script>
+<script src="scripts/jquery.fullscreen.js"></script>
 <script src="scripts/file.js"></script>
 
 <script>
@@ -290,6 +292,7 @@ if(!isset($_GET['experience'])) {
         }
 
         loadObject();
+        updateTargets();
     }
 
     /***
@@ -425,16 +428,18 @@ if(!isset($_GET['experience'])) {
      *  @description Update targets position when avatar posture/position have been modified
      */
     function updateTargets() {
-        avatar.updateMatrixWorld(true);
-        for (var i = 0; i < targetList.length - 1; i++) {
-            var pos = avatar.skeleton.bones[idBonesTargeted[i]].getWorldPosition();
-            targetList[i].position.set(pos.x, pos.y, pos.z);
-            if(tutoTargets.length)
-                tutoTargets[i].position.set(pos.x, pos.y, pos.z);
+        if(avatar) {
+            avatar.updateMatrixWorld(true);
+            for (var i = 0; i < targetList.length - 1; i++) {
+                var pos = avatar.skeleton.bones[idBonesTargeted[i]].getWorldPosition();
+                targetList[i].position.set(pos.x, pos.y, pos.z);
+                if (tutoTargets.length)
+                    tutoTargets[i].position.set(pos.x, pos.y, pos.z);
+            }
+            targetList[targetList.length - 1].position.setX(avatar.position.x);
+            if (tutoTargets.length)
+                tutoTargets[tutoTargets.length - 1].position.setX(avatar.position.x);
         }
-        targetList[targetList.length - 1].position.setX(avatar.position.x);
-        if(tutoTargets.length)
-            tutoTargets[tutoTargets.length - 1].position.setX(avatar.position.x);
     }
 
     /***

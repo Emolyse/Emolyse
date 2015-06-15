@@ -56,6 +56,23 @@ a {
     -webkit-transform : rotate(360deg);
     transform : rotate(360deg);
 }
+
+#fullscreen{
+    padding: 2px 6px;
+    border : solid 2px #ffffff;
+    color: #ffffff;
+    font-size: 1.2em;
+    position: fixed;
+    z-index: 9999;
+    top: 6px;
+    right: 5px;
+    margin-left: 3px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
 .icon_env{
     display: block;
     color: #fff;
