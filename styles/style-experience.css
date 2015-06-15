@@ -88,7 +88,7 @@ a {
 }
 .loader {
     font-size: 10px;
-    margin: 25em auto;
+    margin: 25em auto auto;
     text-indent: -9999em;
     width: 11em;
     height: 11em;
@@ -153,7 +153,6 @@ a {
     color: #fff;
     font-size: 20px;
     position: relative;
-    margin-top: -17%;
 }
 .logoChargement{
     width: 250px;
@@ -206,21 +205,29 @@ a {
     opacity: 0;
     box-sizing: border-box;
 }
-#finalizer div{
+#finalizer .opacity-div{
     opacity: 0;
 }
+#finalizer .opacity-div div{
+    width: 100%;
+}
 #finalizer span {
+    max-width: 90%;
     font-size: 1.5em;
     display: inline-block;
-    max-width: 90%;
     text-align: left;
-}#finalizer p {
+    vertical-align: middle;
+}
+#finalizer p {
      font-size: 2em;
- }
+}
+
 #finalizer i{
-    font-size: 4em;
+    font-size: 3em;
     display: inline-block;
     color: #00B236;
+    vertical-align: middle;
+    margin-left: 15px;
 }
 #console-tuto{
     display: none;

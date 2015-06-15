@@ -24,22 +24,25 @@ if(!isset($_GET['experience'])) {
 <div id="console"></div>
 <div id="containerObjet">
     <?php
+    /***
+     * This php section get from the database experience settings
+     */
     if(isset($_GET['experience'])){
         $nbObjet = 0;
         $experience = $_GET['experience'];
         $reqExp = "SELECT consigne, nbProduit, codeLangue, syncroBras, random, lienEnvironnement from experience exp, environnement env where exp.idEnvironnement=env.idEnvironnement and exp.idExperience =".$experience;
         $resExp = $base->query($reqExp);
         while(($rowExp = $resExp->fetch_array())){
-            //On récupère l'environnement
+            //Environment
             $lienEnvironnement = $rowExp['lienEnvironnement'];
 
-            //On vérifie si les bras doivent être synchronisés
+            //Arm synchronization params
             $synchroneArm = false;
             if($rowExp['syncroBras'] == 1){
                 $synchroneArm = true;
             }
 
-            //La traduction
+            //Traduction & instruction
             $consigne = nl2br($rowExp['consigne']);
             $tmpSession = $_SESSION['lang'];
             $_SESSION['lang'] = $rowExp['codeLangue'];
@@ -48,7 +51,7 @@ if(!isset($_GET['experience'])) {
             if($consigne == ''){
                 $consigne = nl2br(TEXT_CONSIGNE);
             }
-            //Puis les Objets
+            //Products
             if($rowExp['random'] == 0){
                 $reqObjet = "SELECT * FROM produit WHERE idExperience=".$experience." ORDER BY position ASC";
             }elseif($rowExp['random'] == 1){
@@ -92,10 +95,12 @@ if(!isset($_GET['experience'])) {
 <div id="container"></div>
 
 <div id="finalizer">
-    <div>
+    <div class="opacity-div">
         <p><?php echo FINALISATION;?> !</p>
-        <span><?php echo  PHRASE_FIN;?></span>
-        <i class="fa fa-arrow-circle-o-right"></i>
+        <div>
+            <span><?php echo  PHRASE_FIN;?></span>
+            <i class="fa fa-arrow-circle-o-right"></i>
+        </div>
     </div>
 </div>
 
@@ -208,7 +213,7 @@ if(!isset($_GET['experience'])) {
          *   12 : bras droit
          *   13: bras gauche
          */
-        //Url de l'avatar
+        //Avatar url
         if(choixAvatar == 'man'){
             urlAvatar = 'Homme/avatar_man.dae';
             sexeAvatar = 'M';
@@ -217,6 +222,10 @@ if(!isset($_GET['experience'])) {
             urlAvatar = 'Femme/avatar_woman.dae'
             sexeAvatar = 'F';
         }
+
+        /***
+         *  When the avatar is loaded we activate mouseDown listener, create targets & hide the load screen
+         */
         loadAvatar(urlAvatar, function () {
             avatar.updateMatrixWorld(true);
             targetList = getTargetList(15,false);
@@ -258,6 +267,10 @@ if(!isset($_GET['experience'])) {
         render();
 
     }
+
+    /***
+     *  @description Window resize handler
+     */
     function onWindowResize() {
 
         camera.aspect = 16 / 9;
@@ -279,6 +292,9 @@ if(!isset($_GET['experience'])) {
         loadObject();
     }
 
+    /***
+     *  @description ThreeJS procedure to render scenes with set cameras (backgroundScene & scene)
+     */
     function render() {
         requestAnimationFrame( render, renderer.domElement );
         renderer.autoClear = false;
@@ -287,11 +303,11 @@ if(!isset($_GET['experience'])) {
         renderer.render( backgroundScene, backgroundCamera);
         renderer.render( scene, camera );
     }
-    /*****************************************************************************************
-     * @description Load the .dae file according to the name et initialize it in the scene   *
-     * @param name                                                                           *
-     * @param callback                                                                       *
-     *****************************************************************************************/
+    /***
+     * @description Load the .dae file according to the name et load it in the scene
+     * @param name Collada file name
+     * @param callback
+     */
 
     function loadAvatar(name, callback) {
         var loader = new THREE.ColladaLoader();
@@ -308,7 +324,7 @@ if(!isset($_GET['experience'])) {
             }
 
             // create a smooth skin
-            // On active la manipulation des bones sur tous les matériaux qui composent un mesh
+            //Activation of the avatar manipulation for every required bones
             for (var i = 0; i < avatar.material.materials.length; i++) {
                 avatar.material.materials[i].skinning = true;
             }
@@ -335,10 +351,16 @@ if(!isset($_GET['experience'])) {
         });
     }
 
+    /***
+     *  @description Console : Usefull development tool for debugging in LiveEdit PhpStorm mode
+     */
     function loadConsole(msg) {
         $("#console").text(msg);
     }
 
+    /***
+     *  @description Update the product picture size and position
+     */
     function loadObject(){
 
         var w = $('canvas').height();
@@ -353,6 +375,9 @@ if(!isset($_GET['experience'])) {
         });
     }
 
+    /***
+     *  @description load the 3D screen object in the scene
+     */
     function loadScreen(callback){
         var loaderObject = new THREE.ColladaLoader();
         var screen;
@@ -370,6 +395,12 @@ if(!isset($_GET['experience'])) {
      * @description Couch de dialogue avatar/touchInterface
      *******************************************************/
 
+    /***
+     *  @description Create targets for the avatar manipulation (3D Spheres)
+     *  @param size sphere radius
+     *  @param visible
+     *  @return An array of the created targets
+     */
     function getTargetList(size,visible) {
         avatar.updateMatrixWorld(true);
         var res = [];
@@ -381,7 +412,7 @@ if(!isset($_GET['experience'])) {
             scene.add(target);
             res.push(target);
         }
-        //On créé la cible de rotation de l'avatar
+        //Creation of the avatar manipulation targets
         var avatarTarget = sphereGenerator(size, "#01B0F0",visible);
         avatarTarget.position.set(0, -80, 0);
         avatarTarget.name = 'avatarRot';
@@ -390,6 +421,9 @@ if(!isset($_GET['experience'])) {
         return res;
     }
 
+    /***
+     *  @description Update targets position when avatar posture/position have been modified
+     */
     function updateTargets() {
         avatar.updateMatrixWorld(true);
         for (var i = 0; i < targetList.length - 1; i++) {
@@ -403,6 +437,10 @@ if(!isset($_GET['experience'])) {
             tutoTargets[tutoTargets.length - 1].position.setX(avatar.position.x);
     }
 
+    /***
+     *  @description Triggered event when the mouse is moving, it will load required mouse events and the mouse position
+     *  @param evt mouse event
+     */
     function onDocumentMouseDown(evt) {
         if(manipulable) {
             console.log(evt.type);
@@ -426,6 +464,10 @@ if(!isset($_GET['experience'])) {
         }
     }
 
+    /***
+     *  @description Triggered event when the mouse go up, it will applied avatar move
+     *  @param evt mouse event
+     */
     function onDocumentMouseUp(evt) {
         console.log(evt.type);
         if(evt.type == "touchend") {
@@ -437,14 +479,14 @@ if(!isset($_GET['experience'])) {
         if (intersects.length > 0) {
         } else {
             var mousePosUp = mouseToWorld(evt);
-            var long = mousePosUp.x - mousePosDown.x; // long est la longueur de déplacement du touch
+            var long = mousePosUp.x - mousePosDown.x; // long is the slide value for the avatar move
             if (Math.abs(long) > 10 && !lockMove) {
-                if (long > 0) { // L'avatar avance
+                if (long > 0) { // The avatar is moving forward
                     if(long+avatar.position.x >= borneMax){
                         long = borneMax - avatar.position.x;
                     }
                 }
-                else { // L'avatar recule
+                else { // The avatar is moving back
                     if(long+avatar.position.x <= borneMin){
                         long = borneMin - avatar.position.x;
                     }
@@ -455,6 +497,10 @@ if(!isset($_GET['experience'])) {
         }
     }
 
+    /***
+     *  @description Triggered event when the mouse is moving, it will applied the rotation and update the avatar posture & targets position (used for avatar manipulation only)
+     *  @param evt mouse event
+     */
     function onContainerMouseMove(evt) {
 
         if(evt.type == "touchmove") {
@@ -463,10 +509,10 @@ if(!isset($_GET['experience'])) {
         }
 
         var name = intersects[0].object.name;
-        //si on synchronise et qu'on a ciblé un bras
+        //When the arm synchronization is activated and an arm target is selected
         if(manipulable) {
             if (synchroneArm && (name == 'rHand' || name == 'lHand')) {
-                //on applique d'abord la rotation au bras ciblé et on l'applique ensuite à l'autre bras grace a l'angle résultant
+                //The targeted arm rotation is applied first then we apply it on the other arm thanks to the angle result
                 if (name == 'rHand') {
                     applyRotation('rHand', evt, function (angle) {
                         applyRotation('lHand', evt, updateTargets, angle);
@@ -476,13 +522,19 @@ if(!isset($_GET['experience'])) {
                         applyRotation('rHand', evt, updateTargets, angle);
                     });
                 }
-            } else {//dans tous les autres cas on applique une rotation unique
+            } else {//In other case we apply an unique rotation
                 applyRotation(name, evt, updateTargets);
             }
         }
 
     }
-
+    /***
+     *  @description Apply a rotation according to the selected target
+     *  @param name targte name
+     *  @param evt mouse event
+     *  @param callback
+     *  @param angle applied angle (used for arm synchronization)
+     */
     function applyRotation(name,evt,callback, angle){
         var bone, res = 0;
         var tmpMousePosMove = mouseToWorld(evt);
@@ -508,18 +560,18 @@ if(!isset($_GET['experience'])) {
                 }
 
                 if (angle) {
-                    if (Math.abs(avatarRotation) <= 0.8 || Math.abs(avatarRotation) >= Math.PI - 0.8) {//On rotate autour de l'axe des épaules
-                        if(Math.abs(avatarRotation) > 0.8){//l'avatar est dos à l'objet -> on inverse la rotation
+                    if (Math.abs(avatarRotation) <= 0.8 || Math.abs(avatarRotation) >= Math.PI - 0.8) {//We apply the rotation on the shoulder axis
+                        if(Math.abs(avatarRotation) > 0.8){//The avatar is back to the object -> Rotation reversed
                             angle = -angle;
                         }
-                        if(rArmRotX+angle<maxRotXArm && rArmRotX+angle>minRotXArm) {//on vérifie l'angle de rotation
-                            //on applique la rotation
+                        if(rArmRotX+angle<maxRotXArm && rArmRotX+angle>minRotXArm) {//Check rotation limits
+                            //Rotation applied
                             bone.rotateX(angle);
                             rArmRotX += angle;
                         }
-                    } else {//On rotate de manière à écarter les bras
-                        res = -res;//on inverse l'angle de synchronisé pour l'autre bras
-                        if(avatarRotation>=0){//l'avatar est de dos par rapport à l'utilisateur -> on inverse la rotation
+                    } else {//Rotation to part arms
+                        res = -res;//Rotation angle reversed for the other arm
+                        if(avatarRotation>=0){//The avatar is back to the user -> Rotation reversed
                             angle = -angle;
                         }
                         if(rArmRotZ+angle>-maxRotZArm && rArmRotZ+angle<=minRotZArm) {
@@ -541,18 +593,18 @@ if(!isset($_GET['experience'])) {
                     mousePosMove = mouseToWorld(evt);
                 }
 
-                if (Math.abs(avatarRotation) <= 0.8 || Math.abs(avatarRotation) >= Math.PI - 0.8) {//On rotate autour de l'axe des épaules
-                    if(Math.abs(avatarRotation) > 0.8){//l'avatar est dos à l'objet -> on inverse la rotation
+                if (Math.abs(avatarRotation) <= 0.8 || Math.abs(avatarRotation) >= Math.PI - 0.8) {//We apply the rotation on the shoulder axis
+                    if(Math.abs(avatarRotation) > 0.8){//The avatar is back to the object -> Rotation reversed
                         angle = -angle;
                     }
-                    if(lArmRotX+angle<maxRotXArm && lArmRotX+angle>minRotXArm) {//on vérifie l'angle de rotation
-                        //on applique la rotation
+                    if(lArmRotX+angle<maxRotXArm && lArmRotX+angle>minRotXArm) {//Check rotation limits
+                        //Rotation applied
                         bone.rotateX(angle);
                         lArmRotX += angle;
                     }
-                } else {//On rotate de manière à écarter les bras
-                    res = -res;//on inverse l'angle de synchronisé pour l'autre bras
-                    if(avatarRotation>=0){//l'avatar est de dos par rapport à l'utilisateur -> on inverse la rotation
+                } else {//Rotation to part arms
+                    res = -res;//Rotation angle reversed for the other arm
+                    if(avatarRotation>=0){//The avatar is back to the user -> Rotation reversed
                         angle = -angle;
                     }
                     if(lArmRotZ+angle<maxRotZArm && lArmRotZ+angle>=minRotZArm) {
@@ -590,12 +642,19 @@ if(!isset($_GET['experience'])) {
                     break;
                 }
         }
-        if(first) {//si on synchronise les bras et qu'on traite le bras ciblé on envoie l'angle pour synchroniser l'autre bras
+        if(first) {//If the arm synchronization is activated and the targeted arm has just been rotate we send the angle to rotated the other arm
             callback(res);
         }
-        else callback();//sinon on update les target
+        else callback();//Otherwise we update targets position
     }
 
+    /***
+     *  @description Will return the correct rotation angle for a specific avatar rotation
+     *  @param origin rotate bone world position
+     *  @param previous click/touch position
+     *  @param current click/touch position
+     *  @return rotation angle
+     */
     function getAngle(origin, v1, v2) {
         v1.x -= origin.x;
         v2.x -= origin.x;
@@ -613,6 +672,11 @@ if(!isset($_GET['experience'])) {
         return teta;
     }
 
+    /***
+     *  @description Will convert a screen 2D vector in a
+     *  @param evt mouse position
+     *  @return ThreeJS 3D vector
+     */
     function mouseToWorld(evt) {
         var mouseX = ((evt.clientX-offsetWidth/2) / (window.innerWidth-offsetWidth)) * 2 - 1;
         var mouseY = -((evt.clientY-offsetHeight/2) / (window.innerHeight-offsetHeight)) * 2 + 1;
@@ -622,6 +686,11 @@ if(!isset($_GET['experience'])) {
         return vector;
     }
 
+    /***
+     *  @description Will convert a ThreeJS 3D vector in a screen 2D vector
+     *  @param pos ThreeJS 3D Vector
+     *  @return Screen 2D vector
+     */
     function worldToScreen(pos) {
         var p = pos.clone();
         var vector = p.project(camera);
@@ -635,19 +704,26 @@ if(!isset($_GET['experience'])) {
     /*******************************************************
      * Fonctions d'animation de l'avatar
      *******************************************************/
+
+    /***
+     *  @description Start the move animation
+     *  @param translation
+     *  @param nbFrame
+     */
+
     function start(translation, nbFrame) {
         if (!animationState) {
             skeleton = saveSkeleton();
-            if(translation>0){ // Il avance et donc marche à l'endroit
+            if(translation>0){ // It moves forward
                 avatar.rotateY(-avatarRotation);
                 avatarRotation = 0;
 
-            }else{ // Il recule
-                if(avatarRotation < Math.PI/2 && avatarRotation > -Math.PI/2){ //Il marche à reculons
+            }else{ // It walks away
+                if(avatarRotation < Math.PI/2 && avatarRotation > -Math.PI/2){ // it walks backwards
                     avatar.rotateY(-avatarRotation);
                     avatarRotation = 0;
                 }
-                else{ // Il marche à l'endroit
+                else{ // It moves to the back
                     avatar.rotateY(Math.PI-avatarRotation);
                     avatarRotation = Math.PI;
                 }
@@ -657,6 +733,9 @@ if(!isset($_GET['experience'])) {
         }
     }
 
+    /***
+     *  @description Stop the avatar animation when the destination is reached
+     */
     function stop() {
         if (animationState) {
             animation.stop();
@@ -669,7 +748,11 @@ if(!isset($_GET['experience'])) {
         }
     }
 
-
+    /***
+     *  @description This function will animate the avatar with the clock delta and make it move towards its destination
+     *  @param translation
+     *  @param nbFrame
+     */
     function loop(translation, nbFrame){
         animationState = requestAnimationFrame(
             function(){
@@ -686,6 +769,10 @@ if(!isset($_GET['experience'])) {
     /***************************
      *      Les Bones          *
      ***************************/
+    /***
+     * @description Will save an avatar position (bones rotations included) at this moment
+     * @return avatar_position
+     */
     function saveSkeleton(){
         var res = [];
         for(var i=0;i<avatar.skeleton.bones.length;i++){
@@ -695,6 +782,9 @@ if(!isset($_GET['experience'])) {
         return res;
     }
 
+    /***
+     * @description Will restore the initial avatar position (bones rotations included)
+     */
     function resetBones(){
         takePose(originalSkeleton);
         avatar.rotateY(-avatarRotation);
@@ -705,15 +795,25 @@ if(!isset($_GET['experience'])) {
         bodyRot = 0;
         updateTargets();
     }
+
+    /***
+     * @description Will restore an avatar position (bones rotations included) based on a saved position (skeleton)
+     * @param skeleton saved position
+     */
     function takePose(skeleton){
         for(var i=0;i<avatar.skeleton.bones.length;i++){
             avatar.skeleton.bones[i].rotation.set(skeleton[i].x,skeleton[i].y,skeleton[i].z);
         }
-        /*Enregistre la roatation de l'avatar*/
+        /*Save the avatar rotation*/
         //avatar.rotateY(skeleton[skeleton.length-1] - avatarRotation);
         //avatarRotation = skeleton[skeleton.length-1];
     }
-
+    /***
+     * @description Create a 3D sphere in the ThreeJS environment
+     * @param width radial value of the sphere
+     * @param color
+     * @param visible
+     */
     function sphereGenerator(width, color, visible) {
         var planeGeometry = new THREE.SphereGeometry(width, 100, 100);
         var material = new THREE.MeshPhongMaterial({color: color, visible: visible});
@@ -721,17 +821,23 @@ if(!isset($_GET['experience'])) {
         return new THREE.Mesh(planeGeometry, material);
     }
 
+    /***
+     * @description Extract in a JSON result all data result for an object
+     */
     function extractData(){
         var res = {objPos:posObject,idObj:idObj[posObject],idExperience:idExperience,avatarRot:THREE.Math.radToDeg(avatarRotation),rArmRotX:THREE.Math.radToDeg(rArmRotX),rArmRotZ:Math.abs(THREE.Math.radToDeg(rArmRotZ)),lArmRotX:THREE.Math.radToDeg(lArmRotX),lArmRotZ:Math.abs(THREE.Math.radToDeg(lArmRotZ)),bodyRot:THREE.Math.radToDeg(bodyRot),distance:avatar.position.x,sexeAvatar:sexeAvatar};
         return res;
     }
 
+    /***
+     * @description Trigger a tutorial step (You can easily modify it to access each step independantly using iTuto value)
+     */
     function tutorial(){
         var slow = 6000, quick = 4000;
         var pos;
         switch (iTuto){
             case 0 :
-                //rotationX des bras
+                //Arm rotation on X
                 msgTuto("<?php echo addslashes(TUTO_0);?>",slow, function () {
                     msgTuto("<?php echo addslashes(TUTO_1);?>",quick, function () {
                         msgTuto("<?php echo addslashes(TUTO_2);?>",quick, function () {
@@ -930,6 +1036,12 @@ if(!isset($_GET['experience'])) {
         }
     }
 
+    /***
+     * @description This function will display a message during a precised duration in the middle of the screen
+     * @param msg the message you want to display
+     * @param temp display duration
+     * @param callback
+     */
     function msgTuto (msg, temp,callback){
         $('#console-tuto').html(msg).fadeIn(300, function () {
             setTimeout(function () {
@@ -944,6 +1056,13 @@ if(!isset($_GET['experience'])) {
 <script type="text/javascript">
     var posObject = 0;
     var redirect = "../Emolyse/finalisation.php";
+
+    /****
+     * @description Send the input data (arg) to the redirectUrl page
+     * @param redirectUrl
+     * @param arg
+     * @param value
+     */
     var myRedirect = function(redirectUrl, arg, value) {
         var form = $('<form action="' + redirectUrl + '" method="post">' +
         '<input type="hidden" id="myForm" name="'+ arg +'"></input>' + '</form>');
@@ -953,6 +1072,9 @@ if(!isset($_GET['experience'])) {
     };
 
     $(document).ready(function () {
+        /***
+         * @description Start directly the experience without tutorial
+         */
         $("#btn-start").on('click', function (e) {
             e.preventDefault();
             console.log(e.type);
@@ -961,6 +1083,9 @@ if(!isset($_GET['experience'])) {
                 startExperience();
             })
         });
+        /***
+         * @description Activate the tutorial mode
+         */
         $("#btn-tuto").on('click', function (e) {
             e.preventDefault();
             console.log(e.type);
@@ -977,13 +1102,18 @@ if(!isset($_GET['experience'])) {
         })
     });
 
-
+    /***
+     * @description Initialize all required settings to start an experience
+     */
     function startExperience () {
         manipulable = true;
         resetBones();
-        //Affichage des objets
+        //Displaying products
         $('.objet:first').addClass('display');
 
+        /***
+         * @description Animate & Activate the confirmation button listening event
+         */
         $('#icon_confirm').on('click', function (e) {
             e.preventDefault();
             console.log(e.type);
@@ -1007,17 +1137,21 @@ if(!isset($_GET['experience'])) {
                     left : '30%',
                     top : '35%'
                 },800, function () {
-                    $("#finalizer div").animate({
+                    $("#finalizer .opacity-div").animate({
                         opacity : 1
                     },500);
                 });
-                $('#finalizer div i').on('click', function (e) {
+                $('#finalizer .opacity-div i').on('click', function (e) {
                     e.preventDefault();
                     console.log(e.type);
                     myRedirect(redirect, "data", JSON.stringify(data));
                 });
             }
         });
+
+        /***
+         * @description Animate & Activate the next/cancel button listening event
+         */
         $("#icon-next").on('click touchstart', function(e){
             e.preventDefault();
             console.log(e.type);
