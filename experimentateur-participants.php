@@ -56,7 +56,7 @@
                         }else{
                             echo "<img src='images/profil_f.png' alt='Femme' class='pictoSexe' width='60px' />";
                         }
-                    }elseif($resultat['sexe'] == 'H'){
+                    }elseif($resultat['sexe'] == 'M'){
                         if($resultat['lienPhoto'] != ''){
                             echo "<img src='".$resultat['lienPhoto']."' alt='Homme' class='pictoSexe' style='border: 4px solid #158a9e; border-radius: 4px;' width='52px' />";
                         }else{
