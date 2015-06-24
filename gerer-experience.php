@@ -126,7 +126,7 @@ $idExperience = $_GET['id'];
                     echo $resultatConsigne['traduction'];
                     echo "</textarea>";
                     echo "<input type='hidden' name='idExperience' value='".$idExperience."' />";
-                    echo "<input type='submit' value='Modifier' name='modifierConsigneExperience' />";
+                    echo "<input type='submit' value='".MODIFIER."' name='modifierConsigneExperience' />";
                     echo "</form>";
                     echo "</div>";
                 }
@@ -137,7 +137,7 @@ $idExperience = $_GET['id'];
                 echo $resultatExperience['consigne'];
                 echo "</textarea>";
                 echo "<input type='hidden' name='idExperience' value='".$idExperience."' />";
-                echo "<input type='submit' value='Modifier' name='modifierConsigneExperience' />";
+                echo "<input type='submit' value='".MODIFIER."' name='modifierConsigneExperience' />";
                 echo "</form>";
                 echo "</div>";
             }

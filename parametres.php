@@ -112,7 +112,7 @@ include('includes/en-tete.php');
                     echo "</textarea>";
                     echo "<input type='hidden' name='codeLangue' value='".$resultatLang['codeLangue']."' />";
                     echo "<input type='hidden' name='codeIdentifiant' value='TEXT_CONSIGNE' />";
-                    echo "<input type='submit' value='Modifier' name='modifierConsigne' />";
+                    echo "<input type='submit' value='".MODIFIER."' name='modifierConsigne' />";
                     echo "<div class='error'></div>";
                     echo "</form>";
                     echo "</div>";
@@ -143,13 +143,16 @@ include('includes/en-tete.php');
 
         $(document).mouseup(function (e){
             var container = $(".pop-up-consigne");
-            if (container.has(e.target).length === 0)
+            if (container.has(e.target).length === 0) {
                 container.hide();
+                document.body.style.overflow = 'auto';
+            }
         });
         $(document).mouseup(function (e){
             var container = $(".pop-up");
             if (container.has(e.target).length === 0)
                 container.hide();
+            document.body.style.overflow = 'auto';
         });
         // tabs dans la pop-up de la consigne pour les différantes langues
         $("a[title*='consigne-FR']").addClass("active");
