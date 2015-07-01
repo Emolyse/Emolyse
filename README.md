@@ -35,4 +35,19 @@ Pour nous contacter :
 [*Jordan DAITA*](https://github.com/jodata)  ([jordandaita@gmail.com](mailto:jordandaita@gmail.com))  
 [*Rémy DROUET*](https://github.com/remy199210)  ([drouet.remy@gmail.com](mailto:drouet.remy@gmail.com))  
 
+## License
+This file is part of Emolyse.
 
+Emolyse is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Emolyse is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You can access the GNU General Public License by clicking on
+Emolyse (c) 2015 link on the home page of this program.
+If not, see ([GNU General Public License v3](http://www.gnu.org/licenses/gpl-3.0.html)).
