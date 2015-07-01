@@ -50,4 +50,4 @@ GNU General Public License for more details.
 
 You can access the GNU General Public License by clicking on
 Emolyse (c) 2015 link on the home page of this program.
-If not, see ([GNU General Public License v3](http://www.gnu.org/licenses/gpl-3.0.html)).
+If not, see [GNU General Public License v3](http://www.gnu.org/licenses/gpl-3.0.html).
