@@ -3,7 +3,7 @@
 An application to evaluate emotions about innovative products
 
 This application has been conceived and will be used by the [Laboratoire d'Informatique de Grenoble](https://www.liglab.fr/) in laboratory experiences.  
-We are a 3 students goup, studying [Web Development](http://imss-www.upmf-grenoble.fr/master-ic2a/wic) at the Grenoble University (UPMF).
+We are a 3 students group, studying [Web Development](http://imss-www.upmf-grenoble.fr/master-ic2a/wic) at the Grenoble University (UPMF).
 
 This web project uses the WebGL 3D technology with the ThreeJS framework.
 
