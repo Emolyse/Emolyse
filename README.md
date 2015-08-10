@@ -1,4 +1,4 @@
-![](https://github.com/Emolyse/Emolyse/blob/master/images/logo_light.png)
+![Logo Emolyse](https://github.com/Emolyse/Emolyse/blob/master/images/logo_light.png)
 ## Emolyse App [EN]
 An application to evaluate emotions about innovative products
 
@@ -7,7 +7,7 @@ We are a 3 students group, studying [Web Development](http://imss-www.upmf-greno
 
 This web project uses the WebGL 3D technology with the ThreeJS framework.
 
-You can access to the development documentations (French only) and manuals (English & French) : [Download English version](https://github.com/Emolyse/Emolyse/documents/Manuel_emolyse_ENGLISH.pdf).
+You can access to the development documentations (French only) and manuals (English & French) in the folder "[Documents](https://github.com/Emolyse/Emolyse/tree/master/documents)".
 
 Feel free to download, use or modify this OpenSource project.
 
@@ -26,7 +26,7 @@ Nous sommes un groupe de trois étudiants en Master 1 [IC2A Web Informatique et 
 Ce projet web utilise la technologie WebGL avec la librairie ThreeJS.
 
 Vous pouvez retrouver nos trois rapports de projet pour dans le dossier "[Documents](https://github.com/Emolyse/Emolyse/tree/master/documents)" (en français).  
-Vous y trouverez également le manuel utilisateur pour installer et utiliser l'application : [Télécharger](https://github.com/Emolyse/Emolyse/documents/Manuel_emolyse_FRANCAIS.pdf).
+Vous y trouverez également le manuel utilisateur pour installer et utiliser l'application. 
 
 N'hésitez pas à télécharger, utiliser ou modifier ce projet OpenSource
 
