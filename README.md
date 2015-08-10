@@ -14,7 +14,7 @@ Feel free to download, use or modify this OpenSource project.
 To contact us :  
 [*Alizée ARNAUD*](http://alizee-arnaud.com)  ([arn.alizee@gmail.com](mailto:arn.alizee@gmail.com))  
 [*Jordan DAITA*](https://github.com/jodata)  ([jordandaita@gmail.com](mailto:jordandaita@gmail.com))  
-[*Rémy DROUET*](https://github.com/remy199210)  ([drouet.remy@gmail.com](mailto:drouet.remy@gmail.com))  
+[*Rémy DROUET*](http://remy-drouet.fr)  ([drouet.remy@gmail.com](mailto:drouet.remy@gmail.com))  
 
 ## L'application Emolyse [FR]
 
@@ -33,7 +33,7 @@ N'hésitez pas à télécharger, utiliser ou modifier ce projet OpenSource
 Pour nous contacter :  
 [*Alizée ARNAUD*](http://alizee-arnaud.com)  ([arn.alizee@gmail.com](mailto:arn.alizee@gmail.com))  
 [*Jordan DAITA*](https://github.com/jodata)  ([jordandaita@gmail.com](mailto:jordandaita@gmail.com))  
-[*Rémy DROUET*](https://github.com/remy199210)  ([drouet.remy@gmail.com](mailto:drouet.remy@gmail.com))  
+[*Rémy DROUET*](http://remy-drouet.fr)  ([drouet.remy@gmail.com](mailto:drouet.remy@gmail.com))  
 
 ## License
 This file is part of Emolyse.
