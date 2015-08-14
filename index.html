@@ -49,6 +49,11 @@
             height: 100%;
             background-color: #025993;
         }
+        .carousel-caption{
+            bottom: 50%;
+            -webkit-transform: translateY(50%);
+            transform: translateY(50%);
+        }
         .browser-logo{
             width: 64px;
             margin-left: 10px;
@@ -192,7 +197,6 @@
                 var offset = parseFloat($sprite.css("background-position-x"))-100/3;
                 if(offset<-100)
                     offset=0;
-                console.log(offset);
                 $sprite.css("background-position-x",offset+'%');
                 $sprite.fadeIn(800);
             });
