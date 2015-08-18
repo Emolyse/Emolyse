@@ -56,6 +56,12 @@
         }
         .scroll-navbar li a{
             /*background-color: #025993;*/
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+        .scroll-navbar li a:hover{
+            padding-top: 15px;
+            padding-bottom: 15px;
         }
         .scroll-navbar.invert li a{
             /*background-color: #eeeeee;*/
@@ -88,10 +94,10 @@
             background-color: #ffffff;
             color: #025993;
         }
-        #myCarousel{
+        #Home {
             height: 100%;
         }
-        #myCarousel .carousel-inner,#myCarousel .item{
+        #Home .carousel-inner, #Home .item{
             height: 100%;
             background-color: #025993;
         }
@@ -154,7 +160,7 @@
             <div id="navbar" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav pull-right">
                     <li class="active">
-                        <a href="#">Home</a>
+                        <a href="#Home">Home</a>
                     </li>
                     <li>
                         <a href="#Project">Project</a>
@@ -169,12 +175,12 @@
             </div>
         </div>
     </nav>
-    <div id="myCarousel" class="section scroll-anchor carousel slide carousel-style" data-ride="carousel" data-keyboard="false" data-interval="0">
+    <div id="Home" class="section scroll-anchor carousel slide carousel-style" data-ride="carousel" data-keyboard="false" data-interval="0">
         <!-- Indicators -->
         <ol class="carousel-indicators">
-            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-            <li data-target="#myCarousel" data-slide-to="1" class=""></li>
-            <li data-target="#myCarousel" data-slide-to="2" class=""></li>
+            <li data-target="#Home" data-slide-to="0" class="active"></li>
+            <li data-target="#Home" data-slide-to="1" class=""></li>
+            <li data-target="#Home" data-slide-to="2" class=""></li>
         </ol>
         <div class="carousel-inner" role="listbox">
             <div class="item active">
@@ -219,11 +225,11 @@
                 </div>
             </div>
         </div>
-        <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+        <a class="left carousel-control" href="#Home" role="button" data-slide="prev">
             <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
             <span class="sr-only">Previous</span>
         </a>
-        <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+        <a class="right carousel-control" href="#Home" role="button" data-slide="next">
             <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
             <span class="sr-only">Next</span>
         </a>
@@ -241,7 +247,7 @@
                     <img class="img-responsive" src="images/logo-lip-horizontal.png" alt="Logo LIP"/>
                 </div>
             </div>
-            <div class="pt50 row scroll-anchor" data-invert="true">
+            <div class="pt50 row scroll-anchor" data-invert="true" data-menu="Project">
                 <div class="col-md-4 col-md-offset-2">
                     <img class="align-center img-responsive" src="images/avatars.png" alt="Avatar"/>
                 </div>
@@ -253,7 +259,7 @@
                     )</div>
                 </div>
             </div>
-            <div class="pt50 inverse row scroll-anchor parallaxe">
+            <div class="pt50 inverse row scroll-anchor parallaxe" data-menu="Project">
                 <div class="inverse row">
                     <div class="col-md-10 col-md-offset-2">
                         <h1>Development aspects</h1>
