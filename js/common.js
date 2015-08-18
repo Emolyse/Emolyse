@@ -39,7 +39,7 @@ function majScrollMenuActive($anchor){
     } else {
         var ref = "#"+$anchor.attr("id");
     }
-    history.replaceState(null, null, "http://localhost/Emolyse/"+ref);
+    history.pushState(null, null, "/ref");
     $('.scroll-navbar li').removeClass('active');
     $('.scroll-navbar li a[href^="'+ref+'"]').parent().addClass('active');
 }
