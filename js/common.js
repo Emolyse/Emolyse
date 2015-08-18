@@ -39,7 +39,7 @@ function majScrollMenuActive($anchor){
     } else {
         var ref = "#"+$anchor.attr("id");
     }
-    history.pushState(null, null, "/ref");
+    history.pushState(null, null, "/"+ref);
     $('.scroll-navbar li').removeClass('active');
     $('.scroll-navbar li a[href^="'+ref+'"]').parent().addClass('active');
 }
