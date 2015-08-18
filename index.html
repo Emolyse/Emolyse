@@ -3,6 +3,7 @@
 <head>
     <title>Emolyse | Test your emotions</title>
     <meta http-equiv="content-type" content="text/html" charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="An application to evaluate emotions about innovative products developed in WebGL for touch devices.
     This Web application has been developped by Alizée Arnaud, Jordan Daïta and Rémy Drouet for the LIP (Laboratoire Interuniversitaire de Grenoble)"/>
     <meta name="keywords" content="Emolyse, Rémy Drouet, Alizée Arnaud, Jordan Daïta, ThreeJS, WebGL, LIP, LIG, Web Application, touch device, 3D, Emotions"/>
@@ -18,17 +19,64 @@
     <link rel="icon" type="image/png" href="img/logo-192x192.png" sizes="192x192"/>
 
     <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/jquery.fullPage.css">
     <!--<link rel="stylesheet" href="css/bootstrap-theme.css">-->
     <style>
-        .navbar-brand,
-        .navbar-nav > li >a{
-            color: #ffffff;
+        body{
+            overflow:hidden;
+            position: absolute;
+            height: 100%;
+            width: 100%;
+        }
+        .inverse h1{
+            color: #eeeeee;
+        }
+        .inverse small{
+            color: #aaaaaa;
+        }
+        .inverse p{
+            color: #eeeeee;
+        }
+        .pt50 {
+            padding-top: 50px;
+        }
+        .align-center{
+            margin-left: auto;
+            margin-right: auto;
+        }
+        section{
+            position: relative;
+            width: 100%;
+        }
+        .scroll-navbar a{
+            color: #eee;
             font-size: 20px;
             text-shadow: none;
+            transition: all 500ms;
         }
-        .navbar-nav > li >a:hover{
+        .scroll-navbar li a{
+            /*background-color: #025993;*/
+        }
+        .scroll-navbar.invert li a{
+            /*background-color: #eeeeee;*/
+        }
+        .scroll-navbar li a:hover,.scroll-navbar li.active a{
+            color: #025993;
+            background-color: #eee;
+        }
+        .scroll-navbar.invert a{
             color: #025993;
         }
+        .scroll-navbar.invert li a:hover,.scroll-navbar.invert li.active a{
+            color: #eee;
+            background-color: #025993;
+        }
+        .scroll-navbar li a{
+            opacity: 1;
+        }
+        /*.scroll-navbar:hover li a{*/
+            /*opacity: 1;*/
+        /*}*/
         .btn-car{
             background-color: transparent;
             border:solid 1px #fff;
@@ -41,9 +89,7 @@
             color: #025993;
         }
         #myCarousel{
-            position: absolute;
             height: 100%;
-            width: 100%;
         }
         #myCarousel .carousel-inner,#myCarousel .item{
             height: 100%;
@@ -59,7 +105,7 @@
             margin-left: 10px;
         }
         .slide-img{
-            width: 60%;
+            width: 40%;
         }
         .sprite{
             width: 60%;
@@ -84,124 +130,179 @@
             border-radius: 10px;
             box-shadow: 0px 0px 20px #aaa;
         }
+        .parallaxe{
+            background-image: url(images/paralaxe.png);
+            background-size: cover;
+        }
+        #TheCrew{
+            position: relative;
+        }
     </style>
 </head>
 <body>
-<nav class="navbar navbar-fixed-top">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar" aria-expanded="true" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#">Emolyse</a>
+    <nav class="navbar navbar-fixed-top navbar scroll-navbar">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar" aria-expanded="true" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Emolyse <span class="icon-bar"></span></a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav pull-right">
+                    <li class="active">
+                        <a href="#">Home</a>
+                    </li>
+                    <li>
+                        <a href="#Project">Project</a>
+                    </li>
+                    <li>
+                        <a href="#TheCrew">The Crew</a>
+                    </li>
+                    <li>
+                        <a href="#Contact">Contact</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-        <div id="navbar" class="collapse navbar-collapse">
-            <ul class="nav navbar-nav pull-right">
-                <li class="active">
-                    <a href="#">Home</a>
-                </li>
-                <li>
-                    <a href="#Project">Project</a>
-                </li>
-                <li>
-                    <a href="#TheCrew">The Crew</a>
-                </li>
-                <li>
-                    <a href="#Contact">Contact</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
-<div id="myCarousel" class="carousel slide carousel-style" data-ride="carousel">
-    <!-- Indicators -->
-    <ol class="carousel-indicators">
-        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-        <li data-target="#myCarousel" data-slide-to="1" class=""></li>
-        <li data-target="#myCarousel" data-slide-to="2" class=""></li>
-    </ol>
-    <div class="carousel-inner" role="listbox">
-        <div class="item active">
-            <div class="container">
-                <div class="carousel-caption">
-                    <img class="slide-img" src="images/logo.png" alt="Logo Emolyse"/>
-                    <h1>An Open-Source project (GNU License)</h1>
+    </nav>
+    <div id="myCarousel" class="section scroll-anchor carousel slide carousel-style" data-ride="carousel" data-keyboard="false" data-interval="0">
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#myCarousel" data-slide-to="1" class=""></li>
+            <li data-target="#myCarousel" data-slide-to="2" class=""></li>
+        </ol>
+        <div class="carousel-inner" role="listbox">
+            <div class="item active">
+                <div class="container">
+                    <div class="carousel-caption">
+                        <img class="slide-img" src="images/logo.png" alt="Logo Emolyse"/>
+                        <h1>An application to evaluate emotions about innovative products</h1>
+                        <h4>Open-Source project under GNU License</h4>
                         <p>Use Emolyse to improve your experiments data result.</p>
-                    <p>
-                        <a class="btn btn-lg btn-car" href="https://github.com/Emolyse/Emolyse/archive/master.zip" role="button">Download (.zip) <span class="glyphicon glyphicon-download-alt"></span></a>
-                        <a class="btn btn-lg btn-car" href="https://github.com/Emolyse/Emolyse" target="_blank" role="button">View on GitHub</a>
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="item">
-            <div class="container">
-                <div class="carousel-caption">
-                    <div class="sprite">
-                        <img src="images/tablet-laptop.png" alt="Tablet & Laptop" />
-                        <span class="sprite-pseudo"></span>
+                        <p>
+                            <a class="btn btn-lg btn-car" href="https://github.com/Emolyse/Emolyse/archive/master.zip" role="button">Download (.zip) <span class="glyphicon glyphicon-download-alt"></span></a>
+                            <a class="btn btn-lg btn-car" href="https://github.com/Emolyse/Emolyse" target="_blank" role="button">View on GitHub</a>
+                        </p>
                     </div>
-                    <h1>A Tablet / Laptop Web Application</h1>
-                    <h3>in your browser</h3>
-                    <p>Emolyse is a web application for touch devices. Use it in your Web browser and never care about
-                        saving your configurations, it's automatic (Mouse interface is also supported)</p>
-                    <img class="browser-logo" src="images/logo-chrome.png" alt="logo chrome"/>
-                    <img class="browser-logo" src="images/logo-firefox.png" alt="logo firefox"/>
+                </div>
+            </div>
+            <div class="item">
+                <div class="container">
+                    <div class="carousel-caption">
+                        <div class="sprite">
+                            <img src="images/tablet-laptop.png" alt="Tablet & Laptop" />
+                            <span class="sprite-pseudo"></span>
+                        </div>
+                        <h1>A Tablet / Laptop Web Application</h1>
+                        <h3>in your browser</h3>
+                        <p>Emolyse is a web application for touch devices. Use it in your Web browser and never care about
+                            saving your configurations, it's automatic (Mouse interface is also supported)</p>
+                        <img class="browser-logo" src="images/logo-chrome.png" alt="logo chrome"/>
+                        <img class="browser-logo" src="images/logo-firefox.png" alt="logo firefox"/>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="container">
+                    <div class="carousel-caption">
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/Zc42Y_RGTG0" frameborder="0" allowfullscreen autoplay></iframe>
+                        <h1>A full documented project</h1>
+                        <p>Learn how to use Emolyse with manuals (English & French), integrated & interactive tutorial for participants and a video tutorial for experimenters</p>
+                        <!--<p>Want to learn more about this project ? Retrieve the full documentation about this project developement (French only) from the begining</p>-->
+                        <p><a class="btn btn-lg btn-car" href="https://github.com/Emolyse/Emolyse/raw/master/documents/Manuel_emolyse_ENGLISH.pdf" role="button">Manual (English) <span class="glyphicon glyphicon-download-alt"></span></a></p>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="item">
-            <div class="container">
-                <div class="carousel-caption">
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/Zc42Y_RGTG0" frameborder="0" allowfullscreen autoplay></iframe>
-                    <h1>A full documented project</h1>
-                    <p>Learn how to use Emolyse with manuals (English & French), integrated & interactive tutorial for participants and a video tutorial for experimenters</p>
-                    <!--<p>Want to learn more about this project ? Retrieve the full documentation about this project developement (French only) from the begining</p>-->
-                    <p><a class="btn btn-lg btn-car" href="https://github.com/Emolyse/Emolyse/raw/master/documents/Manuel_emolyse_ENGLISH.pdf" role="button">Manual (English) <span class="glyphicon glyphicon-download-alt"></span></a></p>
+        <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+    <div id="Project" class="section scroll-anchor" data-invert="true">
+        <div class="container-fluid">
+            <div class="pt50 row">
+                <div class="col-md-4 col-md-offset-2">
+                    <h1>Purpose</h1>
+                    <p>This application has been conceived for the LIP (Laboratoire Interuniversitaire de Psychologie).</p>
+                    <p>Emolyse app permits to virtualize an experience situation. In this virtual environment the participant will traduce a body reaction about choosen objects/pictures</p>
+                    <div class="alert alert-info"><strong>Info !</strong> Emolyse App is a complement to your real experience</div>
+                </div>
+                <div class="col-md-3 col-md-offset-1">
+                    <img class="img-responsive" src="images/logo-lip-horizontal.png" alt="Logo LIP"/>
+                </div>
+            </div>
+            <div class="pt50 row scroll-anchor" data-invert="true">
+                <div class="col-md-4 col-md-offset-2">
+                    <img class="align-center img-responsive" src="images/avatars.png" alt="Avatar"/>
+                </div>
+                <div class="col-md-4">
+                    <h1>3D Experience <span class="small">--WebGL</span></h1>
+                    <p>It was a constraint to develop this project in a 3D environment. We chose the web technology WebGL through the ThreeJS Library to build this environment</p>
+                    <p>The environment itself is a simple 2D picture with perspective. Only avatars are really implemented in 3D (Thanks to the makehuman free software</p>
+                    <div class="alert alert-warning"><strong>Be careful !</strong> If you want to add new environment to this app care about picture camera position & perspective
+                    )</div>
+                </div>
+            </div>
+            <div class="pt50 inverse row scroll-anchor parallaxe">
+                <div class="inverse row">
+                    <div class="col-md-10 col-md-offset-2">
+                        <h1>Development aspects</h1>
+                    </div>
+                </div>
+                <div class="inverse row">
+                    <div class="col-md-4 col-md-offset-2">
+                        <h1><small>Open-source & Multi-language</small></h1>
+                        <p>
+                            The LIP wanted this Emolyse Project accessible to everybody.
+                             We made it open-source an we works on a settable language module.
+                             By default, english and french are enable but you can completely set an all new language
+                        </p>
+                    </div>
+                    <div class="col-md-4 col-md-offset-1">
+                        <h1><small>Completly settable</small></h1>
+                        <p>
+                            As experimenters should use Emolyse app it has to be a maximum settable. So we made a big work
+                            on the administrator (experimenter) part with the aim to add a maximum of settings.
+                            We tried to keep it easy-to-use thanks to auto-save functions and visual feedback.
+                        </p>
+                    </div>
+                </div>
+                <div class="inverse row">
+                    <div class="col-md-4 col-md-offset-2">
+                        <h1><small>Technology & Portability</small></h1>
+                        <p>
+                            It was not a constraint but we decided through the WebGL technology to make the Emolyse App portable.
+                            However, WebGL is a quite new technology so only recent devices (> 2009) can support it.
+                        </p>
+                    </div>
+                    <div class="col-md-4 col-md-offset-1">
+                        <h1><small>Devices & Interface</small></h1>
+                        <p>
+                            Even if the using experience is much better on touch device we keep in mind the portability
+                            and made available manipulation with mouse click.
+                            Emolyse app hasn't be tested on mobile cause its utilisation on that kind of device seems us inappropriate
+                            according to its main functionalities.
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-    </a>
-    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-    </a>
-</div>
+    <div id="TheCrew" class="scroll-anchor">
+
+    </div>
 <script src="js/jquery-2.1.4.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
-<script>
-    (function ($) {
-        $('.carousel').carousel({
-            interval: 0
-        })
-        $(document).keypress(function (e) {
-            if(e.key === 'ArrowRight'){
-                $('.carousel').carousel('next');
-            }
-            if(e.key === 'ArrowLeft'){
-                $('.carousel').carousel('prev');
-            }
-        });
-        
-        var $sprite = $('.sprite-pseudo');
-        
-        setInterval(function () {
-            $sprite.after().fadeOut(800, function () {
-                var offset = parseFloat($sprite.css("background-position-x"))-100/3;
-                if(offset<-100)
-                    offset=0;
-                $sprite.css("background-position-x",offset+'%');
-                $sprite.fadeIn(800);
-            });
-        },7000);
-    })(jQuery);
-</script>
+<script src="js/common.js"></script>
 </body>
 </html>
