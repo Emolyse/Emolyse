@@ -48,6 +48,12 @@
             position: relative;
             width: 100%;
         }
+        .scroll-navbar .icon-bar{
+            background-color: #eeeeee;
+        }
+        .scroll-navbar.invert .icon-bar{
+            background-color: #025993;
+        }
         .scroll-navbar a{
             color: #eee;
             font-size: 20px;
@@ -55,9 +61,11 @@
             transition: all 500ms;
         }
         .scroll-navbar li a{
-            /*background-color: #025993;*/
             padding-top: 5px;
             padding-bottom: 5px;
+        }
+        .scroll-navbar li a:focus{
+            background-color: transparent;
         }
         .scroll-navbar li a:hover{
             padding-top: 15px;
@@ -237,21 +245,21 @@
     <div id="Project" class="section scroll-anchor" data-invert="true">
         <div class="container-fluid">
             <div class="pt50 row">
-                <div class="col-md-4 col-md-offset-2">
+                <div class="col-md-4 col-md-offset-2 col-sm-8 col-sm-offset-2">
                     <h1>Purpose</h1>
                     <p>This application has been conceived for the LIP (Laboratoire Interuniversitaire de Psychologie).</p>
                     <p>Emolyse app permits to virtualize an experience situation. In this virtual environment the participant will traduce a body reaction about choosen objects/pictures</p>
                     <div class="alert alert-info"><strong>Info !</strong> Emolyse App is a complement to your real experience</div>
                 </div>
-                <div class="col-md-3 col-md-offset-1">
+                <div class="col-md-3 col-md-offset-1 col-sm-8 col-sm-offset-2">
                     <img class="img-responsive" src="images/logo-lip-horizontal.png" alt="Logo LIP"/>
                 </div>
             </div>
             <div class="pt50 row scroll-anchor" data-invert="true" data-menu="Project">
-                <div class="col-md-4 col-md-offset-2">
+                <div class="col-md-4 col-md-offset-2 col-sm-8 col-sm-offset-2">
                     <img class="align-center img-responsive" src="images/avatars.png" alt="Avatar"/>
                 </div>
-                <div class="col-md-4">
+                <div class="col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-0">
                     <h1>3D Experience <span class="small">--WebGL</span></h1>
                     <p>It was a constraint to develop this project in a 3D environment. We chose the web technology WebGL through the ThreeJS Library to build this environment</p>
                     <p>The environment itself is a simple 2D picture with perspective. Only avatars are really implemented in 3D (Thanks to the makehuman free software</p>
@@ -261,12 +269,12 @@
             </div>
             <div class="pt50 inverse row scroll-anchor parallaxe" data-menu="Project">
                 <div class="inverse row">
-                    <div class="col-md-10 col-md-offset-2">
+                    <div class="col-md-10 col-md-offset-2 col-sm-8 col-sm-offset-2">
                         <h1>Development aspects</h1>
                     </div>
                 </div>
                 <div class="inverse row">
-                    <div class="col-md-4 col-md-offset-2">
+                    <div class="col-md-4 col-md-offset-2 col-sm-8 col-sm-offset-2">
                         <h1><small>Open-source & Multi-language</small></h1>
                         <p>
                             The LIP wanted this Emolyse Project accessible to everybody.
@@ -274,7 +282,7 @@
                              By default, english and french are enable but you can completely set an all new language
                         </p>
                     </div>
-                    <div class="col-md-4 col-md-offset-1">
+                    <div class="col-md-4 col-md-offset-1 col-sm-8 col-sm-offset-2">
                         <h1><small>Completly settable</small></h1>
                         <p>
                             As experimenters should use Emolyse app it has to be a maximum settable. So we made a big work
@@ -284,14 +292,14 @@
                     </div>
                 </div>
                 <div class="inverse row">
-                    <div class="col-md-4 col-md-offset-2">
+                    <div class="col-md-4 col-md-offset-2 col-sm-8 col-sm-offset-2">
                         <h1><small>Technology & Portability</small></h1>
                         <p>
                             It was not a constraint but we decided through the WebGL technology to make the Emolyse App portable.
                             However, WebGL is a quite new technology so only recent devices (> 2009) can support it.
                         </p>
                     </div>
-                    <div class="col-md-4 col-md-offset-1">
+                    <div class="col-md-4 col-md-offset-1 col-sm-8 col-sm-offset-2">
                         <h1><small>Devices & Interface</small></h1>
                         <p>
                             Even if the using experience is much better on touch device we keep in mind the portability
@@ -305,6 +313,9 @@
         </div>
     </div>
     <div id="TheCrew" class="scroll-anchor">
+        <div class="container"></div>
+    </div>
+    <div id="Contact" class="scroll-anchor">
 
     </div>
 <script src="js/jquery-2.1.4.min.js"></script>
