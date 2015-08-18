@@ -9,7 +9,7 @@
 // SMOOTH SCROLL PARAMS
 var preventLRArrows = false;
 var preventScroll = false;
-var deltaError = 10;//Even after a scrollTo on an $anchor there is a small difference between body.scrollTop and anchor.offset.top this param solve this issue
+var deltaError = 50;//Even after a scrollTo on an $anchor there is a small difference between body.scrollTop and anchor.offset.top this param solve this issue
 var smoothScrollDuration = 800;
 
 // SMOOTH SCROLL TOOLS
@@ -23,8 +23,8 @@ function majScrollMenuStyle($anchor){
 
 function getClosestScrollAnchor(){
     var $res = $(".scroll-anchor").first();
-    $(".scroll-anchor").each(function () {
-        if ($("body").scrollTop()-$(this).offset().top>-deltaError){
+    $(".scroll-anchor").each(function () {;
+        if ($("body").scrollTop()-$(this).offset().top + parseFloat($(this).css("padding-top"))>-deltaError){
             $res = $(this);
         } else {
             return false;
@@ -174,6 +174,10 @@ function initSmoothScroll(duration){
         preventLRArrows = false;
     });
 }
+
+/**************************************
+ *                END                 *
+ *************************************/
 $(document).ready(function () {
 
     initSmoothScroll();

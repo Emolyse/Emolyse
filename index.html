@@ -20,138 +20,7 @@
 
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/jquery.fullPage.css">
-    <!--<link rel="stylesheet" href="css/bootstrap-theme.css">-->
-    <style>
-        body{
-            overflow:hidden;
-            position: absolute;
-            height: 100%;
-            width: 100%;
-        }
-        .inverse h1{
-            color: #eeeeee;
-        }
-        .inverse small{
-            color: #aaaaaa;
-        }
-        .inverse p{
-            color: #eeeeee;
-        }
-        .pt50 {
-            padding-top: 50px;
-        }
-        .align-center{
-            margin-left: auto;
-            margin-right: auto;
-        }
-        section{
-            position: relative;
-            width: 100%;
-        }
-        .scroll-navbar .icon-bar{
-            background-color: #eeeeee;
-        }
-        .scroll-navbar.invert .icon-bar{
-            background-color: #025993;
-        }
-        .scroll-navbar a{
-            color: #eee;
-            font-size: 20px;
-            text-shadow: none;
-            transition: all 500ms;
-        }
-        .scroll-navbar li a{
-            padding-top: 5px;
-            padding-bottom: 5px;
-        }
-        .scroll-navbar li a:focus{
-            background-color: transparent;
-        }
-        .scroll-navbar li a:hover{
-            padding-top: 15px;
-            padding-bottom: 15px;
-        }
-        .scroll-navbar.invert li a{
-            /*background-color: #eeeeee;*/
-        }
-        .scroll-navbar li a:hover,.scroll-navbar li.active a{
-            color: #025993;
-            background-color: #eee;
-        }
-        .scroll-navbar.invert a{
-            color: #025993;
-        }
-        .scroll-navbar.invert li a:hover,.scroll-navbar.invert li.active a{
-            color: #eee;
-            background-color: #025993;
-        }
-        .scroll-navbar li a{
-            opacity: 1;
-        }
-        /*.scroll-navbar:hover li a{*/
-            /*opacity: 1;*/
-        /*}*/
-        .btn-car{
-            background-color: transparent;
-            border:solid 1px #fff;
-            color:#fff;
-            margin-left: 10px;
-            margin-right: 10px;
-        }
-        .btn-car:hover{
-            background-color: #ffffff;
-            color: #025993;
-        }
-        #Home {
-            height: 100%;
-        }
-        #Home .carousel-inner, #Home .item{
-            height: 100%;
-            background-color: #025993;
-        }
-        .carousel-caption{
-            bottom: 50%;
-            -webkit-transform: translateY(50%);
-            transform: translateY(50%);
-        }
-        .browser-logo{
-            width: 64px;
-            margin-left: 10px;
-        }
-        .slide-img{
-            width: 40%;
-        }
-        .sprite{
-            width: 60%;
-            /*height: 236px;*/
-            margin-left: auto;
-            margin-right: auto;
-            position: relative;
-        }
-        .sprite img{
-            width: 100%;
-        }
-        .sprite-pseudo{
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url(images/sprite.png);
-            background-size: cover;
-        }
-        .carousel iframe{
-            border-radius: 10px;
-            box-shadow: 0px 0px 20px #aaa;
-        }
-        .parallaxe{
-            background-image: url(images/paralaxe.png);
-            background-size: cover;
-        }
-        #TheCrew{
-            position: relative;
-        }
-    </style>
+    <link rel="stylesheet" href="css/common.css">
 </head>
 <body>
     <nav class="navbar navbar-fixed-top navbar scroll-navbar">
@@ -174,10 +43,10 @@
                         <a href="#Project">Project</a>
                     </li>
                     <li>
-                        <a href="#TheCrew">The Crew</a>
+                        <a href="#Details">Details</a>
                     </li>
                     <li>
-                        <a href="#Contact">Contact</a>
+                        <a href="#TheCrew">The Crew</a>
                     </li>
                 </ul>
             </div>
@@ -267,7 +136,7 @@
                     )</div>
                 </div>
             </div>
-            <div class="pt50 inverse row scroll-anchor parallaxe" data-menu="Project">
+            <div id="Details" class="pt50 pb50 inverse row scroll-anchor parallaxe">
                 <div class="inverse row">
                     <div class="col-md-10 col-md-offset-2 col-sm-8 col-sm-offset-2">
                         <h1>Development aspects</h1>
@@ -276,7 +145,7 @@
                 <div class="inverse row">
                     <div class="col-md-4 col-md-offset-2 col-sm-8 col-sm-offset-2">
                         <h1><small>Open-source & Multi-language</small></h1>
-                        <p>
+                        <p class="blockquote">
                             The LIP wanted this Emolyse Project accessible to everybody.
                              We made it open-source an we works on a settable language module.
                              By default, english and french are enable but you can completely set an all new language
@@ -284,7 +153,7 @@
                     </div>
                     <div class="col-md-4 col-md-offset-1 col-sm-8 col-sm-offset-2">
                         <h1><small>Completly settable</small></h1>
-                        <p>
+                        <p class="blockquote">
                             As experimenters should use Emolyse app it has to be a maximum settable. So we made a big work
                             on the administrator (experimenter) part with the aim to add a maximum of settings.
                             We tried to keep it easy-to-use thanks to auto-save functions and visual feedback.
@@ -294,14 +163,14 @@
                 <div class="inverse row">
                     <div class="col-md-4 col-md-offset-2 col-sm-8 col-sm-offset-2">
                         <h1><small>Technology & Portability</small></h1>
-                        <p>
+                        <p class="blockquote">
                             It was not a constraint but we decided through the WebGL technology to make the Emolyse App portable.
                             However, WebGL is a quite new technology so only recent devices (> 2009) can support it.
                         </p>
                     </div>
                     <div class="col-md-4 col-md-offset-1 col-sm-8 col-sm-offset-2">
                         <h1><small>Devices & Interface</small></h1>
-                        <p>
+                        <p class="blockquote">
                             Even if the using experience is much better on touch device we keep in mind the portability
                             and made available manipulation with mouse click.
                             Emolyse app hasn't be tested on mobile cause its utilisation on that kind of device seems us inappropriate
@@ -312,11 +181,90 @@
             </div>
         </div>
     </div>
-    <div id="TheCrew" class="scroll-anchor">
-        <div class="container"></div>
-    </div>
-    <div id="Contact" class="scroll-anchor">
-
+    <div id="TheCrew" class="scroll-anchor pt50" data-invert="true">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 profil-desc">
+                    <div class="col-md-8 col-md-offset-2">
+                        <img class="img-circle img-responsive" src="https://avatars1.githubusercontent.com/u/3617653?v=3&s=460" alt="Alizée Arnaud"/>
+                    </div>
+                    <h3>
+                        Alizée Arnaud
+                        <br><small>&laquo;Citation Alizée&raquo;</small>
+                    </h3>
+                    <span class="separator"></span>
+                    <ul>
+                        <li>Administration</li>
+                        <li>Analysis</li>
+                        <li>Conception</li>
+                        <li>Database</li>
+                        <li>Language Module</li>
+                        <li>PHP</li>
+                        <li>jQuery</li>
+                        <li>Drag & Drop</li>
+                    </ul>
+                    <span class="separator"></span>
+                    <a class="thumbnail-container" href="http://alizee-arnaud.com" target="_blank">
+                        <img class="img-thumbnail img-responsive" src="images/alizee-thumbnail.jpg" alt=""/>
+                        <div class="thumbnail-alpha"></div>
+                        <div class="thumbnail-title">Alizée-Arnaud.com</div>
+                    </a>
+                </div>
+                <div class="col-md-4 profil-desc scroll-anchor" data-menu="TheCrew" data-invert="true">
+                    <div class="col-md-8 col-md-offset-2">
+                        <img class="img-circle img-responsive" src="https://avatars2.githubusercontent.com/u/4182707?v=3&s=460" alt="Rémy Drouet"/>
+                    </div>
+                    <h3>
+                        Rémy Drouet
+                        <br><small>&laquo; A new techno ? When do we start ? I can't wait for the begining ! &raquo;</small>
+                    </h3>
+                    <span class="separator"></span>
+                    <ul>
+                        <li>This Emolyse WebSite</li>
+                        <li>WebGL</li>
+                        <li>Manipulation Avatar</li>
+                        <li>Tutorial (video, interactive)</li>
+                        <li>Analysis</li>
+                        <li>Conception</li>
+                        <li>Javascript</li>
+                    </ul>
+                    <span class="separator"></span>
+                    <a class="thumbnail-container" href="http://remy-drouet.fr" target="_blank">
+                        <img class="img-thumbnail img-responsive" src="images/remy-thumbnail.jpg" alt=""/>
+                        <div class="thumbnail-alpha"></div>
+                        <div class="thumbnail-title">Rémy-Drouet.fr</div>
+                    </a>
+                </div>
+                <div class="col-md-4 profil-desc scroll-anchor" data-menu="TheCrew" data-invert="true">
+                    <div class="col-md-8 col-md-offset-2">
+                        <img class="img-circle img-responsive" src="https://avatars2.githubusercontent.com/u/9638925?v=3&s=460" alt="Jordan Daïta"/>
+                    </div>
+                    <h3>
+                        Jordan Daïta
+                        <br><small>&laquo;Citation Jordan&raquo;</small>
+                    </h3>
+                    <span class="separator"></span>
+                    <ul>
+                        <li>Conception</li>
+                        <li>Avatar Manipulation</li>
+                        <li>WebGL</li>
+                        <li>Javascript</li>
+                        <li>Avatar Creation</li>
+                        <li>Analysis</li>
+                        <li>Blender Animation</li>
+                    </ul>
+                    <span class="separator"></span>
+                    <a class="thumbnail-container" href="https://github.com/jodata" target="_blank">
+                        <img class="img-thumbnail img-responsive" src="images/jordan-thumbnail.jpg" alt=""/>
+                        <div class="thumbnail-alpha"></div>
+                        <div class="thumbnail-title">GitHub.com/jodata</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    <footer>
+        Rémy Drouet - All rights reserved Emolyse 2015
+    </footer>
     </div>
 <script src="js/jquery-2.1.4.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
