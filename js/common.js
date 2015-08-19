@@ -12,6 +12,7 @@ var preventLRArrows = false;
 var preventScroll = false;
 var deltaError = 50;//Even after a scrollTo on an $anchor there is a small difference between body.scrollTop and anchor.offset.top this param solve this issue
 var smoothScrollDuration = 800;
+var smoothScrollRelocate = window.location.origin + window.location.pathname;
 
 // SMOOTH SCROLL TOOLS
 function majScrollMenuStyle($anchor){
@@ -40,8 +41,7 @@ function majScrollMenuActive($anchor){
     } else {
         var ref = "#"+$anchor.attr("id");
     }
-    history.replaceState(null, null, "http://localhost/Emolyse/"+ref);
-    //history.replaceState(null, null, "http://emolyse.github.io/Emolyse/"+ref);
+    history.replaceState(null, null, smoothScrollRelocate+ref);
     $('.scroll-navbar li').removeClass('active');
     $('.scroll-navbar li a[href^="'+ref+'"]').parent().addClass('active');
 }
