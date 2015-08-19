@@ -7,6 +7,7 @@
  *************************************/
 
 // SMOOTH SCROLL PARAMS
+var $body = $("html");
 var preventLRArrows = false;
 var preventScroll = false;
 var deltaError = 50;//Even after a scrollTo on an $anchor there is a small difference between body.scrollTop and anchor.offset.top this param solve this issue
@@ -24,7 +25,7 @@ function majScrollMenuStyle($anchor){
 function getClosestScrollAnchor(){
     var $res = $(".scroll-anchor").first();
     $(".scroll-anchor").each(function () {;
-        if ($("body").scrollTop()-$(this).offset().top + parseFloat($(this).css("padding-top"))>=-deltaError){
+        if ($body.scrollTop()-$(this).offset().top + parseFloat($(this).css("padding-top"))>=-deltaError){
             $res = $(this);
         } else {
             return false;
@@ -39,15 +40,15 @@ function majScrollMenuActive($anchor){
     } else {
         var ref = "#"+$anchor.attr("id");
     }
-    //history.replaceState(null, null, "http://localhost/Emolyse/"+ref);
-    history.replaceState(null, null, "http://emolyse.github.io/Emolyse/"+ref);
+    history.replaceState(null, null, "http://localhost/Emolyse/"+ref);
+    //history.replaceState(null, null, "http://emolyse.github.io/Emolyse/"+ref);
     $('.scroll-navbar li').removeClass('active');
     $('.scroll-navbar li a[href^="'+ref+'"]').parent().addClass('active');
 }
 
 function getPrevScrollAnchor(){
-    var $res = $("body");
-    var currentScroll = $("body").scrollTop();
+    var $res = $body;
+    var currentScroll = $body.scrollTop();
     $(".scroll-anchor").each(function (index,e) {
         if(currentScroll>=$(this).offset().top+deltaError){
             $res = $(this);
@@ -59,9 +60,9 @@ function getPrevScrollAnchor(){
 }
 
 function getNextScrollAnchor(){
-    var $res = $("body");
-    var currentScroll = $("body").scrollTop();
-    $(".scroll-anchor").each(function (index,e) {
+    var $res = $body;
+    var currentScroll = $body.scrollTop();
+    $(".scroll-anchor").each(function () {
         if(currentScroll<=$(this).offset().top-deltaError){
             $res = $(this);
             return false;
@@ -98,7 +99,7 @@ function smoothScrollKeysHandler(e) {
 function smoothScrollMouseWheelHandler(e){
     e.preventDefault();
     if(!preventScroll) {
-        if (e.originalEvent.wheelDelta >= 0) {
+        if (e.originalEvent.deltaY < 0) {
             smoothScrollToPrev();
         }
         else {
@@ -121,8 +122,7 @@ function smoothScrollTo($anchor){
     //ajouter le scroll watcher
     if(!preventScroll){
         preventScroll = true;
-        if($anchor.selector === "body"){
-            console.log("body");
+        if($anchor.selector === $body.selector){
             var scroll = $anchor.scrollTop();
         } else {
             //on reccupere la position de l'ancre
@@ -131,12 +131,12 @@ function smoothScrollTo($anchor){
             //on reccupere l'ID de l'ancre ou de son menu rattaché
             majScrollMenuActive($anchor);
         }
-        $("body").animate({
+        $body.animate({
             scrollTop:scroll
         },smoothScrollDuration, function () {
             preventScroll = false;
             //On situe le menu avant de mettre à jour son style (invert)
-            if (Math.abs($anchor.offset().top-$("body").scrollTop())>=deltaError){
+            if (Math.abs($anchor.offset().top-$body.scrollTop())>=deltaError){
                 $anchor = getClosestScrollAnchor();
             }
             majScrollMenuStyle($anchor);
@@ -153,6 +153,9 @@ function smoothScrollToNext(){
 }
 
 function initSmoothScroll(duration,navbar){
+    if(/Chrome/i.test(navigator.userAgent) || /Safari/i.test(navigator.userAgent) || /Opera/i.test(navigator.userAgent)){
+        $body = $('body');
+    }
     deltaError = navbar ? navbar : $(".scroll-navbar").height();
     //On met à jour le menu
     if(duration)
@@ -163,8 +166,7 @@ function initSmoothScroll(duration,navbar){
 
     //On met en place tous les event handler
     $(document).keydown(smoothScrollKeysHandler);
-    var mousewheelevt = (/Firefox/i.test(navigator.userAgent)) ? "DOMMouseScroll" : "mousewheel" //FF doesn't recognize mousewheel as of FF3.x
-    $(window).on(mousewheelevt,smoothScrollMouseWheelHandler);
+    $(window).on('wheel',smoothScrollMouseWheelHandler);
     $(".scroll-navbar a").click(smoothScrollClickHandler);
 
 
