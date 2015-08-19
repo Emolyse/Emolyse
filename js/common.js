@@ -24,7 +24,7 @@ function majScrollMenuStyle($anchor){
 function getClosestScrollAnchor(){
     var $res = $(".scroll-anchor").first();
     $(".scroll-anchor").each(function () {;
-        if ($("body").scrollTop()-$(this).offset().top + parseFloat($(this).css("padding-top"))>-deltaError){
+        if ($("body").scrollTop()-$(this).offset().top + parseFloat($(this).css("padding-top"))>=-deltaError){
             $res = $(this);
         } else {
             return false;
@@ -39,7 +39,8 @@ function majScrollMenuActive($anchor){
     } else {
         var ref = "#"+$anchor.attr("id");
     }
-    history.pushState(null, null, "/Emolyse/"+ref);
+    //history.replaceState(null, null, "http://localhost/Emolyse/"+ref);
+    history.replaceState(null, null, "http://emolyse.github.io/Emolyse/"+ref);
     $('.scroll-navbar li').removeClass('active');
     $('.scroll-navbar li a[href^="'+ref+'"]').parent().addClass('active');
 }
@@ -48,7 +49,7 @@ function getPrevScrollAnchor(){
     var $res = $("body");
     var currentScroll = $("body").scrollTop();
     $(".scroll-anchor").each(function (index,e) {
-        if(currentScroll>$(this).offset().top+deltaError){
+        if(currentScroll>=$(this).offset().top+deltaError){
             $res = $(this);
         }else{
             return false;
@@ -61,7 +62,7 @@ function getNextScrollAnchor(){
     var $res = $("body");
     var currentScroll = $("body").scrollTop();
     $(".scroll-anchor").each(function (index,e) {
-        if(currentScroll<$(this).offset().top-deltaError){
+        if(currentScroll<=$(this).offset().top-deltaError){
             $res = $(this);
             return false;
         }
@@ -135,7 +136,7 @@ function smoothScrollTo($anchor){
         },smoothScrollDuration, function () {
             preventScroll = false;
             //On situe le menu avant de mettre à jour son style (invert)
-            if (Math.abs($anchor.offset().top-$("body").scrollTop())>deltaError){
+            if (Math.abs($anchor.offset().top-$("body").scrollTop())>=deltaError){
                 $anchor = getClosestScrollAnchor();
             }
             majScrollMenuStyle($anchor);
@@ -151,7 +152,8 @@ function smoothScrollToNext(){
     smoothScrollTo(getNextScrollAnchor());
 }
 
-function initSmoothScroll(duration){
+function initSmoothScroll(duration,navbar){
+    deltaError = navbar ? navbar : $(".scroll-navbar").height();
     //On met à jour le menu
     if(duration)
         smoothScrollDuration = duration;

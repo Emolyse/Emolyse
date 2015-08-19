@@ -1,34 +1,17 @@
-body{
-    overflow:hidden;
-    position: absolute;
-    height: 100%;
-    width: 100%;
-}
+body{overflow:hidden;position: absolute;height: 100%;width: 100%;}
 
-.blockquote{
-    padding-left:20px;
-    border-left:solid 1px #eeeeee;
-}
-.inverse h1{
-    color: #eeeeee;
-}
-.inverse small{
-    color: #aaaaaa;
-}
+.blockquote{padding-left:20px;border-left:solid 1px #eeeeee;}
 
-.inverse p{
-    color: #eeeeee;
-}
-.pt50 {
-    padding-top: 50px;
-}
-.pb50 {
-    padding-bottom: 50px;
-}
-.align-center{
-    margin-left: auto;
-    margin-right: auto;
-}
+.inverse h1{color: #eeeeee;}
+.inverse small{color: #aaaaaa;}
+.inverse p{color: #eeeeee;}
+
+.pt50 {padding-top: 50px;}
+.pb50 {padding-bottom: 50px;}
+.mt50 {margin-top: 50px;}
+.mb50 {margin-bottom: 50px;}
+.align-center{margin-left: auto;margin-right: auto;}
+
 section{
     position: relative;
     width: 100%;
